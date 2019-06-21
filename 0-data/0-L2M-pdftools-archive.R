@@ -569,7 +569,8 @@ results <- raw_results %>%
          disadvantaged = case_when(is.na(disadvantaged) ~ "",
                                    disadvantaged == "," ~ "",
                                    disadvantaged == "NA NA" ~ "",
-                                   T ~ disadvantaged))
+                                   T ~ disadvantaged)) %>%
+  select(-columns, -comment_error)
 
 # Bad on left, good on right
 period_cross <- c("Q3" = "Q4")
@@ -588,7 +589,7 @@ results <- results %>%
                          period, period_cross[period]),
          call_type = ifelse(is.na(call_type_cross[call_type]),
                             call_type, call_type_cross[call_type]),
-         decision_type = ifelse(is.na(decision_cross[decision]),
+         decision = ifelse(is.na(decision_cross[decision]),
                                 decision, decision_cross[decision]))
 
 

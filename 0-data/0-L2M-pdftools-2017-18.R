@@ -270,10 +270,10 @@ corrections <- results %>%
          temp_team = word(game_details, 1, -4),
          away1 = str_trim(str_remove(temp_team, "@.*$")),
          away_score = str_extract(away1,  "(?<=\\().+?(?=\\))"),
-         away = str_trim(str_remove(away1, "\\(.*\\)")),
+         away_team = str_trim(str_remove(away1, "\\(.*\\)")),
          home1 = str_trim(str_remove(temp_team, ".*@")),
          home_score = str_extract(home1,  "(?<=\\().+?(?=\\))"),
-         home = str_trim(str_remove(home1, "\\(.*\\)")),
+         home_team = str_trim(str_remove(home1, "\\(.*\\)")),
          # Austin Rivers was miscoded as Doc Rivers on March 4, 2018
          disadvantaged = ifelse(disadvantaged == "Doc Rivers", "Austin Rivers",
                                 disadvantaged)) %>% 

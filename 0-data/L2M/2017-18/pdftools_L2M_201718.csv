@@ -1,4 +1,4 @@
-period,time,call_type,committing,disadvantaged,decision,comments,game_details,page,file,game_date,away_score,away,home_score,home
+period,time,call_type,committing,disadvantaged,decision,comments,game_details,page,file,game_date,away_score,away_team,home_score,home_team
 Q4,01:46.0,Foul: Shooting,John Collins,Greg Monroe,CC,Collins (ATL) makes contact to Monroe's (BOS) arm that affects his driving shot attempt.,"Hawks (112) @ Celtics (106) April 8, 2018",1,L2M-ATL-BOS-04-08-2018.pdf,"April 8, 2018",112,Hawks,106,Celtics
 Q4,01:35.0,Foul: Offensive,Isaiah Taylor,Jabari Bird,CNC,Taylor (ATL) firms up his position and sets the screen on Bird (BOS) without delivering the contact.,"Hawks (112) @ Celtics (106) April 8, 2018",1,L2M-ATL-BOS-04-08-2018.pdf,"April 8, 2018",112,Hawks,106,Celtics
 Q4,01:32.0,Foul: Shooting,Semi Ojeleye,Dewayne Dedmon,CNC,Ojeleye (BOS) legally contests Dedmon's (ATL) jump shot attempt.,"Hawks (112) @ Celtics (106) April 8, 2018",1,L2M-ATL-BOS-04-08-2018.pdf,"April 8, 2018",112,Hawks,106,Celtics

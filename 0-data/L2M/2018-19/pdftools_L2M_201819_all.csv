@@ -1,4 +1,4 @@
-period,time,call_type,committing,disadvantaged,decision,comments,game_details,page,file,game_date,away_score,away,home_score,home
+period,time,call_type,committing,disadvantaged,decision,comments,game_details,page,file,game_date,away_score,away_team,home_score,home_team
 Q4,01:49.8,Foul: Offensive,Blake Griffin,Jeremy Lin,CNC,Griffin (DET) is established in the path of Lin (ATL) and gives him room to avoid the contact.,"Hawks (98) @ Pistons (95) (Dec 23, 2018)",1,L2M-ATL-DET-12-23-2018-1.pdf,"Dec 23, 2018",98,Hawks,95,Pistons
 Q4,01:45.0,Foul: Personal,Jeremy Lin,Blake Griffin,CNC,Lin (ATL) maintains a legal guarding position on the drive by Griffin (DET).,"Hawks (98) @ Pistons (95) (Dec 23, 2018)",1,L2M-ATL-DET-12-23-2018-1.pdf,"Dec 23, 2018",98,Hawks,95,Pistons
 Q4,01:44.5,Foul: Offensive,Zaza Pachulia,Kevin Huerter,CNC,Pachulia (DET) firms up in the path of Huerter (ATL) and absorbs the contact on his screen.,"Hawks (98) @ Pistons (95) (Dec 23, 2018)",1,L2M-ATL-DET-12-23-2018-1.pdf,"Dec 23, 2018",98,Hawks,95,Pistons

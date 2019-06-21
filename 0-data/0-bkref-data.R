@@ -39,10 +39,7 @@ archived <- read_rds("0-data/L2M/archive/pdftools_L2M_archive_all.rds") %>%
          type = str_trim(str_remove(call_type, ".*:")),
          date = mdy(game_date),
          home = team_dictionary[home_team],
-         away = team_dictionary[away_team]) %>% 
-  select(period, time, call_type, call, type,
-         committing, disadvantaged, decision, comments,
-         file, away, home, date)
+         away = team_dictionary[away_team])
 
 # 2017-18
 l2m_2018 <- read_rds("0-data/L2M/2017-18/pdftools_L2M_201718.rds") %>% 
@@ -51,7 +48,9 @@ l2m_2018 <- read_rds("0-data/L2M/2017-18/pdftools_L2M_201718.rds") %>%
                             NA_character_, call_type),
          call_type = str_squish(call_type),
          call = str_remove(call_type, ":.*"),
-         type = str_trim(str_remove(call_type, ".*:")))
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
 
 # 2018-19 pdfs
 l2mpdf_2019 <- read_rds("0-data/L2M/2018-19/pdftools_L2M_201819_all.rds") %>% 
@@ -60,7 +59,9 @@ l2mpdf_2019 <- read_rds("0-data/L2M/2018-19/pdftools_L2M_201819_all.rds") %>%
                             NA_character_, call_type),
          call_type = str_squish(call_type),
          call = str_remove(call_type, ":.*"),
-         type = str_trim(str_remove(call_type, ".*:")))
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
 
 # 2018-19 scraped
 scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>% 
@@ -74,7 +75,9 @@ scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>%
                             NA_character_, call_type),
          call_type = str_squish(call_type),
          call = str_remove(call_type, ":.*"),
-         type = str_trim(str_remove(call_type, ".*:")))
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
 
 # L2M are not consistent with the names of teams
 team_cross <- c("BRK" = "BKN", "PHO" = "PHX")

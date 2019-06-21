@@ -176,8 +176,15 @@ scrape_site <- map(links_url, function(x) {
 })
 
 # Now, write the full data set and also write individual csv files!
-scrape_data  <- bind_rows(scrape_site) %>% 
-  mutate(scrape_time = as.character(scrape_time))
+if (is_empty(scrape_site)) {
+  scrape_data <- data.frame(scrape_time = NA)
+  
+} else {
+  scrape_data  <- bind_rows(scrape_site) %>% 
+    mutate(scrape_time = as.character(scrape_time))
+  
+}
+
 scraped_data <- map(scraped_files, read_csv, col_types = cols(.default = "c"))
 
 # Individual games
@@ -193,16 +200,17 @@ ind_games_csv <- map(scrape_site, function(x) {
 
 corrections <- scrape_data %>% 
   bind_rows(scraped_data) %>%
-  arrange(scrape_time)
+  arrange(scrape_time) %>% 
+  filter(!is.na(scrape_time))
 
 # Enter in the home and away teams plus final scores
 corrections <- corrections %>% 
   mutate(away1 = str_trim(str_remove(game_details, "@.*$")),
          away_score = str_extract(away1,  "(?<=\\().+?(?=\\))"),
-         away = str_trim(str_remove(away1, "\\(.*\\)")),
+         away_team = str_trim(str_remove(away1, "\\(.*\\)")),
          home1 = str_trim(str_remove(game_details, ".*@")),
          home_score = str_extract(home1,  "(?<=\\().+?(?=\\))"),
-         home = str_trim(str_remove(home1, "\\(.*\\)"))) %>% 
+         home_team = str_trim(str_remove(home1, "\\(.*\\)"))) %>% 
   select(-away1, -home1)
 
 
