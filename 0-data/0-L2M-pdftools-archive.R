@@ -323,6 +323,7 @@ pdf_raw <- map(raw_files, function(x) {
                  disadvantaged, decision)
       } else {
         play_data <- play_data %>% 
+          mutate(decision = paste(X6, decision)) %>% 
           select(period, time, call_type, committing,
                  disadvantaged, decision)
       }
@@ -582,6 +583,7 @@ call_type_cross <- c("Jump Ball" = "Violation: Jump Ball",
                      "Shot Clock" = "Violation: Other")
 decision_cross <- c("CC*" = "CC",
                     "CNC*" = "CNC",
+                    "IC*" = "IC",
                     "INC*" = "INC")
 
 results <- results %>% 
