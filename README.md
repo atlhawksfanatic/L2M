@@ -1,6 +1,6 @@
 # L2M
 
-This repository is meant as a way to maintain the Last Two Minute (L2M) reports that the NBA releases for certain NBA games. The clean, processed version of the data can be found in `1-tidy/L2M.csv` while the corresponding `R` code to create this data is scattered across the `0-data` and `1-tidy` folders. The `0-data/L2M/` folder hosts the raw data (in pdf form).
+This repository is meant as a way to maintain the Last Two Minute (L2M) reports that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [`1-tidy/L2M.csv`](1-tidy/L2M.csv) while the corresponding `R` code to create this data is scattered across the [`0-data`](0-data) and [`1-tidy`](1-tidy) folders. The [`0-data/L2M/`](0-data/L2M/) folder hosts the raw data (in pdf form).
 
 The process for compiling the L2M dataset is to:
 
