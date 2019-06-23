@@ -56,3 +56,5 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 - time_min - minutes remaining in period
 - time_sec - seconds remaining in period
 - time2 - fractional minutes left (ie 1.9 would be one minute and 54 seconds)
+
+And an overview of the changes in L2M reporting is provided in [`2-eda/2-through-2019-finals`](2-eda/2-through-2019-finals).
