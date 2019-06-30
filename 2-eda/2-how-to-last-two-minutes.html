@@ -382,12 +382,12 @@ $(document).ready(function () {
 </div>
 
 
-<p>The NBA’s Last Two Minute (L2M) reports are intended to be a transparent analysis of referee performance at the end of close NBA games. Having started on March 1st of 2015, they have been publicly available on the <a href="official.nba.com">official.nba.com</a> section of the NBA’s website. Being publicly available is not the same thing as easily accessible or user friendly. These reports are scattered across their website (with a few games hidden) and in PDF format for the majority of games. The NBA did make a major improvement after the 2019 NBA All-Star game in switching away from PDF format for the reports to a web-based format, however all of the pre-2019 All-Star game L2Ms remain in PDF format.</p>
+<p>The NBA’s Last Two Minute (L2M) reports are intended to be a transparent analysis of referee performance at the end of close NBA games. Having started on March 1st of 2015, they have been publicly available on the <a href="https://official.nba.com">official.nba.com</a> section of the NBA’s website. Being publicly available is not the same thing as easily accessible or user friendly. These reports are scattered across their website (with a few games hidden) and in PDF format for the majority of games. The NBA did make a major improvement after the 2019 NBA All-Star game in switching away from PDF format for the reports to a web-based format, however all of the pre-2019 All-Star game L2Ms remain in PDF format.</p>
 <p>The actual structure of the underlying data in L2Ms is consistent. Each event is a graded action in a play. The action will contain the period of action, time remaining, call (foul, turnover, violation, etc), type of call (shooting foul, personal foul, etc.), committing player, disadvantaged player, decision, and comment of the action. Sometimes there is no disadvantaged or committing player due to the nature of a play, but the intended structure should lend itself to be nicely formatted after all of the information is extracted.</p>
 <p>All of the code for extracting can be found in my <a href="https://github.com/atlhawksfanatic/L2M">L2M GitHub repository</a>, but this small tutorial is to show how I used <a href="https://www.r-project.org/">R</a> in order to download, parse, and tidy up the L2M data.</p>
 <div id="downloading-l2ms" class="section level1">
 <h1>Downloading L2Ms</h1>
-<p>There are three main sections of the <a href="official.nba.com">official.nba.com</a> website where L2Ms reside:</p>
+<p>There are three main sections of the <a href="https://official.nba.com">official.nba.com</a> website where L2Ms reside:</p>
 <ol style="list-style-type: decimal">
 <li><a href="http://official.nba.com/nba-last-two-minute-reports-archive/">Archived</a> for games from March 1st, 2015 through the 2017 NBA Finals.</li>
 <li><a href="https://official.nba.com/2017-18-nba-officiating-last-two-minute-reports/">2017-18</a> for games in the 2017-18 NBA Season.</li>
@@ -444,7 +444,7 @@ pdf_games &lt;- map(links_pdf,  function(x) {
              })
   } else &quot;exists&quot;
 })</code></pre>
-<p>For the non-PDF links, this becomes a bit more complex. Take for example the last game of the 2018-19 NBA Season’s url: <a href="https://official.nba.com/l2m/L2MReport.html?gameId=0041800406" class="uri">https://official.nba.com/l2m/L2MReport.html?gameId=0041800406</a></p>
+<p>For the non-PDF links, this becomes a bit more complex. Take for example the last game of the 2018-19 NBA Season’s url: <a href="https://official.nba.com/l2m/L2MReport.html?gameId=0041800406">https://official.nba.com/l2m/L2MReport.html?gameId=0041800406</a></p>
 <p>We can see that the structure of the L2M is consistent in that each graded action has the required elements of period, time remaining, etc. Ideally, we would want to read the website with <code>read_html()</code> and then simply read in the resulting table with <code>html_table()</code>. This method does not work because the web page is rendered with JavaScript:</p>
 <pre class="r"><code>links[1] %&gt;% 
   read_html() %&gt;% 
