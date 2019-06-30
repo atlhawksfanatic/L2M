@@ -1,0 +1,201 @@
+---
+title: "How To Extract The Last Two Minute Reports"
+author: "Robert"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+tags:
+- L2M
+- resources
+layout: post
+---
+
+```{r setup, include=FALSE}
+library("knitr")
+opts_chunk$set(echo = TRUE, message = FALSE, fig.path = "../figure/",
+               out.width = "750px", dpi = 200)
+```
+
+
+The NBA's Last Two Minute (L2M) reports are intended to be a transparent analysis of  referee performance at the end of close NBA games. Having started on March 1st of 2015, they have been publicly available on the [official.nba.com](official.nba.com) section of the NBA's website. Being publicly available is not the same thing as easily accessible or user friendly. These reports are scattered across their website (with a few games hidden) and in PDF format for the majority of games. The NBA did make a major improvement after the 2019 NBA All-Star game in switching away from PDF format for the reports to a web-based format, however all of the pre-2019 All-Star game L2Ms remain in PDF format.
+
+The actual structure of the underlying data in L2Ms is consistent. Each event is a graded action in a play. The action will contain the period of action, time remaining, call (foul, turnover, violation, etc), type of call (shooting foul, personal foul, etc.), committing player, disadvantaged player, decision, and comment of the action. Sometimes there is no disadvantaged or committing player due to the nature of a play, but the intended structure should lend itself to be nicely formatted after all of the information is extracted.
+
+All of the code for extracting can be found in my [L2M GitHub repository](https://github.com/atlhawksfanatic/L2M), but this small tutorial is to show how I used [R](https://www.r-project.org/) in order to download, parse, and tidy up the L2M data.
+
+# Downloading L2Ms
+
+There are three main sections of the [official.nba.com](official.nba.com) website where L2Ms reside:
+
+1. [Archived](http://official.nba.com/nba-last-two-minute-reports-archive/) for games from March 1st, 2015 through the 2017 NBA Finals.
+2. [2017-18](https://official.nba.com/2017-18-nba-officiating-last-two-minute-reports/) for games in the 2017-18 NBA Season.
+3. [2018-19](https://official.nba.com/2018-19-nba-officiating-last-two-minute-reports/) for games in the 2018-19 NBA Season.
+
+As a guess, there will likely be a corresponding [2019-20](https://official.nba.com/2019-20-nba-officiating-last-two-minute-reports/) section of the website where they will put the next season's games, but as of right now it returns a 404 error.
+
+Downloading the L2M reports requires the `httr` and `rvest` packages as well as the `tidyverse` for ease of use. But with the 2018-19 season as an example, we can determine all of the urls for the L2Ms by scraping that section of the site and searching for the nodes which contain games:
+
+```{r read-links}
+library("httr")
+library("rvest")
+library("tidyverse")
+
+url <- paste0("https://official.nba.com/",
+              "2018-19-nba-officiating-last-two-minute-reports/")
+
+# read in url from above, then extract the links that comply with:
+links <- read_html(url) %>% 
+  html_nodes("#main a+ a , strong+ a") %>%
+  html_attr("href")
+
+tail(links)
+```
+
+The resulting object of urls contains `r length(links)` games. Most of these are of PDF format, however as previously mentioned some of these links are web pages and not PDFs:
+
+```{r l2m-formats}
+table(tools::file_ext(links))
+```
+
+We want to separate these two types of links because they require different ways to parse the L2M data for analysis. The PDFs are straight-forward, we simply want to download each of the `r sum(tools::file_ext(links) == "pdf")` PDFs into a folder to be parsed later:
+
+```{r pdf-format, eval = FALSE}
+# Create a directory for the data
+local_dir     <- "0-data/L2M/2018-19"
+data_source   <- paste0(local_dir, "/raw")
+if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
+if (!file.exists(data_source)) dir.create(data_source, recursive = T)
+
+# Subset only the 
+links_pdf <- links[grepl(pattern = "*.pdf", links)]
+
+files  <- paste(data_source, basename(links_pdf), sep = "/")
+
+# For each url and file, check to see if it exists then try to download.
+#  need to keep a record of those which fail with a 404 error
+
+pdf_games <- map(links_pdf,  function(x) {
+  file_x <- paste(data_source, basename(x), sep = "/")
+  if (!file.exists(file_x)) {
+    Sys.sleep(runif(1, 3, 5))
+    tryCatch(download.file(x, file_x, method = "libcurl"),
+             warning = function(w) {
+               "bad"
+             })
+  } else "exists"
+})
+
+```
+
+For the non-PDF links, this becomes a bit more complex. Take for example the last game of the 2018-19 NBA Season's url: `r links[1]`
+
+We can see that the structure of the L2M is consistent in that each graded action has the required elements of period, time remaining, etc. Ideally, we would want to read the website with `read_html()` and then simply read in the resulting table with `html_table()`. This method does not work because the web page is rendered with JavaScript:
+
+```{r bad-url}
+links[1] %>% 
+  read_html() %>% 
+  html_table()
+```
+
+In order to correct for this, we need a service which will read in the full page after the JavaScript has been rendered. This is where the [`splashr`](https://cran.r-project.org/web/packages/splashr/vignettes/intro_to_splashr.html) package comes in handy as it will allow for the webpage to first load all of the JavaScript (and resulting table of information) that we can then scrape. You will need to have `splashr` installed and properly set-up, likely with a [Docker](https://www.docker.com/) container running in the background. Once you have this, we can read in the url properly after waiting a few seconds for the web page to render (ie set `wait = 7` for a 7 second delay) then read in the resulting html table:
+
+```{r splash-download}
+library("splashr")
+
+splash_active() # This needs to be TRUE to work...
+
+l2m_raw <- render_html(url = links[1], wait = 7)
+
+l2m_site <- l2m_raw  %>% 
+  html_table(fill = T) %>% 
+  .[[1]]
+glimpse(tail(l2m_site))
+```
+
+Success! Now with a little bit of tedious adjustments to the resulting data, we can gather up the resulting variables for each action into a consistent format. The gritty details can be found in [0-data/0-L2M-download-2018-19.R](../0-data/0-L2M-download-2018-19.R).
+
+# Parsing PDFs
+
+Now back to the PDFs that we stored away for later, although we'll just use the first one from the 2018-19 Season. We need a package that can extract the text information in each PDF to then extract the relevant variables. The [`pdftools`](https://github.com/ropensci/pdftools) package allows for the reading of text from each page of a PDF, at which point we will need some understanding of the approximate format of each page:
+
+```{r pdfextract}
+library("pdftools")
+raw_text <- pdftools::pdf_text("https://ak-static.cms.nba.com/wp-content/uploads/sites/4/2018/10/L2M-OKC-GSW-10-16-2018.pdf")
+length(raw_text)
+raw_text[[1]]
+```
+
+Each L2M has the same type of disclaimer and description at the beginning. It is always something to the effect of explaining that they grade calls although the literal description does change. This is not important to us, what we firstly need to find in the text is where the game details occur for each page. The game details are where the two teams are mentioned and the date. For this report, it is "Thunder (100) @ Warriors (108) October 16, 2018" that starts the relevant information. At the other end of the spectrum, we need to find out where the page ends. This particular L2M has two pages and the second page ends with a description of "Event Assessments" while the first page simply ends with a "1" to indicate it is the first page. So if "Event Assessments" is not present on the page, we know it will end with a page number. We want to find the beginning and end of the relevant information of each line and only keep those lines:
+
+```{r pdf-temp-info}
+temp <- raw_text[[1]] %>% 
+  str_split("\n") %>% 
+  unlist() %>% 
+  str_trim()
+
+# Each report will start off with the two teams and an @ symbol
+#  I don't think there's any other @s in a pdf
+begin <- grep("@", temp)
+# in case of another "@" instance just take the first
+if (length(begin) > 1) {
+  begin <- begin[1]
+  game_details = temp[begin]
+  } else if (length(begin) == 1) {
+    game_details = temp[begin]
+    # But if it doesn't exist, then it's a secondary page so set to 1
+    } else if (length(begin) == 0) { 
+      begin = 1
+      game_details = NA
+    }
+
+# Each report finishes with a footer that describes the event assessments
+done  <- grep("Event Assessments", temp)
+# But there might not be any pages where this ends
+if (length(done) == 0) {
+  done = length(temp) + 1
+  }
+
+temp_info <- temp[(begin):(done - 1)]
+head(temp_info)
+```
+
+We now have each line after the beginning read in. At this point, we need to determine which lines contain information about a play. Each play begins with a period and then time. We need to find each line with a mention of a period and subset that information to be read in as a play:
+
+```{r pdf-line-read}
+# Does the line contain a quarter reference? Then it's probably a play
+plays <- temp_info[c(grep("^Period", temp_info),
+                     grep("^Q", temp_info))]
+
+play_data <- read_table(plays, col_names = FALSE,
+                        col_types = cols(.default = "c"))
+
+glimpse(play_data)
+```
+
+We are fortunate for this particular PDF that there are only 7 columns of data because the adjustment for the resulting data.frame is to simply rename the columns and combine the last two columns:
+
+```{r collect-columns}
+names(play_data) <- c("period", "time", "call_type", "committing",
+                      "disadvantaged", "decision", "decision2")
+play_data <- play_data %>% 
+  mutate(decision = ifelse(is.na(decision) | decision == "",
+                           decision2, decision)) %>% 
+  select(period, time, call_type, committing, disadvantaged, decision)
+glimpse(play_data)
+```
+
+The only thing missing for the data now are the comments. In the PDFs, comments are below the play action and thus we need to extract each of these lines individually then add them as a separate column to the `play_data`:
+
+```{r comments}
+temp_com <- str_remove(temp_info[grep("^Comment", temp_info)], "Comment:")
+comment  <- data.frame(comments = str_trim(temp_com))
+# add in an NA comment to account for the header
+comments <- bind_rows(data.frame(comments = NA), comment)
+
+results <- bind_cols(play_data, comments)
+glimpse(results)
+```
+
+We now have enough comments to match he play data and have completed extracting the relevant information from a page in a PDF. This was a relatively straight-forward page and how one would hope the PDFs are all structured. Unfortunately, not all pages in PDfs are this simple and you can see all the gory hacks that have needed to parse through all of the PDFs for just the 2018-19 NBA Season in the [0-data/0-L2M-pdftools-2018-19.R](../0-data/0-L2M-pdftools-2018-19.R) file.
+
