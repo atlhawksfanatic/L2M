@@ -1,4 +1,4 @@
-# 0-L2M-pdftools-2018-19-all:
+# 0-L2M-pdftools-2018-19:
 #  Read in all the L2M PDFs with the pdftools package
 
 library("pdftools")

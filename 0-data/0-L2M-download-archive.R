@@ -1,4 +1,4 @@
-# 0-NBA-L2M-download-archive:
+# 0-L2M-download-archive:
 #  Download all the archived L2M reports in raw form to then evaluate:
 #  http://official.nba.com/nba-last-two-minute-reports-archive/
 

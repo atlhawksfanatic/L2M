@@ -1,4 +1,4 @@
-# 0-L2M-pdftools-archive-all:
+# 0-L2M-pdftools-archive:
 
 # ---- start --------------------------------------------------------------
 

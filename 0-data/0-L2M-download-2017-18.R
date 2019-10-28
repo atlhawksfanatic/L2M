@@ -1,4 +1,4 @@
-# 0-NBA-L2M-download-2017-18:
+# 0-L2M-download-2017-18:
 #  Download all the archived L2M reports in raw form to then evaluate:
 #  https://official.nba.com/2017-18-nba-officiating-last-two-minute-reports/
 
