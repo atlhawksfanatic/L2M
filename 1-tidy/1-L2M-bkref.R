@@ -74,6 +74,22 @@ scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>%
          home = team_dictionary[home_team],
          away = team_dictionary[away_team])
 
+# 2019-20 scraped
+scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>% 
+  select(-game_id, -away_score, -home_score) %>% 
+  mutate(date = mdy(game_date),
+         decision = case_when(decision == "NCC" ~ "CNC",
+                              decision == "NCI" ~ "INC",
+                              decision == "Undetectable" ~ "",
+                              T ~ decision),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
+
 # L2M are not consistent with the names of teams
 team_cross <- c("BRK" = "BKN", "PHO" = "PHX")
 
@@ -83,6 +99,7 @@ l2m_games <- archived %>%
   bind_rows(l2m_2018) %>% 
   bind_rows(l2mpdf_2019) %>% 
   bind_rows(scraped_2019) %>% 
+  bind_rows(scraped_2020) %>% 
   select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
@@ -144,7 +161,10 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "Harrington Adam" = "Joe Harris",
                  "Harrington, Adam" = "Joe Harris",
                  "Monty Williams" = "Marvin Williams",
-                 "Kelly Oubre Jr." = "Kelly Oubre")
+                 "Kelly Oubre Jr." = "Kelly Oubre",
+                 # New problems for 2019-20
+                 "Kevin Knox II" = "Kevin Knox",
+                 "Marcus Morris Sr." = "Marcus Morris")
 
 l2m_games <- l2m_games %>% 
   mutate(committing = ifelse(is.na(bad_players[committing]),
@@ -194,7 +214,12 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Wade Baldwin" = "Wade Baldwin IV",
                "Walt Lemon" = "Walter Lemon Jr.",
                "Wendell Carter" = "Wendell Carter Jr.",
-               "Wesley Iwundu" = "Wes Iwundu")
+               "Wesley Iwundu" = "Wes Iwundu",
+               # Problems with 2019-20
+               "PJ Washington" = "P.J. Washington")
+# # 2019-20 bkref now has accents on names
+# "Nicolò Melli" = "Nicolo Melli",
+# "Nikola Vučević" = "Nikola Vucevic"
 
 # Some of the odd player names in L2M which need a corresponding team
 odd_bkref <- tribble(
@@ -263,6 +288,9 @@ bkref_games <- read_rds("0-data/bkref/bkref_box.rds") %>%
                               player_name, bad_bkref[player_name]),
          player_team = ifelse(is.na(team_dictionary[player_team]),
                               player_team, team_dictionary[player_team])) %>% 
+  # 2019-20 bkref now has accents on names
+  mutate(player_name = stringi::stri_trans_general(player_name,
+                                                   id = "Latin-ASCII")) %>% 
   bind_rows(odd_bkref)
 
 # Game specific box score parts from bkref
@@ -295,7 +323,18 @@ l2m_games_bkref <- l2m_games %>%
          disadvantaged_team = ifelse(is.na(odd_bkref_dic[disadvantaged]),
                                      disadvantaged_team,
                                      odd_bkref_dic[disadvantaged]),
-         call = str_to_upper(call), type = str_to_upper(type))
+         call = str_to_upper(call), type = str_to_upper(type),
+         # Committing/Disadvantaged side to teams if NA
+         committing_side = case_when(is.na(committing_side) &
+                                       (committing_team == home_team) ~ "home",
+                                     is.na(committing_side) &
+                                       (committing_team == away_team) ~ "away",
+                                     T ~ committing_side),
+         disadvantaged_side = case_when(is.na(disadvantaged_side) &
+                                       (disadvantaged_team == home_team) ~ "home",
+                                     is.na(disadvantaged_side) &
+                                       (disadvantaged_team == away_team) ~ "away",
+                                     T ~ disadvantaged_side))
 
 # Make corrections to types and calls
 # Bad on left, good on right

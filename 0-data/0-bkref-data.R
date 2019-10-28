@@ -79,6 +79,22 @@ scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>%
          home = team_dictionary[home_team],
          away = team_dictionary[away_team])
 
+# 2019-20 scraped
+scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>% 
+  select(-game_id, -away_score, -home_score) %>% 
+  mutate(date = mdy(game_date),
+         decision = case_when(decision == "NCC" ~ "CNC",
+                              decision == "NCI" ~ "INC",
+                              decision == "Undetectable" ~ "",
+                              T ~ decision),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
+
 # L2M are not consistent with the names of teams
 team_cross <- c("BRK" = "BKN", "PHO" = "PHX")
 
@@ -88,6 +104,7 @@ l2m_games <- archived %>%
   bind_rows(l2m_2018) %>% 
   bind_rows(l2mpdf_2019) %>% 
   bind_rows(scraped_2019) %>% 
+  bind_rows(scraped_2020) %>% 
   select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
@@ -143,8 +160,8 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
       read_html() %>% 
       html_table()
     
-    home_players <- url_tables[[3]][-1, 1]
-    home_mins    <- url_tables[[3]][-1, 2]
+    home_players <- url_tables[[1 + length(url_tables)/2]][-1, 1]
+    home_mins    <- url_tables[[1 + length(url_tables)/2]][-1, 2]
     home_mins    <- as.numeric(str_extract(home_mins, ".+?(?=:)")) +
       as.numeric(str_remove(home_mins, ".*:")) / 60
     
@@ -165,7 +182,16 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
     bottom_info <- url_get %>% 
       read_html() %>% 
       html_nodes(paste0("#all_box_", tolower(home_team), "_advanced+ div")) %>% 
-      html_text()
+      html_text(trim = T) %>% 
+      str_remove_all("\\n")
+    
+    if (length(bottom_info) == 0) {
+      bottom_info <- url_get %>% 
+        read_html() %>% 
+        # Problems with the bottom_info no longer detectable. 
+        html_text(trim = T) %>% 
+        str_remove_all("\\n")
+    }
     
     refs <- bottom_info %>% 
       str_extract(pattern = "(?<=Officials:).*(?=Attendance)") %>% 
@@ -175,10 +201,10 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
       str_extract(pattern = "(?<=Attendance:).*(?=Time)") %>% 
       parse_number()
     if (is.na(attendance)) {
-      attendance <- bottom_info %>% 
-        str_extract(pattern = "(?<=Attendance:).*") %>% 
-        parse_number()
-    }
+        attendance <- bottom_info %>% 
+          str_extract(pattern = "(?<=Attendance:).*") %>% 
+          parse_number()
+      }
     
     
     bkref_results <- tibble(bkref_id = x,

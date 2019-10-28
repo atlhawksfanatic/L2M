@@ -8,15 +8,17 @@ The process for compiling the L2M dataset is to:
     - [Archived](0-data/0-L2M-download-archive.R) which begins on 1 March 2015 and goes through the 2017 NBA Finals.
     - [2017-18](0-data/0-L2M-download-2017-18.R)
     - [2018-19](0-data/0-L2M-download-2018-19.R) - which changes formats to online only after the 2019 NBA All Star Game (February 21, 2019 is the first). This requires the [splashr](https://github.com/hrbrmstr/splashr) package to handle scraping of the NBA website.
+    - [2019-20](0-data/0-L2M-download-2019-20.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
 2. Read in the pdf files through the [pdftools](https://github.com/ropensci/pdftools) package:
     - [Archived](0-data/0-L2M-pdftools-archive.R)
     - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
     - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
+    - None for 2019-20 at the moment.
 3. Download box scores for games from <basketball-reference.com> for score and rosters to match up committing/disadvantaged players.
     - [File](0-data/0-bkref-data.R) depends on .rds files created in step 2 to be present in directory.
 4. Combine L2M reports with box score information
-    - [Final version](1-tidy/1-L2M-bkref.R) which does not include box score info, the [csv file](1-tidy/L2M/L2M.csv)
     - [Raw version](1-tidy/1-L2M-raw.R) which does not include box score info, the [csv file](1-tidy/L2M/L2M_raw.csv)
+    - [Final version](1-tidy/1-L2M-bkref.R) which includes box score info, the [csv file](1-tidy/L2M/L2M.csv)
 
 The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 
