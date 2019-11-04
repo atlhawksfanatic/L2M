@@ -163,6 +163,7 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "Monty Williams" = "Marvin Williams",
                  "Kelly Oubre Jr." = "Kelly Oubre",
                  # New problems for 2019-20
+                 "P.J. Tucker" = "PJ Tucker",
                  "Kevin Knox II" = "Kevin Knox",
                  "Marcus Morris Sr." = "Marcus Morris")
 
@@ -189,7 +190,7 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "J.R. Smith" = "JR Smith",
                "Jeffery Taylor" = "Jeff Taylor",
                "J.J. Redick" = "JJ Redick",
-               "P.J. Tucker" = "PJ Tucker",
+               "P.J. Tucker" = "PJ Tucker", # NBA is inconsistent in L2Ms
                "B.J. Johnson" = "BJ Johnson",
                "Danuel House" = "Danuel House Jr.",
                "Dennis Smith" = "Dennis Smith Jr.",
@@ -216,7 +217,8 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Wendell Carter" = "Wendell Carter Jr.",
                "Wesley Iwundu" = "Wes Iwundu",
                # Problems with 2019-20
-               "PJ Washington" = "P.J. Washington")
+               "PJ Washington" = "P.J. Washington",
+               "Cam Reddish" = "Cameron Reddish")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
