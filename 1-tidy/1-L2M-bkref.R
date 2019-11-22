@@ -368,14 +368,14 @@ type_correct <- c("10 SECOND" = "10 SECOND VIOLATION",
                   "SECOND TECHNICAL" = "TECHNICAL",
                   "DELAY TECHNICAL" = "TECHNICAL",
                   "DOUBLE TECHNICAL" = "TECHNICAL")
-l2m_games_bkref <- mutate(l2m_games_bkref,
-                          type2 = ifelse(is.na(type_correct[type]),
-                                         type, type_correct[type]),
-                          time = ifelse(time == "00:96", "00:56", time),
-                          # Time Remaining is problematic here
-                          time_min = parse_number(str_extract(time, ".+?(?=:)")),
-                          time_sec = parse_number(str_remove(time, ".+?(?=:)")),
-                          time2 = time_min + time_sec / 60)
+l2m_games_bkref <- l2m_games_bkref %>% 
+  mutate(type2 = ifelse(is.na(type_correct[type]), type, type_correct[type]),
+         time = ifelse(time == "00:96", "00:56", time),
+         # Time Remaining is problematic here
+         time_min = parse_number(str_extract(time, ".+?(?=:)")),
+         time_sec = parse_number(str_remove(time, ".+?(?=:)")),
+         time2 = time_min + time_sec / 60) %>% 
+  arrange(bkref_id)
 
 
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))

@@ -47,7 +47,7 @@ links_url <- links_url[!(gsub(".*\\?|&.*", "", links_url) %in%
 # ---- splashr-start -------------------------------------------------------
 
 # system("sudo docker run -it -p 8050:8050 scrapinghub/splash")
-# system("docker run -p 8050:8050 scrapinghub/splash")
+system("docker run -p 8050:8050 scrapinghub/splash", wait = FALSE)
 
 splash_active() # This needs to be TRUE to work...
 
