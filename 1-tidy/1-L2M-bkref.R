@@ -377,6 +377,12 @@ l2m_games_bkref <- l2m_games_bkref %>%
          time2 = time_min + time_sec / 60) %>% 
   arrange(bkref_id)
 
+# new_season <- filter(l2m_games_bkref, date > "2019-10-10")
+# new_season %>% 
+#   filter(is.na(committing_min))
+# new_season %>% 
+#   filter(is.na(disadvantaged_min))
+
 
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))
 write_rds(l2m_games_bkref, paste0(local_dir, "/L2M.rds"))

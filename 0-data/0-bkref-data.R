@@ -16,18 +16,25 @@ if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
 # ---- team-list ----------------------------------------------------------
 
-team_list <- paste0("https://raw.githubusercontent.com/bttmly/",
-                    "nba/master/data/teams.json") %>% 
-  GET() %>% 
-  httr::content(as = "text", encoding = "UTF-8") %>% 
-  jsonlite::fromJSON() %>% 
-  mutate_all(as.character)
+# Only download the bkref team id list once and save it
+
+if (file.exists(paste0(local_dir, "/team_ids.rds"))) {
+  team_list <- read_rds(paste0(local_dir, "/team_ids.rds"))
+} else {
+  team_list <- paste0("https://raw.githubusercontent.com/bttmly/",
+                      "nba/master/data/teams.json") %>% 
+    GET() %>% 
+    httr::content(as = "text", encoding = "UTF-8") %>% 
+    jsonlite::fromJSON() %>% 
+    mutate_all(as.character)
+  
+  write_csv(team_list, paste0(local_dir, "/team_ids.csv"))
+  write_rds(team_list, paste0(local_dir, "/team_ids.rds"))
+  
+}
 
 team_dictionary <- team_list$abbreviation
 names(team_dictionary) <- team_list$simpleName
-
-write_csv(team_list, paste0(local_dir, "/team_ids.csv"))
-write_rds(team_list, paste0(local_dir, "/team_ids.rds"))
 
 
 # ---- game-calls ---------------------------------------------------------

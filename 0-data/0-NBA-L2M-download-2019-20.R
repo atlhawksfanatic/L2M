@@ -49,83 +49,98 @@ links_url <- links_url[!(gsub(".*\\?|&.*", "", links_url) %in%
 # system("sudo docker run -it -p 8050:8050 scrapinghub/splash")
 system("docker run -p 8050:8050 scrapinghub/splash", wait = FALSE)
 
+Sys.sleep(3)
+
 splash_active() # This needs to be TRUE to work...
 
 # ---- map-links ----------------------------------------------------------
 
-scrape_site <- map(links_url, function(x) {
-  game_id <- gsub(".*\\?|&.*", "", x)
-  print(paste0(game_id, " at ", Sys.time()))
-  
-  Sys.sleep(runif(1, 10, 15))
-  
-  l2m_raw <- render_html(url = x, wait = 7)
-  
-  game_details <- l2m_raw %>% 
-    xml_nodes(".gamedetails") %>% 
-    html_text()
-  game_date <- l2m_raw %>% 
-    xml_nodes(".gamedate") %>% 
-    html_text()
-  
-  l2m_site <- l2m_raw  %>% 
-    html_table(fill = T) %>% 
-    .[[1]]
-  
-  # Did the scrape give us a functional table?
-  
-  if (is.data.frame(l2m_site)) {
-    print("is a data.frame")
-    l2m_site <- l2m_site[, !is.na(names(l2m_site)) & !(names(l2m_site) == "")]
+if (splash_active()) {
+  scrape_site <- map(links_url, function(x) {
+    game_id <- gsub(".*\\?|&.*", "", x)
+    print(paste0(game_id, " at ", Sys.time()))
     
-    names(l2m_site) <- tolower(str_replace(names(l2m_site), " ", "_"))
+    Sys.sleep(runif(1, 10, 15))
     
-    data1 <- l2m_site %>% 
-      mutate(comments = if_else(grepl(pattern = "^Comment", period),
-                                time, NA_character_),
-             comments = lead(comments),
-             stint = if_else(period == "", time, NA_character_)) %>% 
-      fill(stint)
+    l2m_raw <- render_html(url = x, wait = 7)
     
-    data2 <- data1 %>% 
-      filter(grepl(pattern = "^Period", period)) %>% 
-      mutate(period = str_remove(period, "Period:"),
-             time = str_remove(time, "Time:"),
-             call_type = str_remove(call_type, "Call Type:"),
-             committing = str_remove(committing_player,
-                                     "Committing Player:"),
-             disadvantaged = str_remove(disadvantaged_player,
-                                        "Disadvantaged Player:"),
-             decision = str_remove(review_decision,
-                                   "Review Decision:")) %>% 
-      mutate_all(str_trim) %>% 
-      select(period, time, call_type, committing, disadvantaged, decision,
-             comments, stint)
+    game_details <- l2m_raw %>% 
+      xml_nodes(".gamedetails") %>% 
+      html_text()
+    game_date <- l2m_raw %>% 
+      xml_nodes(".gamedate") %>% 
+      html_text()
     
+    l2m_site <- l2m_raw  %>% 
+      html_table(fill = T) %>% 
+      .[[1]]
     
-    # Check to see that these are dataframes with more than 1 row
-    n1 = nrow(data2)
-    if (n1 > 0) {
-      print("it worked!")
-      j5 <- data2
-      j5$game_id      <- game_id
-      j5$game_details <- game_details
-      j5$game_date    <- game_date
-      j5$scrape_time  <- Sys.time()
+    # Did the scrape give us a functional table?
+    
+    if (is.data.frame(l2m_site)) {
+      print("is a data.frame")
+      l2m_site <- l2m_site[, !is.na(names(l2m_site)) & !(names(l2m_site) == "")]
       
-      return(j5)
-    } else if (n1 == 0) {
-      print("didn't work, data were 0 length")
-      j5 <- data.frame(Period = "error - n1 == 0",
-                       game_id = game_id,
-                       game_details = game_details,
-                       game_date = game_date,
-                       scrape_time = Sys.time())
+      names(l2m_site) <- tolower(str_replace(names(l2m_site), " ", "_"))
       
-      return(j5)
+      data1 <- l2m_site %>% 
+        mutate(comments = if_else(grepl(pattern = "^Comment", period),
+                                  time, NA_character_),
+               comments = lead(comments),
+               stint = if_else(period == "", time, NA_character_)) %>% 
+        fill(stint)
+      
+      data2 <- data1 %>% 
+        filter(grepl(pattern = "^Period", period)) %>% 
+        mutate(period = str_remove(period, "Period:"),
+               time = str_remove(time, "Time:"),
+               call_type = str_remove(call_type, "Call Type:"),
+               committing = str_remove(committing_player,
+                                       "Committing Player:"),
+               disadvantaged = str_remove(disadvantaged_player,
+                                          "Disadvantaged Player:"),
+               decision = str_remove(review_decision,
+                                     "Review Decision:")) %>% 
+        mutate_all(str_trim) %>% 
+        select(period, time, call_type, committing, disadvantaged, decision,
+               comments, stint)
+      
+      
+      # Check to see that these are dataframes with more than 1 row
+      n1 = nrow(data2)
+      if (n1 > 0) {
+        print("it worked!")
+        j5 <- data2
+        j5$game_id      <- game_id
+        j5$game_details <- game_details
+        j5$game_date    <- game_date
+        j5$scrape_time  <- Sys.time()
+        
+        return(j5)
+      } else if (n1 == 0) {
+        print("didn't work, data were 0 length")
+        j5 <- data.frame(Period = "error - n1 == 0",
+                         game_id = game_id,
+                         game_details = game_details,
+                         game_date = game_date,
+                         scrape_time = Sys.time())
+        
+        return(j5)
+      } else {
+        print("didn't work, not sure")
+        j5 <- data.frame(Period = "error - huh",
+                         game_id = game_id,
+                         game_details = game_details,
+                         game_date = game_date,
+                         scrape_time = Sys.time())
+        
+        return(j5)
+      }
+      
+      
     } else {
-      print("didn't work, not sure")
-      j5 <- data.frame(Period = "error - huh",
+      print("no")
+      j5 <- data.frame(Period = "error",
                        game_id = game_id,
                        game_details = game_details,
                        game_date = game_date,
@@ -134,19 +149,15 @@ scrape_site <- map(links_url, function(x) {
       return(j5)
     }
     
-    
-  } else {
-    print("no")
-    j5 <- data.frame(Period = "error",
-                     game_id = game_id,
-                     game_details = game_details,
-                     game_date = game_date,
-                     scrape_time = Sys.time())
-    
-    return(j5)
-  }
+  })
   
-})
+  
+} else {
+  print("Splash is not running, please enable before scraping.")
+  scrape_site <- list(data.frame(Period = "error - splashr did not start",
+                                 game_id = NA, game_details = NA,
+                                 game_date = NA, scrape_time = Sys.time()))
+}
 
 # Now, write the full data set and also write individual csv files!
 if (is_empty(scrape_site)) {
@@ -163,6 +174,8 @@ scraped_data <- map(scraped_files, read_csv, col_types = cols(.default = "c"))
 # Individual games
 ind_games_csv <- map(scrape_site, function(x) {
   game_id <- x$game_id[1]
+  
+  # If the data.frame in the list only has one observation it's an error
   if (nrow(x) > 1) {
     write_csv(x, paste0(scrape_source, "/", game_id, ".csv"))
     return(data.frame(game_id, status = "good"))
