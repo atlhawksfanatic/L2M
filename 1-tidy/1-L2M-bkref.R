@@ -383,6 +383,37 @@ l2m_games_bkref <- l2m_games_bkref %>%
 # new_season %>% 
 #   filter(is.na(disadvantaged_min))
 
+# ---- season-dates -------------------------------------------------------
+
+l2m_games_bkref <-
+  l2m_games_bkref %>% 
+  mutate(season = case_when(date < as.Date("2015-10-01") ~ 2015,
+                            date < as.Date("2016-10-01") ~ 2016,
+                            date < as.Date("2017-10-01") ~ 2017,
+                            date < as.Date("2018-10-01") ~ 2018,
+                            date < as.Date("2019-10-01") ~ 2019,
+                            date < as.Date("2020-10-01") ~ 2020,
+                            T ~ NA_real_),
+         # Last day of the regular season
+         # April 15, 2015
+         # April 13, 2016
+         # April 12, 2017
+         # April 11, 2018
+         # April 10, 2019
+         # April 15, 2020
+         playoffs = case_when(date > as.Date("2015-04-16") &
+                                date < as.Date("2015-10-01") ~ 1,
+                              date > as.Date("2016-04-14") &
+                                date < as.Date("2016-10-01") ~ 1,
+                              date > as.Date("2017-04-13") &
+                                date < as.Date("2017-10-01") ~ 1,
+                              date > as.Date("2018-04-12") &
+                                date < as.Date("2018-10-01") ~ 1,
+                              date > as.Date("2019-04-11") &
+                                date < as.Date("2019-10-01") ~ 1,
+                              date > as.Date("2020-04-16") &
+                                date < as.Date("2020-10-01") ~ 1,
+                              T ~ 0))
 
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))
 write_rds(l2m_games_bkref, paste0(local_dir, "/L2M.rds"))

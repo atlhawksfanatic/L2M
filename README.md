@@ -58,5 +58,7 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 - time_min - minutes remaining in period
 - time_sec - seconds remaining in period
 - time2 - fractional minutes left (ie 1.9 would be one minute and 54 seconds)
+- season - NBA season for which the graded play was a part of, convention is to use the last year of the NBA season so 2015 refers to the 2014-15 Season
+- playoffs - dummy variable equal to 1 if the game occurred in the playoffs
 
 And an overview of the changes in L2M reporting is provided in [`2-eda/2-through-2019-finals`](2-eda/2-through-2019-finals). Further, there is a bit of a how-to for downloading and extracting data on the L2M that is provided in [`2-eda/2-how-to-last-two-minutes`](2-eda/2-how-to-last-two-minutes)
