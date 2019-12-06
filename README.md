@@ -2,6 +2,8 @@
 
 This repository is meant as a way to maintain the Last Two Minute (L2M) reports that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [`1-tidy/L2M/L2M.csv`](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [`0-data`](0-data) and [`1-tidy`](1-tidy) folders. The [`0-data/L2M/`](0-data/L2M/) folder hosts the raw data (in pdf form).
 
+![](calls.png)
+
 The process for compiling the L2M dataset is to:
 
 1. Download the raw data, these are broken up into the different years which the NBA has collected L2M:
