@@ -224,14 +224,25 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
   }
 })
 
-new_box <- bkref_box_scores %>% 
-  bind_rows() %>% 
-  left_join(bkref_games) %>% 
-  mutate(player_team = ifelse(player_side == "home", home, away))
+# If there are no box scores downloaded, set the box scores to the old box scores
+if (is_empty(bkref_box_scores)) {
+  box_scores <- old_box
+} else {
+  new_box <- bkref_box_scores %>% 
+    bind_rows() %>% 
+    left_join(bkref_games) %>% 
+    mutate(player_team = ifelse(player_side == "home", home, away))
+  
+  # Add in the new box scores to the old ones
+  box_scores <- bind_rows(old_box, new_box) %>% 
+    filter(!is.na(bkref_id))
+}
 
-# Add in the new box scores to the old ones
-box_scores <- bind_rows(old_box, new_box) %>% 
-  filter(!is.na(bkref_id))
+# Hack for Lauren Holtkamp missing from referee assignments
+holt_missing = c("201912090NOP", "201912060CHI")
+box_scores <- box_scores %>% 
+  mutate(ref_3 = ifelse(is.na(ref_3) & bkref_id %in% holt_missing,
+                        "Lauren Holtkamp", ref_3))
 
 write_csv(box_scores, paste0(local_dir, "/bkref_box.csv"))
 write_rds(box_scores, paste0(local_dir, "/bkref_box.rds"))
