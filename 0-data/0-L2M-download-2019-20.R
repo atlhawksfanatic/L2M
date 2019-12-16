@@ -25,16 +25,32 @@ links <- read_html(url) %>%
   html_nodes("h2~ p a") %>%
   html_attr("href")
 
-# Is the url a PDF? If so, then ignore it.
-links_good <- links[!tools::file_ext(links) == "pdf"]
-links_pdf  <- links[tools::file_ext(links) == "pdf"]
+# ---- pdf-format ---------------------------------------------------------
+
+
+links_pdf <- links[grepl(pattern = "*.pdf", links)]
+
+files  <- paste(data_source, basename(links_pdf), sep = "/")
+
+# For each url and file, check to see if it exists then try to download.
+#  need to keep a record of those which fail with a 404 error
+
+pdf_games <- map(links_pdf,  function(x) {
+  file_x <- paste(data_source, basename(x), sep = "/")
+  if (!file.exists(file_x)) {
+    Sys.sleep(runif(1, 3, 5))
+    tryCatch(download.file(x, file_x, method = "libcurl"),
+             warning = function(w) {
+               "bad"
+             })
+  } else "exists"
+})
+
 
 # ---- url-format ---------------------------------------------------------
 
-# Adjust the links so it defaults to no video
-links_url <- paste0(links_good,
-                    ifelse(grepl(pattern = "&noVideo=true$", links_good),
-                           "", "&noVideo=true"))
+
+links_url <- links[!grepl(pattern = "*.pdf", links)]
 
 # Only get the links from games not scraped
 scraped_files <- dir(scrape_source, pattern = ".csv", full.names = T)

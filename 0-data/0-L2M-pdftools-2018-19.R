@@ -1,6 +1,9 @@
 # 0-L2M-pdftools-2018-19:
 #  Read in all the L2M PDFs with the pdftools package
 
+# ---- start --------------------------------------------------------------
+
+
 library("pdftools")
 library("stringr")
 library("tidyverse")
@@ -8,6 +11,9 @@ library("tidyverse")
 local_dir   <- "0-data/L2M/2018-19"
 raw_data    <- paste0(local_dir, "/raw")
 if (!file.exists(raw_data)) dir.create(raw_data)
+
+# ---- pdfs ---------------------------------------------------------------
+
 
 raw_files <- dir(raw_data, full.names = T, pattern = "*.pdf")
 
