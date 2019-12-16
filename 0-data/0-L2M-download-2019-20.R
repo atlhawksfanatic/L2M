@@ -25,11 +25,16 @@ links <- read_html(url) %>%
   html_nodes("h2~ p a") %>%
   html_attr("href")
 
+# Is the url a PDF? If so, then ignore it.
+links_good <- links[!tools::file_ext(links) == "pdf"]
+links_pdf  <- links[tools::file_ext(links) == "pdf"]
+
 # ---- url-format ---------------------------------------------------------
 
 # Adjust the links so it defaults to no video
-links_url <- paste0(links, ifelse(grepl(pattern = "&noVideo=true$", links),
-                                  "", "&noVideo=true"))
+links_url <- paste0(links_good,
+                    ifelse(grepl(pattern = "&noVideo=true$", links_good),
+                           "", "&noVideo=true"))
 
 # Only get the links from games not scraped
 scraped_files <- dir(scrape_source, pattern = ".csv", full.names = T)
