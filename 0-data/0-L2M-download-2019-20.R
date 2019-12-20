@@ -67,12 +67,13 @@ links_url <- links_url[!(gsub(".*\\?|&.*", "", links_url) %in%
 
 # ---- splashr-start -------------------------------------------------------
 
-# system("sudo docker run -it -p 8050:8050 scrapinghub/splash")
-system("docker run -p 8050:8050 scrapinghub/splash", wait = FALSE)
+# Only start splashr if there are urls to be downloaded.
 
-Sys.sleep(3)
+if (!is_empty(links_url)) {
+  # Create docker container for splashr to scrape
+  splash_container <- start_splash(container_name = "l2m")
+}
 
-splash_active() # This needs to be TRUE to work...
 
 # ---- map-links ----------------------------------------------------------
 
@@ -180,6 +181,9 @@ if (splash_active()) {
                                  game_date = NA, scrape_time = Sys.time()))
 }
 
+# Remove the splash_container if it was created
+if (exists("splash_container")) stop_splash(splash_container)
+
 # Now, write the full data set and also write individual csv files!
 if (is_empty(scrape_site)) {
   scrape_data <- data.frame(scrape_time = NA)
@@ -220,8 +224,7 @@ corrections <- corrections %>%
          home_team = str_trim(str_remove(home1, "\\(.*\\)"))) %>% 
   select(-away1, -home1)
 
+### Can we put the corrections into a consistent order?
 
 write_csv(corrections, paste0(local_dir, "/scraped_201920.csv"))
 write_rds(corrections, paste0(local_dir, "/scraped_201920.rds"))
-
-
