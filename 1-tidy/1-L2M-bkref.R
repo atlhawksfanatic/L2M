@@ -421,3 +421,24 @@ l2m_games_bkref <-
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))
 write_rds(l2m_games_bkref, paste0(local_dir, "/L2M.rds"))
 
+
+# ---- ref-shiny --------------------------------------------------------------
+
+l2m_shiny <-
+  l2m_games_bkref %>% 
+  mutate(decision_2 = ifelse(is.na(decision) | decision == "",
+                             "INC", decision),
+         decision_3 = ifelse(is.na(decision) | decision == "",
+                             "inc", decision),
+         correct = ifelse(decision_2 %in% c("CC", "CNC"),
+                          "correct", "incorrect"),
+         correct_num = 1*(correct == "correct"),
+         foul = ifelse(decision_2 %in% c("CC", "INC"),
+                       "foul", "clean"),
+         foul_num = 1*(foul == "foul"),
+         temp_year = ifelse(month(date) < 10, 2016, 2015),
+         temp_date = as.Date(paste(temp_year, month(date),
+                                   day(date), sep = "/"), "%Y/%m/%d"))
+
+write_csv(l2m_shiny, "ref-shiny/L2M.csv")
+write_rds(l2m_shiny, "ref-shiny/L2M.rds")
