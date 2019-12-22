@@ -1,6 +1,14 @@
 # L2M
 
-This repository is meant as a way to maintain the Last Two Minute (L2M) reports that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [`1-tidy/L2M/L2M.csv`](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [`0-data`](0-data) and [`1-tidy`](1-tidy) folders. The [`0-data/L2M/`](0-data/L2M/) folder hosts the raw data (in pdf form).
+## Articles
+
+- [How To Extract The Last Two Minute Reports](2-eda/2-how-to-last-two-minutes)
+- [Updating The Last Two Minute Reports: data through the 2019 NBA Finals]((2-eda/2-through-2019-finals))
+
+
+## Description
+
+This repository is meant as a way to maintain the Last Two Minute (L2M) reports that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts the raw data (in pdf form).
 
 ![](calls.png)
 
@@ -63,4 +71,4 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 - `season`: NBA season for which the graded play was a part of, convention is to use the last year of the NBA season so 2015 refers to the 2014-15 Season
 - `playoffs`: dummy variable equal to 1 if the game occurred in the playoffs
 
-And an overview of the changes in L2M reporting is provided in [`2-eda/2-through-2019-finals`](2-eda/2-through-2019-finals). Further, there is a bit of a how-to for downloading and extracting data on the L2M that is provided in [`2-eda/2-how-to-last-two-minutes`](2-eda/2-how-to-last-two-minutes)
+And an overview of the changes in L2M reporting is provided in [2-eda/2-through-2019-finals](2-eda/2-through-2019-finals). Further, there is a bit of a how-to for downloading and extracting data on the L2M that is provided in [2-eda/2-how-to-last-two-minutes](2-eda/2-how-to-last-two-minutes)
