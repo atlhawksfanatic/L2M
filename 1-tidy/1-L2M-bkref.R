@@ -118,8 +118,9 @@ l2m_games <- archived %>%
 
 # ---- correct-players ----------------------------------------------------
 
-# These are the bad L2M player names that need to be converted to the
-#  correct name: bad name on the left, converted good right
+# These are the bad L2M player names that need to be converted to the correct
+#  name. Sometimes it is due to a player altering their name and the NBA not
+#  updating their L2Ms: bad name on the left, converted good right
 bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "Alfred Horford" = "Al Horford",
                  "CJ Watson" = "C.J. Watson",
@@ -165,7 +166,8 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  # New problems for 2019-20
                  "P.J. Tucker" = "PJ Tucker",
                  "Kevin Knox II" = "Kevin Knox",
-                 "Marcus Morris Sr." = "Marcus Morris")
+                 "Marcus Morris Sr." = "Marcus Morris",
+                 "Cameron Reddish" = "Cam Reddish")
 
 l2m_games <- l2m_games %>% 
   mutate(committing = ifelse(is.na(bad_players[committing]),
@@ -218,10 +220,11 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Wesley Iwundu" = "Wes Iwundu",
                # Problems with 2019-20
                "PJ Washington" = "P.J. Washington",
-               "Cam Reddish" = "Cameron Reddish",
+               # "Cam Reddish" = "Cameron Reddish",
                "Lonnie Walker" = "Lonnie Walker IV",
                "Jakob Pöltl" = "Jakob Poeltl",
-               "Kevin Porter" = "Kevin Porter Jr.")
+               "Kevin Porter" = "Kevin Porter Jr.",
+               "Anžejs Pasečņiks" = "Anzejs Pasecniks")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
@@ -285,6 +288,10 @@ names(odd_bkref_dic) <- odd_bkref$player_name
 
 # Box scores from bkref
 bkref_games <- read_rds("0-data/bkref/bkref_box.rds") %>% 
+  # 2019-20 bkref now has accents on names
+  mutate(player_name = stringi::stri_trans_general(player_name,
+                                                   id = "Latin-ASCII")) %>% 
+  
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
          away = ifelse(is.na(team_cross[away]),
@@ -293,9 +300,6 @@ bkref_games <- read_rds("0-data/bkref/bkref_box.rds") %>%
                               player_name, bad_bkref[player_name]),
          player_team = ifelse(is.na(team_dictionary[player_team]),
                               player_team, team_dictionary[player_team])) %>% 
-  # 2019-20 bkref now has accents on names
-  mutate(player_name = stringi::stri_trans_general(player_name,
-                                                   id = "Latin-ASCII")) %>% 
   bind_rows(odd_bkref)
 
 # Game specific box score parts from bkref
