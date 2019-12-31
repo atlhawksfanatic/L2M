@@ -444,5 +444,5 @@ l2m_shiny <-
          temp_date = as.Date(paste(temp_year, month(date),
                                    day(date), sep = "/"), "%Y/%m/%d"))
 
-write_csv(l2m_shiny, "ref-shiny/L2M.csv")
-write_rds(l2m_shiny, "ref-shiny/L2M.rds")
+write_csv(l2m_shiny, "3-shiny/ref-shiny/L2M.csv")
+write_rds(l2m_shiny, "3-shiny/ref-shiny/L2M.rds")
