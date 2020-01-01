@@ -255,7 +255,12 @@ holt_missing = c("201912090NOP", "201912060CHI")
 box_scores <- box_scores %>% 
   mutate(ref_3 = ifelse(is.na(ref_3) & bkref_id %in% holt_missing,
                         "Lauren Holtkamp", ref_3)) %>% 
+  # Change instances of "Lauren Holtkamp" to "Lauren Holtkamp-Sterling"
+  mutate(ref_1 = str_replace(ref_1, "Holtkamp$", "Holtkamp-Sterling"),
+         ref_2 = str_replace(ref_2, "Holtkamp$", "Holtkamp-Sterling"),
+         ref_3 = str_replace(ref_3, "Holtkamp$", "Holtkamp-Sterling")) %>% 
   arrange(bkref_id)
+
 
 write_csv(box_scores, paste0(local_dir, "/bkref_box.csv"))
 write_rds(box_scores, paste0(local_dir, "/bkref_box.rds"))
