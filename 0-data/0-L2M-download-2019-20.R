@@ -25,6 +25,9 @@ links <- read_html(url) %>%
   html_nodes("h2~ p a") %>%
   html_attr("href")
 
+# Hack correction for url link which includes "http:// https://"
+links <- str_remove(links, "http://: ")
+
 # ---- pdf-format ---------------------------------------------------------
 
 
@@ -72,6 +75,7 @@ links_url <- links_url[!(gsub(".*\\?|&.*", "", links_url) %in%
 if (!is_empty(links_url)) {
   # Create docker container for splashr to scrape
   splash_container <- start_splash(container_name = "l2m")
+  Sys.sleep(3)
 }
 
 
@@ -222,9 +226,9 @@ corrections <- corrections %>%
          home1 = str_trim(str_remove(game_details, ".*@")),
          home_score = str_extract(home1,  "(?<=\\().+?(?=\\))"),
          home_team = str_trim(str_remove(home1, "\\(.*\\)"))) %>% 
-  select(-away1, -home1)
-
-### Can we put the corrections into a consistent order?
+  select(-away1, -home1) %>% 
+  # Put the corrections into a consistent order
+  arrange(game_id, period, desc(time))
 
 write_csv(corrections, paste0(local_dir, "/scraped_201920.csv"))
 write_rds(corrections, paste0(local_dir, "/scraped_201920.rds"))
