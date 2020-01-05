@@ -16,14 +16,10 @@ library(lubridate)
 
 ```{r automated, include = FALSE}
 # Automated process
-# 
-# source("0-data/0-L2M-download-2019-20.R")
-# 
-# source("0-data/0-bkref-data.R")
-# 
-# source("1-tidy/1-L2M-raw.R")
-# 
-# source("1-tidy/1-L2M-bkref.R")
+source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
+source("0-data/0-bkref-data.R") # Download bkref box scores
+source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
+source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 ```
 
 # L2M
