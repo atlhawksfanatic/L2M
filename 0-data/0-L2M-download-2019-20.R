@@ -17,11 +17,11 @@ if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 if (!file.exists(scrape_source)) dir.create(scrape_source, recursive = T)
 
-url <- paste0("https://official.nba.com/",
-              "2019-20-nba-officiating-last-two-minute-reports/")
+url_l2m <- paste0("https://official.nba.com/",
+                  "2019-20-nba-officiating-last-two-minute-reports/")
 
 # read in url from above, then extract the links that comply with:
-links <- read_html(url) %>% 
+links <- read_html(url_l2m) %>% 
   html_nodes("h2~ p a") %>%
   html_attr("href")
 
