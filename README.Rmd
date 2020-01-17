@@ -27,7 +27,7 @@ source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 ## Articles
 
 - [How To Extract The Last Two Minute Reports](2-eda/2-how-to-last-two-minutes)
-- [Updating The Last Two Minute Reports: data through the 2019 NBA Finals]((2-eda/2-through-2019-finals))
+- [Updating The Last Two Minute Reports: data through the 2019 NBA Finals](2-eda/2-through-2019-finals)
 
 
 ## Description
@@ -86,12 +86,14 @@ l2m %>%
   rename(Season = season) %>% 
   group_by(Season) %>%
   summarise(Games = n_distinct(bkref_id),
+            "Grades per period" = round(n() / n_distinct(bkref_id, period), digits = 2),
             "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(bkref_id, period), digits = 2),
-            "Incorrect Calls per period" = round(sum(decision_3 == "IC") / n_distinct(bkref_id, period), digits = 2),
-            "Correct Call Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
-            "Incorrect Non-Calls per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(bkref_id, period), digits = 2),
-            "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")))) %>% 
-  knitr::kable(caption = paste("L2M Call Accuracy through ", max(l2m$date)), align = "c")
+            "IC per period" = round(sum(decision_3 == "IC") / n_distinct(bkref_id, period), digits = 2),
+            "CC Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
+            "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(bkref_id, period), digits = 2),
+            "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
+            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(bkref_id, period), digits = 2)) %>% 
+  knitr::kable(caption = paste0("L2M Call Accuracy through ", max(l2m$date)), align = "c")
 
 ```
 
@@ -120,7 +122,7 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 - `call_type`: raw call type variable in L2M
 - `committing`: committing player or team in L2M, may be blank
 - `disadvantaged`: disadvantaged player or team in L2M, may be blank
-- `decision`: judgement of L2M for the call, could be CC, CNC, IC, INC, or blank
+- `decision`: judgement of L2M for the call, could be CC, CNC, IC, INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC = Incorrect Call, INC = Incorrect Non-Call and blank = not detectable without technology
 - `comments`: L2M comments on the play
 - `game_details`: game details on L2M
 - `page`: page of L2M for pdf

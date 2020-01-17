@@ -8,7 +8,7 @@
   - [How To Extract The Last Two Minute
     Reports](2-eda/2-how-to-last-two-minutes)
   - [Updating The Last Two Minute Reports: data through the 2019 NBA
-    Finals](\(2-eda/2-through-2019-finals\))
+    Finals](2-eda/2-through-2019-finals)
 
 ## Description
 
@@ -23,14 +23,14 @@ form).
 
 ![](README_files/figure-gfm/calls-1.png)<!-- -->
 
-| Season | Games | Calls per period | Incorrect Calls per period | Correct Call Percentage | Incorrect Non-Calls per period | Bad Calls Percentage |
-| :----: | :---: | :--------------: | :------------------------: | :---------------------: | :----------------------------: | :------------------: |
-|  2015  |  139  |       4.82       |            0.15            |           97%           |              1.37              |         25%          |
-|  2016  |  439  |       4.77       |            0.21            |           96%           |              1.66              |         29%          |
-|  2017  |  428  |       4.14       |            0.08            |           98%           |              2.50              |         39%          |
-|  2018  |  475  |       4.14       |            0.12            |           97%           |              2.46              |         39%          |
-|  2019  |  453  |       3.63       |            0.14            |           96%           |              2.54              |         43%          |
-|  2020  |  214  |       3.73       |            0.14            |           96%           |              1.17              |         27%          |
+| Season | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
+| :----: | :---: | :---------------: | :--------------: | :-----------: | :-----------: | :------------: | :------------------: | :------------: |
+|  2015  |  139  |       11.27       |       4.82       |     0.15      |      97%      |      1.37      |         25%          |      5.08      |
+|  2016  |  439  |       12.88       |       4.77       |     0.21      |      96%      |      1.66      |         29%          |      6.45      |
+|  2017  |  428  |       15.00       |       4.14       |     0.08      |      98%      |      2.50      |         39%          |      8.36      |
+|  2018  |  475  |       19.67       |       4.14       |     0.12      |      97%      |      2.46      |         39%          |     13.07      |
+|  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
+|  2020  |  214  |       18.14       |       3.73       |     0.14      |      96%      |      1.17      |         27%          |     13.24      |
 
 L2M Call Accuracy through 2020-01-15
 
@@ -73,7 +73,9 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
   - `committing`: committing player or team in L2M, may be blank
   - `disadvantaged`: disadvantaged player or team in L2M, may be blank
   - `decision`: judgement of L2M for the call, could be CC, CNC, IC,
-    INC, or blank
+    INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC =
+    Incorrect Call, INC = Incorrect Non-Call and blank = not detectable
+    without technology
   - `comments`: L2M comments on the play
   - `game_details`: game details on L2M
   - `page`: page of L2M for pdf
