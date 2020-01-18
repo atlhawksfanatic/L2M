@@ -93,7 +93,8 @@ l2m %>%
             "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(bkref_id, period), digits = 2),
             "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
             "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(bkref_id, period), digits = 2)) %>% 
-  knitr::kable(caption = paste0("L2M Call Accuracy through ", max(l2m$date)), align = "c")
+  knitr::kable(caption = paste0("L2M Call Accuracy updated through ",
+                                max(l2m$date)), align = "c")
 
 ```
 
