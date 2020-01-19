@@ -145,7 +145,7 @@ if (splash_active()) {
         return(j5)
       } else if (n1 == 0) {
         print("didn't work, data were 0 length")
-        j5 <- data.frame(Period = "error - n1 == 0",
+        j5 <- data.frame(period = "error - n1 == 0",
                          game_id = game_id,
                          game_details = game_details,
                          game_date = game_date,
@@ -154,7 +154,7 @@ if (splash_active()) {
         return(j5)
       } else {
         print("didn't work, not sure")
-        j5 <- data.frame(Period = "error - huh",
+        j5 <- data.frame(period = "error - huh",
                          game_id = game_id,
                          game_details = game_details,
                          game_date = game_date,
@@ -166,7 +166,7 @@ if (splash_active()) {
       
     } else {
       print("no")
-      j5 <- data.frame(Period = "error",
+      j5 <- data.frame(period = "error",
                        game_id = game_id,
                        game_details = game_details,
                        game_date = game_date,
@@ -180,7 +180,7 @@ if (splash_active()) {
   
 } else {
   print("Splash is not running, please enable before scraping.")
-  scrape_site <- list(data.frame(Period = "error - splashr did not start",
+  scrape_site <- list(data.frame(period = "error - splashr did not start",
                                  game_id = NA, game_details = NA,
                                  game_date = NA, scrape_time = Sys.time()))
 }
@@ -194,8 +194,12 @@ if (is_empty(scrape_site)) {
   
 } else {
   scrape_data  <- bind_rows(scrape_site) %>% 
+    # Filter out the errors
+    filter(!grepl("error", period)) %>% 
     mutate(scrape_time = as.character(scrape_time))
   
+  # Just in case all were errors.
+  if (nrow(scrape_data) == 0) scrape_data <- data.frame(scrape_time = NA)
 }
 
 scraped_data <- map(scraped_files, read_csv, col_types = cols(.default = "c"))
