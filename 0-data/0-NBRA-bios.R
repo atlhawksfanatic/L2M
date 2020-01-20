@@ -101,3 +101,4 @@ nbra_bios <-
   select(ref_name, ref_number, everything())
 
 write_csv(nbra_bios, paste0(local_dir, "/ref_bios.csv"))
+write_rds(nbra_bios, paste0(local_dir, "/ref_bios.rds"))
