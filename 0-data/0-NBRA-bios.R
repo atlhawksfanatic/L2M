@@ -102,3 +102,6 @@ nbra_bios <-
 
 write_csv(nbra_bios, paste0(local_dir, "/ref_bios.csv"))
 write_rds(nbra_bios, paste0(local_dir, "/ref_bios.rds"))
+
+write_csv(nbra_bios, "3-shiny/ref-shiny/ref_bios.csv")
+write_rds(nbra_bios, "3-shiny/ref-shiny/ref_bios.rds")

@@ -15,13 +15,13 @@ team_list <- read_rds("0-data/bkref/team_ids.rds") %>%
   rename(team_id = teamId)
 
 # Which team names need to be adjusted to this?
-team_dictionary <- team_list$abbreviation
+team_dictionary        <- team_list$abbreviation
 names(team_dictionary) <- team_list$simpleName
 
-team_names <- team_list$simpleName
+team_names        <- team_list$simpleName
 names(team_names) <- team_list$abbreviation
 
-bkref_dictionary <- team_list$simpleName
+bkref_dictionary        <- team_list$simpleName
 names(bkref_dictionary) <- team_list$abbreviation
 
 
