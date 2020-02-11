@@ -93,6 +93,15 @@ pdf_raw <- map(raw_files, function(x) {
         mutate(call_type = paste(call_type1, call_type2)) %>% 
         select(period, time, call_type, committing, disadvantaged, decision)
       
+    } else if (n_cols == 10) {
+      names(play_data) <- c("period", "time",
+                            "call_type1", "call_type2", "X5",
+                            "committing", "disadvantaged", "junk1",
+                            "decision", "junk2")
+      play_data <- play_data %>% 
+        mutate(call_type  = paste(call_type1, call_type2),
+               committing = paste(X5, committing)) %>% 
+        select(-junk1, -junk2, -X5, -call_type1, -call_type2)
     }
     
     # str_split(y, "\\s{2,}", simplify = T)
