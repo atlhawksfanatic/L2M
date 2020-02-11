@@ -72,6 +72,10 @@ pdf_raw <- map(raw_files, function(x) {
     first_line <- grep("^Period", temp_info)
     starting <- grep("^Q", temp_info)
     ending   <- grep("^Comment", temp_info)
+    
+    # Is the beginning of the line a call?
+    call_start <- grep("^(CC|CNC|IC|INC)", temp_info)
+    
     # What if starting and ending are not equal?
     if (length(starting) > length(ending)) {
       ending <- append(ending, starting[length(starting)])
@@ -82,6 +86,15 @@ pdf_raw <- map(raw_files, function(x) {
       combine_lines <- seq(x, y - 1)
       temp_info[combine_lines]
     })
+    
+    if (basename(x) == "L2M-NYK-ATL-01-29-17.pdf") {
+      alt <- pmap(list(starting, lag(starting), ending),
+                  function(x, y, z) {
+                    xx <- call_start[call_start < x & call_start > y]
+                    combine_lines <- append(seq(x, z - 1), na.omit(xx))
+                    temp_info[combine_lines]
+                    })
+    }
     
     alt_plays <- append(temp_info[first_line], unlist(alt))
     
@@ -268,6 +281,12 @@ pdf_raw <- map(raw_files, function(x) {
       } else if (basename(x) == "L2M-IND-CLE-04-02-17.pdf" & page != 2) {
         play_data <- alt_2
         
+      } else if (basename(x) == "L2M-NYK-ATL-01-29-17.pdf" & page == 2) {
+        play_data <- alt_2 %>% 
+          mutate(X8 = ifelse(is.na(str_extract(X2, "(CC|CNC|IC|INC)")),
+                                   X8, str_extract(X2, "(CC|CNC|IC|INC)")),
+                 X2 = str_trim(str_remove(X2, "(CC|CNC|IC|INC)")))
+        
       } else if (basename(x) %in% c("L2M-ATL-MIL-03-24-17.pdf",
                                     "L2M-BOS-PHI-12-3-16.pdf",
                                     "L2M-CHI-MEM-01-15-17.pdf",
@@ -345,6 +364,17 @@ pdf_raw <- map(raw_files, function(x) {
                  disadvantaged = paste(X5, X6, X7)) %>% 
           select(period, time, call_type, committing,
                  disadvantaged, decision)
+      } else if (basename(x) == "L2M-NYK-ATL-01-29-17.pdf") {
+        names(play_data) <- c("period", "time",
+                              "call_type", "player11",
+                              "player12", "player21",
+                              "player22",
+                              "decision", "junk")
+        play_data <- play_data %>% 
+          mutate(committing = str_c(player11, player12),
+                 disadvantaged = str_c(player21, player22)) %>% 
+          select(period, time, call_type, committing,
+                 disadvantaged, decision)
       } else if (basename(x) == "L2M-CHI-MEM-01-15-17.pdf") {
         names(play_data) <- c("period", "time",
                               "call_type", "player1",
@@ -408,13 +438,13 @@ pdf_raw <- map(raw_files, function(x) {
                                      "Chris Paul", committing),
                  call_type = ifelse(call_type == "Foul: Personal Chris",
                                     "Foul: Personal", call_type)) %>% 
-          # Problem with Millsap fouling Carmelo
-          mutate(committing = ifelse(call_type == "Foul: Personal Paul",
-                                     "Paul Millsap", committing),
-                 disadvantaged = ifelse(call_type == "Foul: Personal Paul",
-                                        "Carmelo Anthony", disadvantaged),
-                 call_type = ifelse(call_type == "Foul: Personal Paul",
-                                    "Foul: Personal", call_type)) %>% 
+          # # Problem with Millsap fouling Carmelo
+          # mutate(committing = ifelse(call_type == "Foul: Personal Paul",
+          #                            "Paul Millsap", committing),
+          #        disadvantaged = ifelse(call_type == "Foul: Personal Paul",
+          #                               "Carmelo Anthony", disadvantaged),
+          #        call_type = ifelse(call_type == "Foul: Personal Paul",
+          #                           "Foul: Personal", call_type)) %>% 
           # Problem with Enes Kanter fouling Eric Gordon
           mutate(committing = ifelse(call_type == "Foul: Shooting Enes",
                                      "Enes Kanter", committing),
