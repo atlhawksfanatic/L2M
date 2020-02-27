@@ -371,8 +371,8 @@ pdf_raw <- map(raw_files, function(x) {
                               "player22",
                               "decision", "junk")
         play_data <- play_data %>% 
-          mutate(committing = str_c(player11, player12),
-                 disadvantaged = str_c(player21, player22)) %>% 
+          mutate(committing = str_squish(str_c(player11, player12, sep = " ")),
+                 disadvantaged = str_squish(str_c(player21, player22, sep = " "))) %>% 
           select(period, time, call_type, committing,
                  disadvantaged, decision)
       } else if (basename(x) == "L2M-CHI-MEM-01-15-17.pdf") {
