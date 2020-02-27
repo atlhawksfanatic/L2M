@@ -223,8 +223,11 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                # "Cam Reddish" = "Cameron Reddish",
                "Lonnie Walker" = "Lonnie Walker IV",
                "Jakob Pöltl" = "Jakob Poeltl",
+               "Jakob Poltl" = "Jakob Poeltl",
                "Kevin Porter" = "Kevin Porter Jr.",
-               "Anžejs Pasečņiks" = "Anzejs Pasecniks")
+               "Anžejs Pasečņiks" = "Anzejs Pasecniks",
+               "Sviatoslav Mykhailiuk" = "Svi Mykhailiuk",
+               "Michael Porter" = "Michael Porter Jr.")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
