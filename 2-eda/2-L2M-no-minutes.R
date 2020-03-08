@@ -101,7 +101,5 @@ l2m %>%
          !(disadvantaged %in% odd_bkref$player_name),
          !is.na(disadvantaged)) %>%
   arrange(desc(date)) %>% 
-  select(game_details, game_date, period, time,
+  select(date, away_team, home_team, period, time,
          committing, committing_min, disadvantaged, disadvantaged_min)
-%>% View
-
