@@ -201,23 +201,23 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
     bottom_info <- url_get %>% 
       read_html() %>% 
       html_nodes(paste0("#all_box_", tolower(home_team), "_advanced+ div")) %>% 
-      html_text(trim = T) %>% 
-      str_remove_all("\\n")
+      html_text(trim = T) #%>% 
+      # str_remove_all("\\n")
     
     if (length(bottom_info) == 0) {
       bottom_info <- url_get %>% 
         read_html() %>% 
         # Problems with the bottom_info no longer detectable. 
-        html_text(trim = T) %>% 
-        str_remove_all("\\n")
+        html_text(trim = T) #%>% 
+        # str_remove_all("\\n")
     }
     
     refs <- bottom_info %>% 
-      str_extract(pattern = "(?<=Officials:).*(?=Attendance)") %>% 
+      str_extract(pattern = "(?<=Officials:).*") %>% 
       str_split(",", simplify = T) %>% 
       str_trim()
     attendance <- bottom_info %>% 
-      str_extract(pattern = "(?<=Attendance:).*(?=Time)") %>% 
+      str_extract(pattern = "(?<=Attendance:).*") %>% 
       parse_number()
     if (is.na(attendance)) {
         attendance <- bottom_info %>% 
