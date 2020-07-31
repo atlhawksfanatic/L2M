@@ -18,8 +18,7 @@ processed version of the data can be found in
 [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R`
 code to create this data is scattered across the [0-data](0-data) and
 [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts
-the raw data (in pdf
-form).
+the raw data (in pdf form).
 
 ![](README_files/figure-gfm/calls-1.png)<!-- -->
 
@@ -30,9 +29,9 @@ form).
 |  2017  |  428  |       15.00       |       4.15       |     0.08      |      98%      |      2.49      |         39%          |      8.36      |
 |  2018  |  475  |       19.67       |       4.14       |     0.12      |      97%      |      2.46      |         39%          |     13.07      |
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
-|  2020  |  328  |       17.82       |       3.78       |     0.15      |      96%      |      1.11      |         26%          |     12.93      |
+|  2020  |  330  |       17.83       |       3.78       |     0.15      |      96%      |      1.11      |         26%          |     12.94      |
 
-L2M Call Accuracy updated through 2020-03-11
+L2M Call Accuracy updated through 2020-07-30
 
 The process for compiling the L2M dataset is to:
 
