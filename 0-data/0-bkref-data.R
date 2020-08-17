@@ -177,7 +177,7 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
   } else {
     url_tables <- url_get %>% 
       read_html() %>% 
-      html_table()
+      html_table(fill = TRUE)
     
     home_players <- url_tables[[1 + length(url_tables)/2]][-1, 1]
     home_mins    <- url_tables[[1 + length(url_tables)/2]][-1, 2]
