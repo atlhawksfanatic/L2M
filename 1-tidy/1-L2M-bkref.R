@@ -421,8 +421,8 @@ l2m_games_bkref <-
                                 date < as.Date("2018-10-01") ~ 1,
                               date > as.Date("2019-04-11") &
                                 date < as.Date("2019-10-01") ~ 1,
-                              date > as.Date("2020-04-16") &
-                                date < as.Date("2020-10-01") ~ 1,
+                              date > as.Date("2020-8-15") &
+                                date < as.Date("2020-10-12") ~ 1,
                               T ~ 0))
 
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))
