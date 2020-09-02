@@ -29,9 +29,9 @@ the raw data (in pdf form).
 |  2017  |  428  |       15.00       |       4.15       |     0.08      |      98%      |      2.49      |         39%          |      8.36      |
 |  2018  |  475  |       19.67       |       4.14       |     0.12      |      97%      |      2.46      |         39%          |     13.07      |
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
-|  2020  |  373  |       17.98       |       3.80       |     0.15      |      96%      |      1.09      |         25%          |     13.09      |
+|  2020  |  375  |       17.99       |       3.80       |     0.15      |      96%      |      1.08      |         25%          |     13.11      |
 
-L2M Call Accuracy updated through 2020-08-31
+L2M Call Accuracy updated through 2020-09-01
 
 The process for compiling the L2M dataset is to:
 
@@ -54,8 +54,9 @@ The process for compiling the L2M dataset is to:
       - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
       - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
       - None for 2019-20 at the moment.
-3.  Download box scores for games from \<basketball-reference.com\> for
-    score and rosters to match up committing/disadvantaged players.
+3.  Download box scores for games from
+    [basketball-reference.com](https://www.basketball-reference.com/)
+    for score and rosters to match up committing/disadvantaged players.
       - [File](0-data/0-bkref-data.R) depends on .rds files created in
         step 2 to be present in directory.
 4.  Combine L2M reports with box score information
