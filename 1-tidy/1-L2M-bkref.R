@@ -411,19 +411,19 @@ l2m_games_bkref <-
          # April 11, 2018
          # April 10, 2019
          # April 15, 2020
-         playoffs = case_when(date > as.Date("2015-04-16") &
-                                date < as.Date("2015-10-01") ~ 1,
-                              date > as.Date("2016-04-14") &
-                                date < as.Date("2016-10-01") ~ 1,
-                              date > as.Date("2017-04-13") &
-                                date < as.Date("2017-10-01") ~ 1,
-                              date > as.Date("2018-04-12") &
-                                date < as.Date("2018-10-01") ~ 1,
-                              date > as.Date("2019-04-11") &
-                                date < as.Date("2019-10-01") ~ 1,
-                              date > as.Date("2020-8-15") &
-                                date < as.Date("2020-10-12") ~ 1,
-                              T ~ 0))
+         playoff = case_when(date > as.Date("2015-04-16") &
+                               date < as.Date("2015-10-01") ~ T,
+                             date > as.Date("2016-04-14") &
+                               date < as.Date("2016-10-01") ~ T,
+                             date > as.Date("2017-04-13") &
+                               date < as.Date("2017-10-01") ~ T,
+                             date > as.Date("2018-04-12") &
+                               date < as.Date("2018-10-01") ~ T,
+                             date > as.Date("2019-04-11") &
+                               date < as.Date("2019-10-01") ~ T,
+                             date > as.Date("2020-8-15") &
+                               date < as.Date("2020-10-13") ~ T,
+                             T ~ F))
 
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))
 write_rds(l2m_games_bkref, paste0(local_dir, "/L2M.rds"))
