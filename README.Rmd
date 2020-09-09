@@ -12,6 +12,43 @@ knitr::opts_chunk$set(
 )
 library(tidyverse)
 library(lubridate)
+
+nba_dates_long <- tribble(
+  ~season, ~season_section, ~start_date, ~end_date,
+  2015, "season", "2014-10-28", "2015-4-15",
+  2015, "playoffs", "2015-4-18", "2015-6-16",
+  2016, "season", "2015-10-27", "2016-4-13",
+  2016, "playoffs", "2016-4-16", "2016-6-19",
+  2017, "season", "2016-10-25", "2017-4-12",
+  2017, "playoffs", "2017-4-15", "2017-6-12",
+  2018, "season", "2017-10-17", "2018-4-11",
+  2018, "playoffs", "2018-4-14", "2018-6-8",
+  2019, "season", "2018-10-16", "2019-4-10",
+  2019, "playoffs", "2019-4-13", "2019-6-13",
+  2020, "season", "2019-10-22", "2020-3-11",
+  2020, "playoffs", "2020-8-15", "2020-10-12",
+  2020, "bubble", "2020-7-30", "2020-8-14"
+) %>% 
+  mutate_at(vars(-season, -season_section), as.Date) %>% 
+  mutate(days = end_date - start_date + 1)
+
+day_number <- function(season, datex) {
+  if (!is.Date(datex)) datex = as_date(datex)
+  indx = nba_dates_long$start_date <= datex & nba_dates_long$end_date >= datex
+  season_section = nba_dates_long$season_section[indx]
+  
+  day_num = datex - nba_dates_long$start_date[indx] + 1
+  
+  if (season_section == "bubble") {
+    day_num = nba_dates_long$days[nba_dates_long$season == season &
+                                    nba_dates_long$season_section == "season"] +
+      day_num
+  }
+  
+  
+  return(day_num)
+}
+
 ```
 
 ```{r automated, include = FALSE}
@@ -49,43 +86,84 @@ l2m <- read_rds("1-tidy/L2M/L2M.rds") %>%
          foul_num = 1*(foul == "foul"),
          temp_year = ifelse(month(date) < 10, 2016, 2015),
          temp_date = as.Date(paste(temp_year, month(date),
-                                   day(date), sep = "/"), "%Y/%m/%d"))
+                                   day(date), sep = "/"), "%Y/%m/%d"),
+         bubble = date > "2020-03-11" & date < "2020-10-31",
+         bubble_seasons = ifelse(bubble,
+                                 paste0(season, " bubble"),
+                                 paste0(season)),
+         day_num = purrr::pmap_dbl(list(season, date), day_number)) %>% 
+  group_by(season) %>% 
+  mutate(day_num_all = ifelse(playoff, day_num + max(day_num), day_num))
 
 
 games <- l2m %>% 
-  group_by(temp_date, season) %>% 
+  group_by(temp_date, season, bubble) %>% 
+  summarise(games = n_distinct(bkref_id),
+            quarters = n_distinct(bkref_id, period))
+
+games_days <- l2m %>% 
+  group_by(day_num, season, bubble, playoff) %>% 
   summarise(games = n_distinct(bkref_id),
             quarters = n_distinct(bkref_id, period))
 
 l2m_freq <- l2m %>%
-  group_by(temp_date, season) %>% 
+  group_by(temp_date, season, bubble) %>% 
   count(decision_2) %>% 
   spread(decision_2, n) %>% 
   replace(is.na(.), 0) %>% 
   mutate(calls = CC + CNC + IC + INC) %>% 
   left_join(games)
 
-##########
-l2m_freq %>% 
-  ggplot(aes(temp_date, calls/quarters, color = factor(season),
+l2m_freq_days <- l2m %>%
+  group_by(day_num, season, bubble, playoff) %>% 
+  count(decision_2) %>% 
+  spread(decision_2, n) %>% 
+  replace(is.na(.), 0) %>% 
+  mutate(calls = CC + CNC + IC + INC) %>% 
+  left_join(games_days)
+
+l2m_freq_days %>%
+  mutate(playoffs = factor(playoff, levels = c("FALSE", "TRUE"),
+                           labels = c("Regular Season", "Playoffs"))) %>% 
+  ggplot(aes(day_num, calls/quarters, color = factor(season),
              group = season)) +
   geom_smooth(aes(linetype = factor(season)), method = "loess") +
-  geom_vline(xintercept = as.numeric(as.Date("2016-04-15")),
-             linetype = 4, color = "black") +
-  #scale_y_continuous(labels=percent) +
+  # geom_vline(xintercept = as.numeric(as.Date("2016-04-15")),
+  #            linetype = 4, color = "black") +
+  facet_wrap(~playoffs, nrow = 1, scales = "free_x") +
+  # scale_y_continuous(labels=percent) +
   scale_color_viridis_d() +
-  labs(color = "Season", linetype = "Season", x = "", y = "",
+  labs(color = "Season", linetype = "Season", x = "Day Number", y = "",
        title = "Number of Graded Action",
        subtitle = "per period graded",
-       caption = paste0("@atlhawksfanatic", "\nL2M Reports through ", max(l2m$date))) +
+       caption = paste0("@atlhawksfanatic", "\nL2M Reports through ",
+                        max(l2m$date))) +
   theme_minimal() +
   theme(legend.position = "bottom")
+
 ```
 
 ```{r whistles, echo = FALSE}
 l2m %>%
   rename(Season = season) %>% 
   group_by(Season) %>%
+  summarise(Games = n_distinct(bkref_id),
+            "Grades per period" = round(n() / n_distinct(bkref_id, period), digits = 2),
+            "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(bkref_id, period), digits = 2),
+            "IC per period" = round(sum(decision_3 == "IC") / n_distinct(bkref_id, period), digits = 2),
+            "CC Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
+            "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(bkref_id, period), digits = 2),
+            "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
+            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(bkref_id, period), digits = 2)) %>% 
+  knitr::kable(caption = paste0("All games with L2M Call Accuracy updated through ",
+                                max(l2m$date)), align = "c")
+
+```
+
+```{r whistles-breakdown, echo = FALSE}
+l2m %>%
+  rename(Season = season, Playoffs = playoff) %>% 
+  group_by(Season, Playoffs) %>%
   summarise(Games = n_distinct(bkref_id),
             "Grades per period" = round(n() / n_distinct(bkref_id, period), digits = 2),
             "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(bkref_id, period), digits = 2),
@@ -111,7 +189,7 @@ The process for compiling the L2M dataset is to:
     - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
     - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
     - None for 2019-20 at the moment.
-3. Download box scores for games from <basketball-reference.com> for score and rosters to match up committing/disadvantaged players.
+3. Download box scores for games from [basketball-reference.com](https://www.basketball-reference.com/) for score and rosters to match up committing/disadvantaged players.
     - [File](0-data/0-bkref-data.R) depends on .rds files created in step 2 to be present in directory.
 4. Combine L2M reports with box score information
     - [Raw version](1-tidy/1-L2M-raw.R) which does not include box score info, the [csv file](1-tidy/L2M/L2M_raw.csv)
@@ -156,6 +234,6 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 - `time_sec`: seconds remaining in period
 - `time2`: fractional minutes left (ie 1.9 would be one minute and 54 seconds)
 - `season`: NBA season for which the graded play was a part of, convention is to use the last year of the NBA season so 2015 refers to the 2014-15 Season
-- `playoffs`: dummy variable equal to 1 if the game occurred in the playoffs
+- `playoff`: dummy variable equal to `TRUE` if the game occurred in the playoffs
 
 And an overview of the changes in L2M reporting is provided in [2-eda/2-through-2019-finals](2-eda/2-through-2019-finals). Further, there is a bit of a how-to for downloading and extracting data on the L2M that is provided in [2-eda/2-how-to-last-two-minutes](2-eda/2-how-to-last-two-minutes)

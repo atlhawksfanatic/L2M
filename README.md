@@ -31,6 +31,23 @@ the raw data (in pdf form).
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
 |  2020  |  379  |       18.01       |       3.79       |     0.15      |      96%      |      1.09      |         25%          |     13.12      |
 
+All games with L2M Call Accuracy updated through 2020-09-06
+
+| Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
+| :----: | :------: | :---: | :---------------: | :--------------: | :-----------: | :-----------: | :------------: | :------------------: | :------------: |
+|  2015  |  FALSE   |  113  |       10.74       |       4.84       |     0.15      |      97%      |      1.36      |         24%          |      4.54      |
+|  2015  |   TRUE   |  26   |       13.40       |       4.74       |     0.14      |      97%      |      1.43      |         25%          |      7.23      |
+|  2016  |  FALSE   |  410  |       12.58       |       4.81       |     0.21      |      96%      |      1.58      |         28%          |      6.18      |
+|  2016  |   TRUE   |  29   |       17.26       |       4.12       |     0.18      |      96%      |      2.82      |         43%          |     10.32      |
+|  2017  |  FALSE   |  403  |       14.81       |       4.14       |     0.08      |      98%      |      2.46      |         38%          |      8.21      |
+|  2017  |   TRUE   |  25   |       18.29       |       4.18       |     0.04      |      99%      |      3.07      |         43%          |     11.04      |
+|  2018  |  FALSE   |  452  |       19.79       |       4.14       |     0.11      |      97%      |      2.47      |         39%          |     13.18      |
+|  2018  |   TRUE   |  23   |       17.35       |       4.12       |     0.23      |      94%      |      2.42      |         41%          |     10.81      |
+|  2019  |  FALSE   |  422  |       21.19       |       3.66       |     0.14      |      96%      |      2.57      |         43%          |     14.97      |
+|  2019  |   TRUE   |  31   |       22.67       |       3.33       |     0.15      |      95%      |      2.21      |         43%          |     17.13      |
+|  2020  |  FALSE   |  362  |       17.93       |       3.79       |     0.15      |      96%      |      1.09      |         25%          |     13.04      |
+|  2020  |   TRUE   |  17   |       19.84       |       3.79       |     0.05      |      99%      |      1.11      |         24%          |     14.95      |
+
 L2M Call Accuracy updated through 2020-09-06
 
 The process for compiling the L2M dataset is to:
@@ -117,8 +134,8 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
   - `season`: NBA season for which the graded play was a part of,
     convention is to use the last year of the NBA season so 2015 refers
     to the 2014-15 Season
-  - `playoffs`: dummy variable equal to 1 if the game occurred in the
-    playoffs
+  - `playoff`: dummy variable equal to `TRUE` if the game occurred in
+    the playoffs
 
 And an overview of the changes in L2M reporting is provided in
 [2-eda/2-through-2019-finals](2-eda/2-through-2019-finals). Further,
