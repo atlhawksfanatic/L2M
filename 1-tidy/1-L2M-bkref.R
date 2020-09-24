@@ -227,7 +227,8 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Kevin Porter" = "Kevin Porter Jr.",
                "Anžejs Pasečņiks" = "Anzejs Pasecniks",
                "Sviatoslav Mykhailiuk" = "Svi Mykhailiuk",
-               "Michael Porter" = "Michael Porter Jr.")
+               "Michael Porter" = "Michael Porter Jr.",
+               "Melvin Frazier" = "Melvin Frazier Jr.")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
@@ -269,6 +270,7 @@ odd_bkref <- tribble(
   "Michael Malone", "DEN",
   "Mike Woodson", "LAC",
   "Nets", "BKN",
+  "Nick Nurse", "TOR",
   "Nuggets", "DEN",
   "Pacers", "IND",
   "Pelicans", "NOP",
