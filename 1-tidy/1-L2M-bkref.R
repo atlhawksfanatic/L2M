@@ -404,7 +404,7 @@ l2m_games_bkref <-
                             date < as.Date("2017-10-01") ~ 2017,
                             date < as.Date("2018-10-01") ~ 2018,
                             date < as.Date("2019-10-01") ~ 2019,
-                            date < as.Date("2020-10-01") ~ 2020,
+                            date < as.Date("2020-11-01") ~ 2020,
                             T ~ NA_real_),
          # Last day of the regular season
          # April 15, 2015

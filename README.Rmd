@@ -26,7 +26,7 @@ nba_dates_long <- tribble(
   2019, "season", "2018-10-16", "2019-4-10",
   2019, "playoffs", "2019-4-13", "2019-6-13",
   2020, "season", "2019-10-22", "2020-3-11",
-  2020, "playoffs", "2020-8-15", "2020-10-12",
+  2020, "playoffs", "2020-8-15", "2020-10-13",
   2020, "bubble", "2020-7-30", "2020-8-14"
 ) %>% 
   mutate_at(vars(-season, -season_section), as.Date) %>% 
@@ -72,7 +72,7 @@ source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 
 This repository is meant as a way to maintain the Last Two Minute (L2M) reports that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts the raw data (in pdf form).
 
-```{r calls, echo = FALSE}
+```{r calls, echo = FALSE, warning = FALSE}
 l2m <- read_rds("1-tidy/L2M/L2M.rds") %>% 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
                              "INC", decision),
