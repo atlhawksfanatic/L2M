@@ -217,8 +217,8 @@ ind_games_csv <- map(scrape_site, function(x) {
   }
 })
 
-corrections <- scrape_data %>% 
-  bind_rows(scraped_data) %>%
+corrections <- scraped_data %>% 
+  bind_rows(scrape_data) %>%
   arrange(scrape_time) %>% 
   filter(!is.na(scrape_time))
 
