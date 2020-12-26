@@ -90,6 +90,22 @@ scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>%
          home = team_dictionary[home_team],
          away = team_dictionary[away_team])
 
+# 2020-21 scraped
+scraped_2021 <- read_rds("0-data/L2M/2020-21/scraped_202021.rds") %>% 
+  select(-game_id, -away_score, -home_score) %>% 
+  mutate(date = mdy(game_date),
+         decision = case_when(decision == "NCC" ~ "CNC",
+                              decision == "NCI" ~ "INC",
+                              decision == "Undetectable" ~ "",
+                              T ~ decision),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
+
 # L2M are not consistent with the names of teams
 team_cross <- c("BRK" = "BKN", "PHO" = "PHX")
 
@@ -100,6 +116,7 @@ l2m_games <- archived %>%
   bind_rows(l2mpdf_2019) %>% 
   bind_rows(scraped_2019) %>% 
   bind_rows(scraped_2020) %>% 
+  bind_rows(scraped_2021) %>% 
   select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
@@ -405,6 +422,7 @@ l2m_games_bkref <-
                             date < as.Date("2018-10-01") ~ 2018,
                             date < as.Date("2019-10-01") ~ 2019,
                             date < as.Date("2020-11-01") ~ 2020,
+                            date < as.Date("2021-10-01") ~ 2021,
                             T ~ NA_real_),
          # Last day of the regular season
          # April 15, 2015

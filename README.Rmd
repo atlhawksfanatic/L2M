@@ -27,7 +27,8 @@ nba_dates_long <- tribble(
   2019, "playoffs", "2019-4-13", "2019-6-13",
   2020, "season", "2019-10-22", "2020-3-11",
   2020, "playoffs", "2020-8-15", "2020-10-13",
-  2020, "bubble", "2020-7-30", "2020-8-14"
+  2020, "bubble", "2020-7-30", "2020-8-14",
+  2021, "season", "2020-12-22", "2021-5-21"
 ) %>% 
   mutate_at(vars(-season, -season_section), as.Date) %>% 
   mutate(days = end_date - start_date + 1)
@@ -53,8 +54,9 @@ day_number <- function(season, datex) {
 
 ```{r automated, include = FALSE}
 # Automated process
-source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
-source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
+# source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
+# source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
+source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
 source("0-data/0-bkref-data.R") # Download bkref box scores
 source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
 source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
@@ -183,12 +185,14 @@ The process for compiling the L2M dataset is to:
     - [Archived](0-data/0-L2M-download-archive.R) which begins on 1 March 2015 and goes through the 2017 NBA Finals.
     - [2017-18](0-data/0-L2M-download-2017-18.R)
     - [2018-19](0-data/0-L2M-download-2018-19.R) - which changes formats to online only after the 2019 NBA All Star Game (February 21, 2019 is the first). This requires the [splashr](https://github.com/hrbrmstr/splashr) package to handle scraping of the NBA website.
-    - [2019-20](0-data/0-L2M-download-2019-20.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
+    - [2019-20](0-data/0-L2M-download-2019-20.R) - almost exclusively online with only a few PDF games. Use of the [splashr](https://github.com/hrbrmstr/splashr) package is required.
+    - [2020-21](0-data/0-L2M-download-2020-21.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
 2. Read in the pdf files through the [pdftools](https://github.com/ropensci/pdftools) package:
     - [Archived](0-data/0-L2M-pdftools-archive.R)
     - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
     - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
-    - None for 2019-20 at the moment.
+    - [2019-20](0-data/0-L2M-pdftools-2019-20.R)
+    - None for 2020-21 at the moment.
 3. Download box scores for games from [basketball-reference.com](https://www.basketball-reference.com/) for score and rosters to match up committing/disadvantaged players.
     - [File](0-data/0-bkref-data.R) depends on .rds files created in step 2 to be present in directory.
 4. Combine L2M reports with box score information
@@ -202,7 +206,7 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 - `call_type`: raw call type variable in L2M
 - `committing`: committing player or team in L2M, may be blank
 - `disadvantaged`: disadvantaged player or team in L2M, may be blank
-- `decision`: judgement of L2M for the call, could be CC, CNC, IC, INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC = Incorrect Call, INC = Incorrect Non-Call and blank = not detectable without technology
+- `decision`: judgment of L2M for the call, could be CC, CNC, IC, INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC = Incorrect Call, INC = Incorrect Non-Call and blank = not detectable without technology
 - `comments`: L2M comments on the play
 - `game_details`: game details on L2M
 - `page`: page of L2M for pdf
