@@ -30,8 +30,9 @@ the raw data (in pdf form).
 |  2018  |  475  |       19.67       |       4.14       |     0.12      |      97%      |      2.46      |         39%          |     13.07      |
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
 |  2020  |  387  |       18.10       |       3.79       |     0.15      |      96%      |      1.09      |         25%          |     13.23      |
+|  2021  |   6   |       15.00       |       3.57       |     0.14      |      96%      |      1.43      |         31%          |     10.00      |
 
-All games with L2M Call Accuracy updated through 2020-10-09
+All games with L2M Call Accuracy updated through 2020-12-23
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 | :----: | :------: | :---: | :---------------: | :--------------: | :-----------: | :-----------: | :------------: | :------------------: | :------------: |
@@ -47,8 +48,9 @@ All games with L2M Call Accuracy updated through 2020-10-09
 |  2019  |   TRUE   |  31   |       22.67       |       3.33       |     0.15      |      95%      |      2.21      |         43%          |     17.13      |
 |  2020  |  FALSE   |  362  |       17.93       |       3.79       |     0.15      |      96%      |      1.09      |         25%          |     13.04      |
 |  2020  |   TRUE   |  25   |       20.50       |       3.67       |     0.13      |      96%      |      1.03      |         25%          |     15.80      |
+|  2021  |  FALSE   |   6   |       15.00       |       3.57       |     0.14      |      96%      |      1.43      |         31%          |     10.00      |
 
-L2M Call Accuracy updated through 2020-10-09
+L2M Call Accuracy updated through 2020-12-23
 
 The process for compiling the L2M dataset is to:
 
@@ -62,7 +64,11 @@ The process for compiling the L2M dataset is to:
         (February 21, 2019 is the first). This requires the
         [splashr](https://github.com/hrbrmstr/splashr) package to handle
         scraping of the NBA website.
-      - [2019-20](0-data/0-L2M-download-2019-20.R) - current season and
+      - [2019-20](0-data/0-L2M-download-2019-20.R) - almost exclusively
+        online with only a few PDF games. Use of the
+        [splashr](https://github.com/hrbrmstr/splashr) package is
+        required.
+      - [2020-21](0-data/0-L2M-download-2020-21.R) - current season and
         so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr)
         package required.
 2.  Read in the pdf files through the
@@ -70,7 +76,8 @@ The process for compiling the L2M dataset is to:
       - [Archived](0-data/0-L2M-pdftools-archive.R)
       - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
       - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
-      - None for 2019-20 at the moment.
+      - [2019-20](0-data/0-L2M-pdftools-2019-20.R)
+      - None for 2020-21 at the moment.
 3.  Download box scores for games from
     [basketball-reference.com](https://www.basketball-reference.com/)
     for score and rosters to match up committing/disadvantaged players.
@@ -89,8 +96,8 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
   - `call_type`: raw call type variable in L2M
   - `committing`: committing player or team in L2M, may be blank
   - `disadvantaged`: disadvantaged player or team in L2M, may be blank
-  - `decision`: judgement of L2M for the call, could be CC, CNC, IC,
-    INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC =
+  - `decision`: judgment of L2M for the call, could be CC, CNC, IC, INC,
+    or blank where CC = Correct Call, CNC = Correct Non-Call, IC =
     Incorrect Call, INC = Incorrect Non-Call and blank = not detectable
     without technology
   - `comments`: L2M comments on the play
