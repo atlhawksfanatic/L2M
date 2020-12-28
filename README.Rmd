@@ -125,7 +125,6 @@ l2m_freq_days <- l2m %>%
   left_join(games_days)
 
 l2m_freq_days %>%
-  filter(season != 2021) %>% # Temporary hack until enough observations for 2021
   mutate(playoffs = factor(playoff, levels = c("FALSE", "TRUE"),
                            labels = c("Regular Season", "Playoffs"))) %>% 
   ggplot(aes(day_num, calls/quarters, color = factor(season),
