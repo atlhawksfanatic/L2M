@@ -22,16 +22,13 @@ links <- read_html(url) %>%
   html_nodes("#main a+ a , strong+ a") %>%
   html_attr("href") %>% 
   # Missing one game of Spurs-Clippers, Memphis-Houston, and Indiana-Chicago
-  append(paste0("https://ak-static.cms.nba.com/wp-content/uploads/sites/",
-                "4/2015/04/L2M-SAS-LAC-4-28-2015.pdf")) %>% 
-  append(paste0("http://official.nba.com/wp-content/uploads/",
-                "sites/4/2015/03/L2M-MEM-HOU-3-4-15.pdf"),
-         paste0("https://ak-static.cms.nba.com/wp-content/uploads/",
-                "sites/4/2015/11/L2M-IND-CHI-11-16-151.pdf"),
-         paste0("https://ak-static.cms.nba.com/wp-content/uploads/",
-                "sites/4/2016/02/L2M-IND-@-MIA-2-22-16-1.pdf"),
-         paste0("https://ak-static.cms.nba.com/wp-content/uploads/",
-                "sites/4/2016/05/L2M-GSW-OKC-5-28-16.pdf"))
+  append(c(paste0("http://official.nba.com/wp-content/uploads/",
+                  "sites/4/2015/03/L2M-MEM-HOU-3-4-15.pdf"),
+           paste0("https://ak-static.cms.nba.com/wp-content/uploads/",
+                  c("sites/4/2015/04/L2M-SAS-LAC-4-28-2015.pdf",
+                    "sites/4/2015/11/L2M-IND-CHI-11-16-151.pdf",
+                    "sites/4/2016/02/L2M-IND-@-MIA-2-22-16-1.pdf",
+                    "sites/4/2016/05/L2M-GSW-OKC-5-28-16.pdf"))))
 
 # Remove nonexistent SAS-LAC gme
 links <- links[-grep("L2M-SAS-LAC-4-28-15.pdf", links)]
