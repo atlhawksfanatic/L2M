@@ -12,9 +12,10 @@
 
 ## Description
 
-This repository is meant as a way to maintain the Last Two Minute (L2M)
-reports that the NBA releases for certain NBA games. The clean,
-processed version of the data can be found in
+This repository is meant as a way to maintain the [Last Two Minute (L2M)
+reports](https://official.nba.com/2020-21-nba-officiating-last-two-minute-reports/)
+that the NBA releases for certain NBA games. The clean, processed
+version of the data can be found in
 [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R`
 code to create this data is scattered across the [0-data](0-data) and
 [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts
@@ -30,9 +31,9 @@ the raw data (in pdf form).
 |  2018  |  475  |       19.67       |       4.14       |     0.12      |      97%      |      2.46      |         39%          |     13.07      |
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
 |  2020  |  387  |       18.10       |       3.79       |     0.15      |      96%      |      1.09      |         25%          |     13.23      |
-|  2021  |  137  |       17.63       |       3.59       |     0.14      |      96%      |      0.91      |         23%          |     13.13      |
+|  2021  |  140  |       17.62       |       3.53       |     0.14      |      96%      |      0.91      |         24%          |     13.18      |
 
-All games with L2M Call Accuracy updated through 2021-02-09
+All games with L2M Call Accuracy updated through 2021-02-10
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 | :----: | :------: | :---: | :---------------: | :--------------: | :-----------: | :-----------: | :------------: | :------------------: | :------------: |
@@ -48,9 +49,9 @@ All games with L2M Call Accuracy updated through 2021-02-09
 |  2019  |   TRUE   |  31   |       22.67       |       3.33       |     0.15      |      95%      |      2.21      |         43%          |     17.13      |
 |  2020  |  FALSE   |  362  |       17.93       |       3.79       |     0.15      |      96%      |      1.09      |         25%          |     13.04      |
 |  2020  |   TRUE   |  25   |       20.50       |       3.67       |     0.13      |      96%      |      1.03      |         25%          |     15.80      |
-|  2021  |  FALSE   |  137  |       17.63       |       3.59       |     0.14      |      96%      |      0.91      |         23%          |     13.13      |
+|  2021  |  FALSE   |  140  |       17.62       |       3.53       |     0.14      |      96%      |      0.91      |         24%          |     13.18      |
 
-L2M Call Accuracy updated through 2021-02-09
+L2M Call Accuracy updated through 2021-02-10
 
 The process for compiling the L2M dataset is to:
 
