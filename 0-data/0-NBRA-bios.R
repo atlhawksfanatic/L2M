@@ -59,6 +59,13 @@ map2(tidy_links$ref_image_file, tidy_links$ref_image,
 
 # go into each of the biography pages and extract information
 
+if (file.exists("0-data/NBRA/bios/ref_bios.rds")) {
+  nbra_bios_old <- read_rds("0-data/NBRA/bios/ref_bios.rds")
+} else {
+  nbra_bios_old <- data.frame(ref_name = NA)
+}
+
+
 map_bios <- map(tidy_links$ref_url, function(x) {
   print(x)
   temp_stats <- read_html(x) %>% 
@@ -100,8 +107,15 @@ nbra_bios <-
   full_join(tidy_links) %>% 
   select(ref_name, ref_number, everything())
 
-write_csv(nbra_bios, paste0(local_dir, "/ref_bios.csv"))
-write_rds(nbra_bios, paste0(local_dir, "/ref_bios.rds"))
+# Joing together the new bios with the old, only keep the newest bio
+both_bios <- bind_rows(nbra_bios, nbra_bios_old) %>% 
+  arrange(ref_name, scrape) %>% 
+  group_by(ref_name) %>% 
+  filter(scrape == max(scrape))
 
-write_csv(nbra_bios, "3-shiny/ref-shiny/ref_bios.csv")
-write_rds(nbra_bios, "3-shiny/ref-shiny/ref_bios.rds")
+
+write_csv(both_bios, paste0(local_dir, "/ref_bios.csv"))
+write_rds(both_bios, paste0(local_dir, "/ref_bios.rds"))
+
+write_csv(both_bios, "3-shiny/ref-shiny/ref_bios.csv")
+write_rds(both_bios, "3-shiny/ref-shiny/ref_bios.rds")
