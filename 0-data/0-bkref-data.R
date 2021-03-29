@@ -2,11 +2,10 @@
 
 # ---- start --------------------------------------------------------------
 
-library("httr")
-library("lubridate")
-library("rvest")
-# library("splashr")
-library("tidyverse")
+library(httr)
+library(lubridate)
+library(rvest)
+library(tidyverse)
 
 local_dir   <- "0-data/bkref"
 data_source <- paste0(local_dir, "/raw")
@@ -197,16 +196,16 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
       read_html() %>% 
       html_table(fill = TRUE)
     
-    home_players <- url_tables[[1 + length(url_tables)/2]][-1, 1]
-    home_mins    <- url_tables[[1 + length(url_tables)/2]][-1, 2]
+    home_players <- url_tables[[1 + length(url_tables)/2]][-1, 1][[1]]
+    home_mins    <- url_tables[[1 + length(url_tables)/2]][-1, 2][[1]]
     home_mins    <- as.numeric(str_extract(home_mins, ".+?(?=:)")) +
       as.numeric(str_remove(home_mins, ".*:")) / 60
     
     home <- tibble(player_name = home_players, player_min = home_mins,
                    player_side = "home")
     
-    away_players <- url_tables[[1]][-1, 1]
-    away_mins    <- url_tables[[1]][-1, 2]
+    away_players <- url_tables[[1]][-1, 1][[1]]
+    away_mins    <- url_tables[[1]][-1, 2][[1]]
     away_mins    <- as.numeric(str_extract(away_mins, ".+?(?=:)")) +
       as.numeric(str_remove(away_mins, ".*:")) / 60
     
