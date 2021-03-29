@@ -73,8 +73,9 @@ links_url    <- links_url[!(gsub(".*\\?|&.*", "", links_url) %in%
 
 # ---- RSelenium-start ----------------------------------------------------
 
-system("docker run -d -p 4445:4444 selenium/standalone-firefox")
-Sys.sleep(7) # Give Docker some time to load up
+# # Uncomment if you do not have the container running automatically on startup
+# system("docker run -d -p 4445:4444 selenium/standalone-firefox")
+# Sys.sleep(7) # Give Docker some time to load up
 
 rem_dr <- remoteDriver(remoteServerAddr = "localhost",
                        port = 4445L,
