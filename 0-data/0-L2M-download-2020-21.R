@@ -247,8 +247,8 @@ corrections <- corrections %>%
   # Put the corrections into a consistent order
   arrange(game_id, period, desc(time))
 
-write_csv(corrections, paste0(local_dir, "/scraped_202021_rselenium.csv"))
-write_rds(corrections, paste0(local_dir, "/scraped_202021_rselenium.rds"))
+write_csv(corrections, paste0(local_dir, "/scraped_202021.csv"))
+write_rds(corrections, paste0(local_dir, "/scraped_202021.rds"))
 
 # Get rid of the RSelenium instances
 rem_dr$close()
