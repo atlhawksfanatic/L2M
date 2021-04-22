@@ -60,7 +60,7 @@ l2mpdf_2019 <- read_rds("0-data/L2M/2018-19/pdftools_L2M_201819_all.rds") %>%
 
 # 2018-19 scraped
 scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>% 
-  select(-game_id, -away_score, -home_score) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
   mutate(date = mdy(game_date),
          decision = case_when(decision == "NCC" ~ "CNC",
                               decision == "NCI" ~ "INC",
@@ -74,9 +74,20 @@ scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>%
          home = team_dictionary[home_team],
          away = team_dictionary[away_team])
 
+# 2019-20 pdfs
+l2mpdf_2020 <- read_rds("0-data/L2M/2019-20/pdftools_L2M_201920_all.rds") %>% 
+  mutate(date = mdy(game_date),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
+
 # 2019-20 scraped
 scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>% 
-  select(-game_id, -away_score, -home_score) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
   mutate(date = mdy(game_date),
          decision = case_when(decision == "NCC" ~ "CNC",
                               decision == "NCI" ~ "INC",
@@ -92,7 +103,7 @@ scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>%
 
 # 2020-21 scraped
 scraped_2021 <- read_rds("0-data/L2M/2020-21/scraped_202021.rds") %>% 
-  select(-game_id, -away_score, -home_score) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
   mutate(date = mdy(game_date),
          decision = case_when(decision == "NCC" ~ "CNC",
                               decision == "NCI" ~ "INC",
@@ -115,13 +126,17 @@ l2m_games <- archived %>%
   bind_rows(l2m_2018) %>% 
   bind_rows(l2mpdf_2019) %>% 
   bind_rows(scraped_2019) %>% 
+  bind_rows(l2mpdf_2020) %>% 
   bind_rows(scraped_2020) %>% 
   bind_rows(scraped_2021) %>% 
-  select(-away_score, -home_score) %>% 
+  # select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
          away = ifelse(is.na(team_cross[away]),
                        away, team_cross[away]),
+         
+         away_score = as.numeric(away_score),
+         home_score = as.numeric(home_score),
          
          home_team = ifelse(is.na(team_dictionary[home]),
                             home, team_dictionary[home]),
@@ -131,7 +146,8 @@ l2m_games <- archived %>%
                              home_team, bkref_cross[home_team]),
          
          bkref_id = paste0(str_remove_all(date, "-"), "0",
-                           home_bkref))
+                           home_bkref),
+         nba_game_id = str_remove(game_id, "gameId="))
 
 # ---- correct-players ----------------------------------------------------
 

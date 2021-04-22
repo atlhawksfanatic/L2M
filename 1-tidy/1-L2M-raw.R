@@ -1,4 +1,5 @@
 # 1-L2M-raw.R
+# Raw L2M data
 
 # ---- start --------------------------------------------------------------
 
@@ -10,12 +11,21 @@ data_source <- paste0(local_dir, "/raw")
 if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(data_source)) dir.create(data_source, recursive = T)
 
+team_list <- read_rds("0-data/bkref/team_ids.rds") %>% 
+  rename(team_id = teamId)
+
+# Which team names need to be adjusted to this?
+team_dictionary        <- team_list$abbreviation
+names(team_dictionary) <- team_list$simpleName
+
+team_names        <- team_list$simpleName
+names(team_names) <- team_list$abbreviation
+
+bkref_dictionary        <- team_list$simpleName
+names(bkref_dictionary) <- team_list$abbreviation
+
 
 # ---- game-calls ---------------------------------------------------------
-
-team_list <- read_rds("0-data/bkref/team_ids.rds")
-team_dictionary <- team_list$abbreviation
-names(team_dictionary) <- team_list$simpleName
 
 # Archived
 archived <- read_rds("0-data/L2M/archive/pdftools_L2M_archive_all.rds") %>% 
@@ -50,7 +60,7 @@ l2mpdf_2019 <- read_rds("0-data/L2M/2018-19/pdftools_L2M_201819_all.rds") %>%
 
 # 2018-19 scraped
 scraped_2019 <- read_rds("0-data/L2M/2018-19/scraped_201819.rds") %>% 
-  select(-game_id, -away_score, -home_score) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
   mutate(date = mdy(game_date),
          decision = case_when(decision == "NCC" ~ "CNC",
                               decision == "NCI" ~ "INC",
@@ -77,7 +87,7 @@ l2mpdf_2020 <- read_rds("0-data/L2M/2019-20/pdftools_L2M_201920_all.rds") %>%
 
 # 2019-20 scraped
 scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>% 
-  select(-game_id, -away_score, -home_score) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
   mutate(date = mdy(game_date),
          decision = case_when(decision == "NCC" ~ "CNC",
                               decision == "NCI" ~ "INC",
@@ -93,7 +103,7 @@ scraped_2020 <- read_rds("0-data/L2M/2019-20/scraped_201920.rds") %>%
 
 # 2020-21 scraped
 scraped_2021 <- read_rds("0-data/L2M/2020-21/scraped_202021.rds") %>% 
-  select(-game_id, -away_score, -home_score) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
   mutate(date = mdy(game_date),
          decision = case_when(decision == "NCC" ~ "CNC",
                               decision == "NCI" ~ "INC",
@@ -119,11 +129,14 @@ l2m_games <- archived %>%
   bind_rows(l2mpdf_2020) %>% 
   bind_rows(scraped_2020) %>% 
   bind_rows(scraped_2021) %>% 
-  select(-away_score, -home_score) %>% 
+  # select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
          away = ifelse(is.na(team_cross[away]),
                        away, team_cross[away]),
+         
+         away_score = as.numeric(away_score),
+         home_score = as.numeric(home_score),
          
          home_team = ifelse(is.na(team_dictionary[home]),
                             home, team_dictionary[home]),
@@ -133,7 +146,8 @@ l2m_games <- archived %>%
                              home_team, bkref_cross[home_team]),
          
          bkref_id = paste0(str_remove_all(date, "-"), "0",
-                           home_bkref))
+                           home_bkref),
+         nba_game_id = str_remove(game_id, "gameId="))
 
 write_csv(l2m_games, paste0(local_dir, "/L2M_raw.csv"))
 write_rds(l2m_games, paste0(local_dir, "/L2M_raw.rds"))
