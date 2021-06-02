@@ -128,12 +128,14 @@ l2m_freq_days <- l2m %>%
 l2m_freq_days %>%
   mutate(playoffs = factor(playoff, levels = c("FALSE", "TRUE"),
                            labels = c("Regular Season", "Playoffs"))) %>% 
+  filter(!playoff) %>% 
   ggplot(aes(day_num, calls/quarters, color = factor(season),
              group = season)) +
   geom_smooth(aes(linetype = factor(season)), method = "loess") +
   # geom_vline(xintercept = as.numeric(as.Date("2016-04-15")),
   #            linetype = 4, color = "black") +
-  facet_wrap(~playoffs, nrow = 1, scales = "free_x") +
+  # facet_wrap(~playoffs, nrow = 1, scales = "free_x") +
+  # scale_y_continuous(limits = c(0, 30)) +
   # scale_y_continuous(labels=percent) +
   scale_color_viridis_d() +
   labs(color = "Season", linetype = "Season", x = "Day Number", y = "",
