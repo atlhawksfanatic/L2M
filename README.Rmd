@@ -29,7 +29,9 @@ nba_dates_long <- tribble(
   2020, "playoffs", "2020-8-15", "2020-10-13",
   2020, "bubble", "2020-7-30", "2020-8-14",
   2021, "season", "2020-12-22", "2021-5-16",
-  2021, "playoffs", "2021-5-18", "2021-7-30"
+  2021, "playoffs", "2021-5-18", "2021-7-30",
+  2022, "season", "2021-10-18", "2022-4-11",
+  2022, "playoffs", "2022-4-12", "2021-6-20"
 ) %>% 
   mutate_at(vars(-season, -season_section), as.Date) %>% 
   mutate(days = end_date - start_date + 1)
@@ -57,7 +59,8 @@ day_number <- function(season, datex) {
 # Automated process
 # source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
 # source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
-source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
+# source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
+source("0-data/0-L2M-download-2021-22.R") # Download the L2M reports
 source("0-data/0-bkref-data.R") # Download bkref box scores
 source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
 source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
@@ -73,7 +76,7 @@ source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 
 ## Description
 
-This repository is meant as a way to maintain the [Last Two Minute (L2M) reports](https://official.nba.com/2020-21-nba-officiating-last-two-minute-reports/) that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts the raw data (in pdf form).
+This repository is meant as a way to maintain the [Last Two Minute (L2M) reports](https://official.nba.com/2021-22-nba-officiating-last-two-minute-reports/) that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts the raw data (in pdf form).
 
 ```{r calls, echo = FALSE, warning = FALSE}
 l2m <- read_rds("1-tidy/L2M/L2M.rds") %>% 
@@ -189,13 +192,14 @@ The process for compiling the L2M dataset is to:
     - [2017-18](0-data/0-L2M-download-2017-18.R)
     - [2018-19](0-data/0-L2M-download-2018-19.R) - which changes formats to online only after the 2019 NBA All Star Game (February 21, 2019 is the first). This requires the [splashr](https://github.com/hrbrmstr/splashr) package to handle scraping of the NBA website.
     - [2019-20](0-data/0-L2M-download-2019-20.R) - almost exclusively online with only a few PDF games. Use of the [splashr](https://github.com/hrbrmstr/splashr) package is required.
-    - [2020-21](0-data/0-L2M-download-2020-21.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
+    - [2020-21](0-data/0-L2M-download-2020-21.R) - no substantial changes from the previous season and all were able to be downloaded with the [splashr](https://github.com/hrbrmstr/splashr) package.
+    - [2021-22](0-data/0-L2M-download-2021-22.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
 2. Read in the pdf files through the [pdftools](https://github.com/ropensci/pdftools) package:
     - [Archived](0-data/0-L2M-pdftools-archive.R)
     - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
     - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
     - [2019-20](0-data/0-L2M-pdftools-2019-20.R)
-    - None for 2020-21 at the moment.
+    - None for 2020-21 and so far none for the 2021-22 season.
 3. Download box scores for games from [basketball-reference.com](https://www.basketball-reference.com/) for score and rosters to match up committing/disadvantaged players.
     - [File](0-data/0-bkref-data.R) depends on .rds files created in step 2 to be present in directory.
 4. Combine L2M reports with box score information

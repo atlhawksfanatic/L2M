@@ -117,6 +117,22 @@ scraped_2021 <- read_rds("0-data/L2M/2020-21/scraped_202021.rds") %>%
          home = team_dictionary[home_team],
          away = team_dictionary[away_team])
 
+# 2021-22 scraped
+scraped_2022 <- read_rds("0-data/L2M/2021-22/scraped_202122.rds") %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
+  mutate(date = mdy(game_date),
+         decision = case_when(decision == "NCC" ~ "CNC",
+                              decision == "NCI" ~ "INC",
+                              decision == "Undetectable" ~ "",
+                              T ~ decision),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
+
 # L2M are not consistent with the names of teams
 team_cross <- c("BRK" = "BKN", "PHO" = "PHX")
 
@@ -129,6 +145,7 @@ l2m_games <- archived %>%
   bind_rows(l2mpdf_2020) %>% 
   bind_rows(scraped_2020) %>% 
   bind_rows(scraped_2021) %>% 
+  bind_rows(scraped_2022) %>% 
   # select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
@@ -147,7 +164,8 @@ l2m_games <- archived %>%
          
          bkref_id = paste0(str_remove_all(date, "-"), "0",
                            home_bkref),
-         nba_game_id = str_remove(game_id, "gameId="))
+         nba_game_id = str_remove(game_id, "gameId=")) %>% 
+  arrange(bkref_id)
 
 write_csv(l2m_games, paste0(local_dir, "/L2M_raw.csv"))
 write_rds(l2m_games, paste0(local_dir, "/L2M_raw.rds"))
