@@ -218,7 +218,10 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "P.J. Tucker" = "PJ Tucker",
                  "Kevin Knox II" = "Kevin Knox",
                  "Marcus Morris Sr." = "Marcus Morris",
-                 "Cameron Reddish" = "Cam Reddish")
+                 "Cameron Reddish" = "Cam Reddish",
+                 # 2020-21
+                 "Herbert Jones" = "Herb Jones",
+                 "Trey Murphy III" = "Trey Murphy")
 
 l2m_games <- l2m_games %>% 
   mutate(committing = ifelse(is.na(bad_players[committing]),
