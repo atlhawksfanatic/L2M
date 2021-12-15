@@ -234,7 +234,7 @@ l2m_games <- l2m_games %>%
 
 
 # Discrepancies from how bkref handles their player names versus the NBA
-#  bad on left, good on right
+#  bad on left (bkref), good on right (L2M values)
 bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                # "James Ennis" = "James Ennis III",
                # "Kelly Oubre" = "Kelly Oubre Jr.",
@@ -284,7 +284,10 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Melvin Frazier" = "Melvin Frazier Jr.",
                # 2021-22
                "Herb Jones" = "Herbert Jones",
-               "Trey Murphy" = "Trey Murphy III")
+               "Trey Murphy" = "Trey Murphy III",
+               "Cameron Thomas" = "Cam Thomas",
+               "Nicolas Claxton" = "Nic Claxton",
+               "David Duke" = "David Duke Jr.")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
