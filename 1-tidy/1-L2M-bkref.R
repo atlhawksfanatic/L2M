@@ -220,7 +220,8 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "Marcus Morris Sr." = "Marcus Morris",
                  "Cameron Reddish" = "Cam Reddish",
                  # 2020-21
-                 "P.J. Dozier" = "PJ Dozier")
+                 "P.J. Dozier" = "PJ Dozier",
+                 "Nic Claxton" = "Nicolas Claxton")
 
 l2m_games <- l2m_games %>% 
   mutate(committing = ifelse(is.na(bad_players[committing]),
@@ -286,10 +287,10 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Herb Jones" = "Herbert Jones",
                "Trey Murphy" = "Trey Murphy III",
                "Cameron Thomas" = "Cam Thomas",
-               "Nicolas Claxton" = "Nic Claxton",
                "David Duke" = "David Duke Jr.",
                "Brandon Boston" = "Brandon Boston Jr.",
-               "Duane Washington" = "Duane Washington Jr.")
+               "Duane Washington" = "Duane Washington Jr.",
+               "Nic Claxton" = "Nicolas Claxton")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
