@@ -4,9 +4,9 @@
 # ---- start --------------------------------------------------------------
 
 
-library("pdftools")
-library("stringr")
-library("tidyverse")
+library(pdftools)
+library(stringr)
+library(tidyverse)
 
 local_dir   <- "0-data/L2M/2018-19"
 raw_data    <- paste0(local_dir, "/raw")
@@ -302,6 +302,9 @@ results <- results %>%
                                 "Jamal Murray", disadvantaged),
          committing = ifelse(committing == "Away from Play",
                              "JaMychal Green", committing)) %>% 
+  # Correcting an odd time in L2M-OKC-BOS-02-03-2019.pdf of "00:96" for a
+  #  Westbrook play
+  mutate(time = ifelse(time == "00:96", "00:56.9", time)) %>% 
   mutate_all(str_trim)
 
 # Enter in the home and away teams plus final scores
