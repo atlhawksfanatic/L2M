@@ -18,13 +18,6 @@ team_list <- read_rds("0-data/bkref/team_ids.rds") %>%
 team_dictionary        <- team_list$abbreviation
 names(team_dictionary) <- team_list$simpleName
 
-team_names        <- team_list$simpleName
-names(team_names) <- team_list$abbreviation
-
-bkref_dictionary        <- team_list$simpleName
-names(bkref_dictionary) <- team_list$abbreviation
-
-
 # ---- l2m-games ----------------------------------------------------------
 
 # Archived

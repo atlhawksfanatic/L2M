@@ -18,13 +18,6 @@ team_list <- read_rds("0-data/bkref/team_ids.rds") %>%
 team_dictionary        <- team_list$abbreviation
 names(team_dictionary) <- team_list$simpleName
 
-team_names        <- team_list$simpleName
-names(team_names) <- team_list$abbreviation
-
-bkref_dictionary        <- team_list$simpleName
-names(bkref_dictionary) <- team_list$abbreviation
-
-
 # ---- game-calls ---------------------------------------------------------
 
 # Archived
@@ -167,5 +160,16 @@ l2m_games <- archived %>%
          nba_game_id = str_remove(game_id, "gameId=")) %>% 
   arrange(bkref_id)
 
-write_csv(l2m_games, paste0(local_dir, "/L2M_raw.csv"))
-write_rds(l2m_games, paste0(local_dir, "/L2M_raw.rds"))
+# Minor corrections
+l2m_games_corrected <- l2m_games %>% 
+  # https://official.nba.com/l2m/L2MReport.html?gameId=0021801148 has two plays
+  #  at the bottom with time of "00:18." which are missing the milliseconds
+  mutate(time = ifelse(time == "00:18." & nba_game_id == "0021801148",
+                       "00:18.1", time)) %>% 
+  # https://official.nba.com/l2m/L2MReport.html?gameId=0022000029 has a play
+  #  missing the millisecond in overtime at "01:16."
+  mutate(time = ifelse(time == "01:16." & nba_game_id == "0022000029",
+                       "01:16.5", time))
+
+write_csv(l2m_games_corrected, paste0(local_dir, "/L2M_raw.csv"))
+write_rds(l2m_games_corrected, paste0(local_dir, "/L2M_raw.rds"))
