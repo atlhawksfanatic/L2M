@@ -25,6 +25,12 @@ links <- read_html(url) %>%
   html_nodes("#main a+ a , strong+ a") %>%
   html_attr("href")
 
+# Hack correction for url link which includes "http:// https://"
+links <- str_remove(links, "http://: ")
+
+# Hack correction for urls that have %0d after gameId= 
+links <- str_remove(links, "%0d")
+
 
 # ---- pdf-format ---------------------------------------------------------
 
@@ -234,7 +240,7 @@ ind_games_csv <- map(scrape_site, function(x) {
 
 corrections <- scraped_data %>% 
   bind_rows(scrape_data) %>%
-  arrange(scrape_time) %>% 
+  arrange(game_id, period, time, scrape_time) %>% 
   filter(!is.na(scrape_time))
 
 # Enter in the home and away teams plus final scores
