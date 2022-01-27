@@ -3,6 +3,9 @@
 
 # ---- start --------------------------------------------------------------
 
+# Correct version of pdftools?
+# devtools::install_version("pdftools", version = "2.2",
+#                           repos = "http://cran.us.r-project.org")
 
 library(pdftools)
 library(stringr)
@@ -60,17 +63,27 @@ pdf_raw <- map(raw_files, function(x) {
                          grep("^Q", temp_info))]
     
     if (length(plays) > 1) {
-      play_data <- read_table(plays, col_names = FALSE,
-                              col_types = cols(.default = "c"))
+      play_data <- read_fwf(I(plays),
+                            fwf_empty(I(plays)),
+                            col_types = cols(.default = "c"),
+                            na = character())
+      
+      # play_data <- read_table(plays, col_names = FALSE,
+      #                         col_types = cols(.default = "c"))
       # play_data <- read_table(plays)
       # if (length(names(play_data)) == 7) {
       #   names(play_data) = c("period", "time", "call_type", "committing",
       #                        "disadvantaged", "decision", "video")
       # }
     } else if (length(plays) == 1) {
-      play_data <- read_table(append(plays, NA),
-                              col_names = FALSE,
-                              col_types = cols(.default = "c"))
+      play_data <- read_fwf(I(append(plays, NA)),
+                            fwf_empty(I(plays)),
+                            col_types = cols(.default = "c"),
+                            na = character())
+      
+      # play_data <- read_table(append(plays, NA),
+      #                         col_names = FALSE,
+      #                         col_types = cols(.default = "c"))
       play_data <- play_data[1, ]
       play_data$error <- "warning - one line read"
     } else {

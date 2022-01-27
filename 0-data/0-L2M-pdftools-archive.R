@@ -3,9 +3,9 @@
 # ---- start --------------------------------------------------------------
 
 
-library("pdftools")
-library("stringr")
-library("tidyverse")
+library(pdftools)
+library(stringr)
+library(tidyverse)
 
 local_dir   <- "0-data/L2M/archive"
 raw_data    <- paste0(local_dir, "/raw")
@@ -93,19 +93,28 @@ pdf_raw <- map(raw_files, function(x) {
                     xx <- call_start[call_start < x & call_start > y]
                     combine_lines <- append(seq(x, z - 1), na.omit(xx))
                     temp_info[combine_lines]
-                    })
+                  })
     }
     
     alt_plays <- append(temp_info[first_line], unlist(alt))
     
     
     if (length(plays) > 1) {
-      play_data <- read_table(plays, col_names = FALSE,
-                              col_types = cols(.default = "c"))
+      play_data <- read_fwf(I(plays),
+                            fwf_empty(I(plays)),
+                            col_types = cols(.default = "c"),
+                            na = character())
+      # play_data <- read_table(plays, col_names = FALSE,
+      #                         col_types = cols(.default = "c"))
       
-      alt_play_data <- tryCatch(read_table(alt_plays, col_names = FALSE,
-                                           col_types = cols(.default = "c")),
+      alt_play_data <- tryCatch(read_fwf(I(alt_plays),
+                                         fwf_empty(I(alt_plays)),
+                                         col_types = cols(.default = "c"),
+                                         na = character()),
                                 error = function(e) NA)
+      # alt_play_data <- tryCatch(read_table(alt_plays, col_names = FALSE,
+      #                                      col_types = cols(.default = "c")),
+      #                           error = function(e) NA)
       
       # Find the rows that do not start with Q or Period, move them all over
       #  one variable and then combine the two rows!!!
@@ -129,11 +138,15 @@ pdf_raw <- map(raw_files, function(x) {
       
       # Problematic files which need to use the alt_plays
       if (basename(x) == "L2M-ATL-MIL-12-9-16.pdf") {
-        alt_3 <- read_table(alt_2$X1, col_names = FALSE)
+        alt_3 <- read_fwf(I(alt_2$X1),
+                          fwf_empty(I(alt_2$X1)),
+                          col_types = cols(.default = "c"),
+                          na = character())
+        # alt_3 <- read_table(alt_2$X1, col_names = FALSE)
         alt_3 <- bind_cols(alt_3, alt_2[-1])
         
         play_data <- alt_3 %>% 
-          select(X1, X2, X3, X21, X10, X11, X12) %>% 
+          select(X1, X2 = X2...2, X3 = X3...3, X21 = X2...4, X10, X11, X12) %>% 
           rename(X4 = X21, X5 = X10, X6 = X11, X7 = X12) %>% 
           mutate(X2 = case_when(grepl("Dellavedova \\(MIL", X4) ~ "00:22.2",
                                 grepl("LO SLA", X4) ~ "00:12.0",
@@ -157,11 +170,15 @@ pdf_raw <- map(raw_files, function(x) {
                                 T ~ X4))
         
       } else if (basename(x) == "L2M-HOU-OKC-11-16-16.pdf") {
-        alt_3 <- read_table(alt_2$X1, col_names = FALSE)
+        alt_3 <- read_fwf(I(alt_2$X1),
+                          fwf_empty(I(alt_2$X1)),
+                          col_types = cols(.default = "c"),
+                          na = character())
+        # alt_3 <- read_table(alt_2$X1, col_names = FALSE)
         alt_3 <- bind_cols(alt_3, alt_2[-1])
         
         play_data <- alt_3 %>% 
-          select(X1, X2, X3, X4, X21, X10, X11, X12) %>% 
+          select(X1, X2 = X2...2, X3 = X3...3, X4 = X4...4, X21 = X2...5, X10, X11, X12) %>% 
           rename(X5 = X21, X6 = X10, X7 = X11, X8 = X12) %>% 
           mutate(X2 = case_when(grepl("Gordon \\(HOU", X5) ~ "00:11.9",
                                 grepl("Ariza \\(HOU", X5) ~ "00:10.0",
@@ -201,11 +218,16 @@ pdf_raw <- map(raw_files, function(x) {
                  X2 = ifelse(X2 == "", "00:27.6", X2))
         
       } else if (basename(x) == "L2M-MIL-NYK-01-04-17.pdf") {
-        alt_3 <- read_table(alt_2$X1, col_names = FALSE)
+        alt_3 <- read_fwf(I(alt_2$X1),
+                          fwf_empty(I(alt_2$X1)),
+                          col_types = cols(.default = "c"),
+                          na = character())
+        # alt_3 <- read_table(alt_2$X1, col_names = FALSE)
         alt_3 <- bind_cols(alt_3, alt_2[-1])
         
         play_data <- alt_3 %>% 
-          select(X1, X2, X3, X4, X5 = X21, X6 = X31, X7 = X41) %>% 
+          select(X1, X2 = X2...2, X3 = X3...3, X4 = X4...4, X5 = X2...5,
+                 X6 = X3...6, X7 = X4...7) %>% 
           mutate(X2 = case_when(grepl("After communicating", X5) ~ "00:42.4",
                                 grepl("Antetokounmpo \\(MIL\\) makes marginal", X5) ~ "00:37.7",
                                 grepl("Noah \\(NYK\\) and", X5) ~ "00:33.7",
@@ -284,7 +306,7 @@ pdf_raw <- map(raw_files, function(x) {
       } else if (basename(x) == "L2M-NYK-ATL-01-29-17.pdf" & page == 2) {
         play_data <- alt_2 %>% 
           mutate(X8 = ifelse(is.na(str_extract(X2, "(CC|CNC|IC|INC)")),
-                                   X8, str_extract(X2, "(CC|CNC|IC|INC)")),
+                             X8, str_extract(X2, "(CC|CNC|IC|INC)")),
                  X2 = str_trim(str_remove(X2, "(CC|CNC|IC|INC)")))
         
       } else if (basename(x) %in% c("L2M-ATL-MIL-03-24-17.pdf",
@@ -299,9 +321,14 @@ pdf_raw <- map(raw_files, function(x) {
       }
       
     } else if (length(plays) == 1) {
-      play_data <- read_table(append(plays, NA),
-                              col_names = FALSE,
-                              col_types = cols(.default = "c"))
+      play_data <- read_fwf(I(append(plays, NA)),
+                            fwf_empty(I(append(plays, NA))),
+                            col_types = cols(.default = "c"),
+                            na = character())
+      
+      # play_data <- read_table(append(plays, NA),
+      #                         col_names = FALSE,
+      #                         col_types = cols(.default = "c"))
       play_data <- play_data[1, ]
       play_data$error <- "warning - one line read"
     } else {
@@ -622,7 +649,7 @@ results <- results %>%
          call_type = ifelse(is.na(call_type_cross[call_type]),
                             call_type, call_type_cross[call_type]),
          decision = ifelse(is.na(decision_cross[decision]),
-                                decision, decision_cross[decision]))
+                           decision, decision_cross[decision]))
 
 
 # ---- game-corrections ---------------------------------------------------
