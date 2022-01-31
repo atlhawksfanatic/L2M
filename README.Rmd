@@ -61,8 +61,9 @@ day_number <- function(season, datex) {
 # source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
 # source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
 source("0-data/0-L2M-download-2021-22.R") # Download the L2M reports
-source("0-data/0-bkref-data.R") # Download bkref box scores
 source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
+
+source("0-data/0-bkref-data.R") # Download bkref box scores
 source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 ```
 
