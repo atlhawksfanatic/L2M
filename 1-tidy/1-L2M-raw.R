@@ -190,5 +190,5 @@ l2m_games_corrected <- l2m_games %>%
   mutate(time = ifelse(time == "01:16." & nba_game_id == "0022000029",
                        "01:16.5", time))
 
-write_csv(l2m_games, paste0(local_dir, "/L2M_raw.csv"))
-write_rds(l2m_games, paste0(local_dir, "/L2M_raw.rds"))
+write_csv(l2m_games_corrected, paste0(local_dir, "/L2M_raw.csv"))
+write_rds(l2m_games_corrected, paste0(local_dir, "/L2M_raw.rds"))
