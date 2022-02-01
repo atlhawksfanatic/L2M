@@ -1,5 +1,5 @@
 # 0-L2M-download-2021-22:
-#  Download all the archived L2M reports in raw form to then evaluate:
+#  Download all the 2021-22 L2M reports in raw form to then evaluate:
 #  https://official.nba.com/2021-22-nba-officiating-last-two-minute-reports/ 
 
 # ---- start --------------------------------------------------------------
@@ -245,7 +245,8 @@ corrections <- corrections %>%
          away_team = str_trim(str_remove(away1, "\\(.*\\)")),
          home1 = str_trim(str_remove(game_details, ".*@")),
          home_score = str_extract(home1,  "(?<=\\().+?(?=\\))"),
-         home_team = str_trim(str_remove(home1, "\\(.*\\)"))) %>% 
+         home_team = str_trim(str_remove(home1, "\\(.*\\)")),
+         scrape_time = lubridate::ymd_hms(scrape_time)) %>% 
   select(-away1, -home1) %>% 
   # Put the corrections into a consistent order
   arrange(game_id, period, desc(time))
