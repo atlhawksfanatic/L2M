@@ -3,8 +3,8 @@
 
 # ---- start --------------------------------------------------------------
 
-library("lubridate")
-library("tidyverse")
+library(lubridate)
+library(tidyverse)
 
 local_dir   <- "1-tidy/L2M"
 data_source <- paste0(local_dir, "/raw")
