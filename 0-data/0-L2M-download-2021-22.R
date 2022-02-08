@@ -218,8 +218,6 @@ if (is_empty(scrape_site)) {
   if (nrow(scrape_data) == 0) scrape_data <- data.frame(scrape_time = NA)
 }
 
-scraped_data <- map(scraped_files, read_csv, col_types = cols(.default = "c"))
-
 # Individual games
 ind_games_csv <- map(scrape_site, function(x) {
   game_id <- x$game_id[1]
@@ -233,8 +231,16 @@ ind_games_csv <- map(scrape_site, function(x) {
   }
 })
 
-corrections <- scraped_data %>% 
-  bind_rows(scrape_data) %>%
+# scraped_data <- map(scraped_files, read_csv, col_types = cols(.default = "c"))
+# 
+# corrections <- scraped_data %>% 
+#   bind_rows(scrape_data) %>%
+#   arrange(game_id, period, time, scrape_time) %>% 
+#   filter(!is.na(scrape_time))
+
+corrections <- dir(scrape_source, pattern = ".csv", full.names = T) %>% 
+  map(read_csv, col_types = cols(.default = "c")) %>% 
+  bind_rows() %>% 
   arrange(game_id, period, time, scrape_time) %>% 
   filter(!is.na(scrape_time))
 
