@@ -132,7 +132,7 @@ box_scores <- box_scores %>%
   mutate(ref_3 = ifelse(is.na(ref_3) & bkref_id %in% holt_missing,
                         "Lauren Holtkamp", ref_3)) %>% 
   # Digit issue, limit to write only 15 digits
-  mutate(player_min = round(player_min, digits = 14)) %>% 
+  mutate(player_min = format(player_min, digits = 14)) %>% 
   # Change instances of "Lauren Holtkamp" to "Lauren Holtkamp-Sterling"
   mutate(ref_1 = str_replace(ref_1, "Holtkamp$", "Holtkamp-Sterling"),
          ref_2 = str_replace(ref_2, "Holtkamp$", "Holtkamp-Sterling"),
