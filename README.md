@@ -32,9 +32,9 @@ the raw data (in pdf form).
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
 |  2020  |  389  |       18.07       |       3.79       |     0.15      |      96%      |      1.08      |         25%          |     13.19      |
 |  2021  |  405  |       17.18       |       3.85       |     0.19      |      95%      |      0.87      |         22%          |     12.47      |
-|  2022  |  289  |       17.38       |       4.19       |     0.20      |      95%      |      1.22      |         26%          |     11.97      |
+|  2022  |  292  |       17.41       |       4.19       |     0.20      |      95%      |      1.21      |         26%          |     12.00      |
 
-All games with L2M Call Accuracy updated through 2022-02-17
+All games with L2M Call Accuracy updated through 2022-02-24
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
@@ -52,9 +52,9 @@ All games with L2M Call Accuracy updated through 2022-02-17
 |  2020  |   TRUE   |  25   |       20.50       |       3.67       |     0.13      |      96%      |      1.03      |         25%          |     15.80      |
 |  2021  |  FALSE   |  379  |       17.13       |       3.82       |     0.18      |      95%      |      0.84      |         22%          |     12.48      |
 |  2021  |   TRUE   |  26   |       17.87       |       4.26       |     0.29      |      93%      |      1.26      |         28%          |     12.35      |
-|  2022  |  FALSE   |  289  |       17.38       |       4.19       |     0.20      |      95%      |      1.22      |         26%          |     11.97      |
+|  2022  |  FALSE   |  292  |       17.41       |       4.19       |     0.20      |      95%      |      1.21      |         26%          |     12.00      |
 
-L2M Call Accuracy updated through 2022-02-17
+L2M Call Accuracy updated through 2022-02-24
 
 The process for compiling the L2M dataset is to:
 
@@ -119,10 +119,10 @@ The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 -   `home_score`: home final score from the L2M reports, incomplete
     variable
 -   `home_team`: home team name
--   `call`: first part of call\_type, this is before the colon in
-    call\_type
--   `type`: second part of call\_type, this is after the colon in
-    call\_type
+-   `call`: first part of call_type, this is before the colon in
+    call_type
+-   `type`: second part of call_type, this is after the colon in
+    call_type
 -   `date`: date of game in YYYY-MM-DD format
 -   `home`: home team abbreviation
 -   `away`: away team abbreviation
