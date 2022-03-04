@@ -19,7 +19,7 @@ if (!file.exists(id_source)) dir.create(id_source, recursive = T)
 # Set up headers to make requests to API
 stats_nba_headers <- c(
   "Host" = "stats.nba.com",
-  "User-Agent" = "libcurl/7.68.0 r-curl/4.3.2 httr/1.4.2",
+  "User-Agent" = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
   "Accept" = "application/json, text/plain, */*",
   "Accept-Language" = "en-US,en;q=0.5",
   "Accept-Encoding" = "gzip, deflate, br",
@@ -171,7 +171,18 @@ ids_map <- map(years, function(x) {
       .$mscd.g %>% 
       bind_rows() %>% 
       mutate(date = as.Date(gdte)) %>% 
-      select(gid, gcode, date, home = h.ta, away = v.ta) %>% 
+      # Unravel the broadcast variables for each game
+      unnest(bd.b, keep_empty = T, names_sep = "_") %>%
+      group_by(gid, gcode, date, home = h.ta, away = v.ta) %>%
+      # Extract only the times a game was on national TV, which could be null
+      summarise(national_tv = list(bd.b_disp[bd.b_scope == "natl" &
+                                               bd.b_type == "tv"])) %>%
+      # home_score = h.s[1],
+      # away_score = v.s[1]
+      # Replace the possible nulls with NA for national TV and unravel
+      mutate(national_tv = replace_na(national_tv)) %>%
+      unnest(national_tv) %>%
+      # select(gid, gcode, date, home = h.ta, away = v.ta) %>%
       arrange(date, gid)
     
     # Save each season game schedule as csv
@@ -183,6 +194,7 @@ ids_map <- map(years, function(x) {
 
 # Bring them all together
 game_list <- bind_rows(ids_map) %>% 
+  replace_na(list(national_tv = "no")) %>% 
   bind_rows(pre2015_ids) %>% 
   bind_rows(yoffs) %>% 
   filter(!is.na(gid)) %>% 
