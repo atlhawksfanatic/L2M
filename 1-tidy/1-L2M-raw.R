@@ -177,7 +177,7 @@ l2m_games <- archived %>%
          bkref_id = paste0(str_remove_all(date, "-"), "0",
                            home_bkref),
          nba_game_id = str_remove(game_id, "gameId=")) %>% 
-  arrange(date, game_id, period, time, scrape_time)
+  arrange(date, game_id, period, desc(time), scrape_time)
 
 # Minor corrections
 l2m_games_corrected <- l2m_games %>% 
