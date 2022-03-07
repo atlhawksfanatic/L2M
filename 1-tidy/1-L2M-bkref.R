@@ -168,7 +168,8 @@ bad_bkref <- c(# "Glenn Robinson" = "Glenn Robinson III",
                "Cameron Thomas" = "Cam Thomas",
                "David Duke" = "David Duke Jr.",
                "Brandon Boston" = "Brandon Boston Jr.",
-               "Duane Washington" = "Duane Washington Jr.")
+               "Duane Washington" = "Duane Washington Jr.",
+               "Kelly Oubre Jr." = "Kelly Oubre")
 # # 2019-20 bkref now has accents on names
 # "Nicolò Melli" = "Nicolo Melli",
 # "Nikola Vučević" = "Nikola Vucevic"
