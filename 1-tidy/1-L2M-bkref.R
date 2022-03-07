@@ -39,7 +39,8 @@ bkref_cross <- c("BKN" = "BRK", "PHX" = "PHO", "CHA" = "CHO")
 
 # ---- l2m-games ----------------------------------------------------------
 
-l2m_games <- read_csv("1-tidy/L2M/L2M_raw.csv")
+l2m_games <- read_csv("1-tidy/L2M/L2M_raw.csv",
+                      col_types = cols(.default = "c"))
 
 # ---- correct-players ----------------------------------------------------
 
@@ -231,7 +232,8 @@ odd_bkref_dic <- odd_bkref$player_team
 names(odd_bkref_dic) <- odd_bkref$player_name
 
 # Box scores from bkref
-bkref_games <- read_rds("0-data/bkref/bkref_box.rds") %>% 
+bkref_games <- read_csv("0-data/bkref/bkref_box.csv",
+                        col_types = cols(.default = "c")) %>% 
   # 2019-20 bkref now has accents on names
   mutate(player_name = stringi::stri_trans_general(player_name,
                                                    id = "Latin-ASCII")) %>% 
