@@ -60,10 +60,16 @@ day_number <- function(season, datex) {
 # source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
 # source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
 # source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
+source("0-data/0-official-nba-referee-assign.R")
+source("0-data/0-official-nba-l2m.R")
+
 source("0-data/0-L2M-download-2021-22.R") # Download the L2M reports
 source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
 
 source("0-data/0-bkref-data.R") # Download bkref box scores
+source("0-data/0-stats-nba-pbp-data.R")
+source("0-data/0-stats-nba-box-data.R")
+
 source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 ```
 
@@ -80,7 +86,7 @@ source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
 This repository is meant as a way to maintain the [Last Two Minute (L2M) reports](https://official.nba.com/2021-22-nba-officiating-last-two-minute-reports/) that the NBA releases for certain NBA games. The clean, processed version of the data can be found in [1-tidy/L2M/L2M.csv](1-tidy/L2M/L2M.csv) while the corresponding `R` code to create this data is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts the raw data (in pdf form).
 
 ```{r calls, echo = FALSE, warning = FALSE}
-l2m <- read_rds("1-tidy/L2M/L2M.rds") %>% 
+l2m <- read_csv("1-tidy/L2M/L2M.csv") %>% 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
                              "INC", decision),
          decision_3 = ifelse(is.na(decision) | decision == "",
