@@ -220,6 +220,7 @@ odd_bkref <- tribble(
   "Rockets", "HOU",
   "Saunders, Flip", "MIN",
   "Spurs", "SAS",
+  "Stephen Silas", "HOU",
   "Steve Clifford", "CHA",
   "Suns", "PHX",
   "Timberwolves", "MIN",
