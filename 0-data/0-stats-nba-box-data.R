@@ -16,32 +16,27 @@ if (!file.exists(box_source)) dir.create(box_source, recursive = T)
 
 # ---- game-calls ---------------------------------------------------------
 
-l2m_games <- read_csv("1-tidy/L2M/L2M_raw.csv")
+l2m_games <- read_csv("1-tidy/L2M/L2M_raw_api.csv")
 
 # ---- game-ids -----------------------------------------------------------
 
 # Download all NBA game_id and schedule information
 if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
-  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv"))
+  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) %>% 
+    select(-national_tv)
 } else {
   print("Please download game schedule from 0-stats-nba-game-ids.R")
   id_list <- data.frame(gid = NA_character_) 
 }
 
-
 # Games in the L2M
 stats_nba_games <- l2m_games %>% 
-  select(nba_game_id, date, home, away) %>% 
+  select(date, home, away) %>% 
   distinct()
 
-
-stats_nba_game_ids <- left_join(stats_nba_games, id_list) %>% 
-  mutate(nba_game_id = ifelse(is.na(nba_game_id), gid, nba_game_id)) %>% 
+stats_nba_game_ids <- stats_nba_games %>% 
+  left_join(id_list) %>% 
   arrange(date)
-
-
-# Read the list of already downloaded box scores
-queried_box <- dir(box_source, pattern = ".csv", full.names = T)
 
 if (file.exists("0-data/stats_nba/stats_nba_box.csv")) {
   old_box <- read_csv("0-data/stats_nba/stats_nba_box.csv",
@@ -49,12 +44,20 @@ if (file.exists("0-data/stats_nba/stats_nba_box.csv")) {
     mutate(MIN = as.numeric(MIN),
            date = as.Date(date))
 } else {
-  old_box <- data.frame(nba_game_id = NA)
+  old_box <- data.frame(gid = NA)
+  # In case you need to reread in the box scores
+  # Read the list of already downloaded box scores
+  # queried_box <- dir(box_source, pattern = ".csv", full.names = T)
+  # old_map <- map(queried_box, ~read_csv(., col_types = cols(.default = "c")))
+  # old_box <- old_map %>% 
+  #   bind_rows() %>% 
+  #   mutate(MIN = as.numeric(MIN),
+  #          date = as.Date(date))
 }
 
 # Only download the missing box scores:
-stats_nba_game_ids <- stats_nba_game_ids %>% 
-  filter(!is.na(nba_game_id), !(nba_game_id %in% old_box$nba_game_id))
+missing_ids <- stats_nba_game_ids %>% 
+  filter(!is.na(gid), !(gid %in% unique(old_box$gid)))
 
 # ---- nba-stats-api ------------------------------------------------------
 
@@ -79,7 +82,7 @@ stats_nba_headers <- c(
 # Take the list of nba_game_ids that are missing box scores, then query API
 #  for information on players, referees, and attendance
 
-box_mapped <- purrr::map(stats_nba_game_ids$nba_game_id, function(x) {
+box_mapped <- purrr::map(missing_ids$gid, function(x) {
   Sys.sleep(runif(1, 0.5, 2.5))
   print(paste(x, "at", Sys.time()))
   
@@ -121,7 +124,7 @@ box_mapped <- purrr::map(stats_nba_game_ids$nba_game_id, function(x) {
   }
 })
 
-info_mapped <- purrr::map(stats_nba_game_ids$nba_game_id, function(x) {
+info_mapped <- purrr::map(missing_ids$gid, function(x) {
   Sys.sleep(runif(1, 0.5, 2.5))
   print(paste(x, "at", Sys.time()))
   
@@ -198,21 +201,21 @@ new_info <- info_mapped %>%
 
 # If there are no box scores downloaded, make the new box_info NA
 if (is_empty(new_box) & is_empty(new_info)) {
-  new_box_info <- data.frame(nba_game_id = NA)
+  new_box_info <- data.frame(gid = NA)
 } else {
   # get player's side and convert the minutes into a numeric
   new_box_info <- new_box %>% 
     left_join(new_info) %>% 
-    mutate(nba_game_id = GAME_ID) %>% 
+    mutate(gid = GAME_ID) %>% 
     left_join(stats_nba_game_ids) %>% 
     mutate(PLAYER_SIDE = ifelse(home == TEAM_ABBREVIATION, "home", "away"),
            MIN = as.numeric(str_extract(MIN, ".+?(?=:)")) +
              as.numeric(str_remove(MIN, ".*:")) / 60)
 }
 
-# Save individual games based on nba_game_id
-ind_games_csv <- purrr::map(unique(new_box_info$nba_game_id), function(x) {
-  temp <- filter(new_box_info, nba_game_id == x)
+# Save individual games based on gid
+ind_games_csv <- purrr::map(unique(new_box_info$gid), function(x) {
+  temp <- filter(new_box_info, gid == x)
   
   # If the data.frame in the list only has one observation it's an error
   if (nrow(temp) > 1) {
@@ -225,8 +228,8 @@ ind_games_csv <- purrr::map(unique(new_box_info$nba_game_id), function(x) {
 
 # Add in the already scrapped box score info, then arrange by ID
 fresh_box_info <- bind_rows(old_box, new_box_info) %>% 
-  filter(!is.na(nba_game_id)) %>% 
-  arrange(date, GAME_ID)
+  filter(!is.na(gid)) %>% 
+  arrange(date, gid)
 
 
 # Save output for continual updates

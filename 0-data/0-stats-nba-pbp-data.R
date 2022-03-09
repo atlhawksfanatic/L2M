@@ -16,35 +16,36 @@ if (!file.exists(pbp_source)) dir.create(pbp_source, recursive = T)
 
 # ---- game-calls ---------------------------------------------------------
 
-l2m_games <- read_csv("1-tidy/L2M/L2M_raw.csv")
+l2m_games <- read_csv("1-tidy/L2M/L2M_raw_api.csv")
 
 # ---- game-ids -----------------------------------------------------------
 
 # Download all NBA game_id and schedule information
 if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
-  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv"))
+  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) %>% 
+    select(-national_tv)
 } else {
   print("Please download game schedule from 0-stats-nba-game-ids.R")
   id_list <- data.frame(gid = NA_character_) 
 }
 
+
 # Games in the L2M
 stats_nba_games <- l2m_games %>% 
-  select(nba_game_id, date, home, away) %>% 
+  select(date, home, away) %>% 
   distinct()
 
-
-stats_nba_game_ids <- left_join(stats_nba_games, id_list) %>% 
-  mutate(nba_game_id = ifelse(is.na(nba_game_id), gid, nba_game_id)) %>% 
+stats_nba_game_ids <- stats_nba_games %>% 
+  left_join(id_list) %>% 
   arrange(date)
 
 # Read the list of already downloaded box scores
 queried_pbp <- dir(pbp_source, pattern = ".csv", full.names = T)
 
-# Only download the missing box scores:
+# Only download the missing pbp scores:
 new_game_ids <- stats_nba_game_ids %>% 
-  filter(!is.na(nba_game_id),
-         !(nba_game_id %in% 
+  filter(!is.na(gid),
+         !(gid %in% 
              tools::file_path_sans_ext(basename(queried_pbp))))
 
 # ---- nba-stats-api ------------------------------------------------------
@@ -68,7 +69,7 @@ stats_nba_headers <- c(
 # ---- query --------------------------------------------------------------
 
 # Take the list of nba_game_ids that are missing pbp, then query API
-pbp_mapped <- purrr::map(new_game_ids$nba_game_id, function(x) {
+pbp_mapped <- purrr::map(new_game_ids$gid, function(x) {
   Sys.sleep(runif(1, 0.5, 2.5))
   print(paste(x, "at", Sys.time()))
   
