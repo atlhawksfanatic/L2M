@@ -51,13 +51,57 @@ stats_nba_headers <- c(
 if (file.exists(paste0(id_source, "/game_ids_pre2015.csv"))) {
   pre2015_ids <- read_csv(paste0(id_source, "/game_ids_pre2015.csv"))
 } else {
+  # Make the franchise names consistent for pre-2015, bad on left good on right
+  team_cross <- c(#"ATL" = "",
+    # "BKN" = "",
+    # "BOS" = "",
+    # "CHA" = "",
+    "CHH" = "NOP",
+    # "CHI" = "",
+    # "CLE" = "",
+    # "DAL" = "",
+    # "DEN" = "",
+    # "DET" = "",
+    # "GSW" = "",
+    # "HOU" = "",
+    # "IND" = "",
+    # "LAC" = "",
+    # "LAL" = "",
+    # "MEM" = "",
+    # "MIA" = "",
+    # "MIL" = "",
+    # "MIN" = "",
+    "NJN" = "BKN",
+    "NOH" = "NOP",
+    "NOK" = "NOP",
+    # "NOP" = "",
+    # "NYK" = "",
+    # "OKC" = "",
+    # "ORL" = "",
+    # "PHI" = "",
+    # "PHX" = "",
+    # "POR" = "",
+    # "SAC" = "",
+    # "SAS" = "",
+    "SEA" = "OKC",
+    # "TOR" = "",
+    # "UTA" = "",
+    # "WAS" = "",
+    "VAN" = "MEM")
+  
   pre2015_ids <- paste0("https://raw.githubusercontent.com/gmf05/",
                       "nba/master/data/csv/games_96-14.csv") %>% 
     read_csv(col_types = cols(.default = "c")) %>% 
     janitor::clean_names()
   
   pre2015_ids <- pre2015_ids %>% 
-    mutate(date = as.Date(str_sub(game_code, 1, 8), format = "%Y%m%d")) %>% 
+    mutate(date = as.Date(str_sub(game_code, 1, 8), format = "%Y%m%d"),
+           home = ifelse(is.na(team_cross[home]),
+                         home,
+                         team_cross[home]),
+           away = ifelse(is.na(team_cross[away]),
+                         away,
+                         team_cross[away])) %>% 
     select(gid = game_id, gcode = game_code, date, home, away)
   
   write_csv(pre2015_ids, paste0(id_source, "/game_ids_pre2015.csv"))
@@ -192,13 +236,52 @@ ids_map <- map(years, function(x) {
   return(id_info)
 })
 
+# ---- wayback ------------------------------------------------------------
+
+# Cross for networks that are not national
+#  network on left, right says if it is not national
+tv_cross <- c(#"ABC" = "",
+  "CBC" = "no",
+  "CTV" = "no",
+  # "ESPN" = "",
+  # "ESPN2" = "",
+  "HDNET" = "no",
+  "NBAC" = "no",
+  "NBALP" = "no",
+  # "NBATV" = "",
+  # "NBC" = "",
+  "RSN" = "no",
+  "RTV" = "no",
+  "SCORE" = "no",
+  # "TBS" = "",
+  "Telemundo" = "no",
+  # "TNT" = "",
+  "TSN" = "no",
+  "TSN2" = "no",
+  "WGN" = "no")
+
+wayback <- "0-data/wayback/tv/NBA dot com Wayback TV Schedule - ALL.csv" %>% 
+  read_csv(col_types = cols(.default = "c")) %>%
+  mutate_all(~str_remove(., "\n")) %>% 
+  type_convert() %>% 
+  mutate(date = as.Date(date, "%m/%d/%Y"),
+         national_tv = ifelse(is.na(tv_cross[network_1]),
+                              network_1,
+                              tv_cross[network_1]))
+
+j5 <- bind_rows(pre2015_ids, yoffs) %>% 
+  left_join(wayback) %>% 
+  select(gid, gcode, date, home, away,
+         networks, national_tv) %>% 
+  replace_na(list(national_tv = "no"))
+  
 # Bring them all together
 game_list <- bind_rows(ids_map) %>% 
   replace_na(list(national_tv = "no")) %>% 
-  bind_rows(pre2015_ids) %>% 
-  bind_rows(yoffs) %>% 
-  filter(!is.na(gid)) %>% 
+  bind_rows(j5) %>% 
+  filter(!is.na(gid), date > "2001-11-12") %>% 
   arrange(date, gid)
+
 
 # Save as csv
 write_csv(game_list, paste0(local_dir, "/nba_game_schedule.csv"))
