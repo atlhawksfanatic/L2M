@@ -240,11 +240,8 @@ ids_map <- map(years, function(x) {
       # Extract only the times a game was on national TV, which could be null
       summarise(national_tv = list(bd.b_disp[bd.b_scope == "natl" &
                                                bd.b_type == "tv"])) %>%
-      # home_score = h.s[1],
-      # away_score = v.s[1]
       # Replace the possible nulls with NA for national TV and unravel
-      mutate(national_tv = replace_na(national_tv)) %>%
-      unnest(national_tv) %>%
+      unnest(national_tv, keep_empty = T) %>%
       # select(gid, gcode, date, home = h.ta, away = v.ta) %>%
       arrange(date, gid)
     
@@ -297,6 +294,7 @@ j5 <- bind_rows(pre2015_ids, yoffs) %>%
 # Bring them all together
 game_list <- bind_rows(ids_map) %>% 
   replace_na(list(national_tv = "no")) %>% 
+  mutate_at(vars(home_score, away_score), as.numeric) %>% 
   bind_rows(j5) %>% 
   filter(!is.na(gid), date > "2001-11-12") %>% 
   arrange(date, gid)
