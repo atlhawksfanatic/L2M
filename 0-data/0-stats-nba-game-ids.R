@@ -174,15 +174,33 @@ if (file.exists(paste0(id_source, "/game_ids_2015_playoffs.csv"))) {
                  away = team_ids[VISITOR_TEAM_ID,]) %>% 
           select(gid = GAME_ID, gcode = GAMECODE,
                  date, home, away)
+        
+        score <- json_map %>% 
+          filter(table == "LineScore") %>% 
+          select_if(~ !any(is.na(.))) %>% 
+          mutate(date = as.Date(str_sub(GAME_DATE_EST, 1, 10)),
+                 team_abr = TEAM_ABBREVIATION,
+                 side = if_else(team_abr == id_info$home, "home", "away"),
+                 score = PTS) %>% 
+          select(gid = GAME_ID, date, side, team_abr, score) %>% 
+          pivot_wider( c("gid", "date"),
+                       names_from = "side",
+                       names_glue = "{side}_{.value}",
+                       values_from = c(team_abr, score)) %>% 
+          select(gid, date, home = home_team_abr, home_score,
+                 away = away_team_abr, away_score)
+        
+        game_info <- left_join(id_info, score)
       }
       
-      return(id_info)
+      return(game_info)
     }
   })
   
   
   yoffs <- bind_rows(yoffs_mapped) %>% 
-    filter(!is.na(gcode))
+    filter(!is.na(gcode)) %>% 
+    distinct()
   
   write_csv(yoffs, paste0(id_source, "/game_ids_2015_playoffs.csv"))
 }
@@ -217,7 +235,8 @@ ids_map <- map(years, function(x) {
       mutate(date = as.Date(gdte)) %>% 
       # Unravel the broadcast variables for each game
       unnest(bd.b, keep_empty = T, names_sep = "_") %>%
-      group_by(gid, gcode, date, home = h.ta, away = v.ta) %>%
+      group_by(gid, gcode, date, home = h.ta, away = v.ta,
+               home_score = h.s, away_score = v.s) %>%
       # Extract only the times a game was on national TV, which could be null
       summarise(national_tv = list(bd.b_disp[bd.b_scope == "natl" &
                                                bd.b_type == "tv"])) %>%
@@ -271,7 +290,7 @@ wayback <- "0-data/wayback/tv/NBA dot com Wayback TV Schedule - ALL.csv" %>%
 
 j5 <- bind_rows(pre2015_ids, yoffs) %>% 
   left_join(wayback) %>% 
-  select(gid, gcode, date, home, away,
+  select(gid, gcode, date, home, away, home_score, away_score,
          networks, national_tv) %>% 
   replace_na(list(national_tv = "no"))
   
