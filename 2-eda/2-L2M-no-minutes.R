@@ -3,15 +3,15 @@
 
 # ---- start --------------------------------------------------------------
 
-library("lubridate")
-library("tidyverse")
+library(lubridate)
+library(tidyverse)
 
 local_dir   <- "2-eda/L2M"
 figures     <- paste0(local_dir, "/figures")
 if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(figures)) dir.create(figures, recursive = T)
 
-l2m <- read_rds("1-tidy/L2M/L2M.rds") %>% 
+l2m <- read_csv("1-tidy/L2M/L2M.csv") %>% 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
                              "INC", decision),
          decision_3 = ifelse(is.na(decision) | decision == "",
