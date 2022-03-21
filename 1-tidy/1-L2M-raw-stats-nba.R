@@ -45,6 +45,7 @@ if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
 # pdftools data
 pdftools_files <- dir("0-data/L2M", pattern = "(pdftools).*\\.csv$",
                       recursive = T, full.names = T)
+pdftools_files <- pdftools_files[!grepl("archive2", pdftools_files)]
 
 pdfs_map <- map(pdftools_files, function(x) {
   temp <- read_csv(x,
