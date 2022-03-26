@@ -16,7 +16,7 @@ games <- paste0(git_hub, "0-data/stats_nba/nba_game_schedule.csv") %>%
   read_csv() %>% 
   rename(game_id = gid, game_code = gcode)
 
-refs  <- paste0(git_hub, "0-data/official_nba/referee_assignments.csv") %>% 
+refs  <- paste0(git_hub, "0-data/official_nba/nba_referee_assignments.csv") %>% 
   read_csv() %>% 
   # Season variable is XYYYY where X indicates the portion of the season
   #  (shown below) and YYYY is the year that the season starts
