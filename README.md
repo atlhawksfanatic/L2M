@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit README.Rmd for corrections file -->
 
 # L2M
@@ -20,10 +21,10 @@ code to create this data is scattered across the [0-data](0-data) and
 [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts
 the raw data (in pdf form).
 
-![](README_files/figure-markdown_github/calls-1.png)
+![](README_files/figure-gfm/calls-1.png)<!-- -->
 
 | Season | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
-|:---:|:---:|:--------:|:--------:|:------:|:------:|:-------:|:----------:|:-------:|
+|:------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
 |  2015  |  139  |       11.27       |       4.82       |     0.15      |      97%      |      1.37      |         25%          |      5.08      |
 |  2016  |  439  |       12.88       |       4.77       |     0.21      |      96%      |      1.66      |         29%          |      6.45      |
 |  2017  |  428  |       15.00       |       4.15       |     0.08      |      98%      |      2.49      |         39%          |      8.36      |
@@ -31,12 +32,12 @@ the raw data (in pdf form).
 |  2019  |  453  |       21.30       |       3.63       |     0.14      |      96%      |      2.54      |         43%          |     15.12      |
 |  2020  |  389  |       18.07       |       3.79       |     0.15      |      96%      |      1.08      |         25%          |     13.19      |
 |  2021  |  405  |       17.18       |       3.85       |     0.19      |      95%      |      0.87      |         22%          |     12.47      |
-|  2022  |  378  |       17.37       |       4.16       |     0.19      |      96%      |      1.17      |         25%          |     12.04      |
+|  2022  |  380  |       17.34       |       4.15       |     0.19      |      96%      |      1.17      |         25%          |     12.02      |
 
-All games with L2M Call Accuracy updated through 2022-03-26
+All games with L2M Call Accuracy updated through 2022-03-27
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
-|:---:|:----:|:--:|:-------:|:-------:|:------:|:------:|:------:|:---------:|:------:|
+|:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
 |  2015  |  FALSE   |  113  |       10.74       |       4.84       |     0.15      |      97%      |      1.36      |         24%          |      4.54      |
 |  2015  |   TRUE   |  26   |       13.40       |       4.74       |     0.14      |      97%      |      1.43      |         25%          |      7.23      |
 |  2016  |  FALSE   |  410  |       12.58       |       4.81       |     0.21      |      96%      |      1.58      |         28%          |      6.18      |
@@ -51,9 +52,9 @@ All games with L2M Call Accuracy updated through 2022-03-26
 |  2020  |   TRUE   |  25   |       20.50       |       3.67       |     0.13      |      96%      |      1.03      |         25%          |     15.80      |
 |  2021  |  FALSE   |  379  |       17.13       |       3.82       |     0.18      |      95%      |      0.84      |         22%          |     12.48      |
 |  2021  |   TRUE   |  26   |       17.87       |       4.26       |     0.29      |      93%      |      1.26      |         28%          |     12.35      |
-|  2022  |  FALSE   |  378  |       17.37       |       4.16       |     0.19      |      96%      |      1.17      |         25%          |     12.04      |
+|  2022  |  FALSE   |  380  |       17.34       |       4.15       |     0.19      |      96%      |      1.17      |         25%          |     12.02      |
 
-L2M Call Accuracy updated through 2022-03-26
+L2M Call Accuracy updated through 2022-03-27
 
 The process for compiling the L2M dataset is to:
 
