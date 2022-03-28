@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit README.Rmd for corrections file -->
 
 # L2M
@@ -21,10 +20,10 @@ code to create this data is scattered across the [0-data](0-data) and
 [1-tidy](1-tidy) folders. The [0-data/L2M/](0-data/L2M/) folder hosts
 the raw data (in pdf form).
 
-![](README_files/figure-gfm/calls-1.png)<!-- -->
+![](README_files/figure-markdown_github/calls-1.png)
 
 | Season | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
-|:------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
+|:---:|:---:|:--------:|:--------:|:------:|:------:|:-------:|:----------:|:-------:|
 |  2015  |  139  |       11.27       |       4.82       |     0.15      |      97%      |      1.37      |         25%          |      5.08      |
 |  2016  |  439  |       12.88       |       4.77       |     0.21      |      96%      |      1.66      |         29%          |      6.45      |
 |  2017  |  428  |       15.00       |       4.15       |     0.08      |      98%      |      2.49      |         39%          |      8.36      |
@@ -37,7 +36,7 @@ the raw data (in pdf form).
 All games with L2M Call Accuracy updated through 2022-03-26
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
-|:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
+|:---:|:----:|:--:|:-------:|:-------:|:------:|:------:|:------:|:---------:|:------:|
 |  2015  |  FALSE   |  113  |       10.74       |       4.84       |     0.15      |      97%      |      1.36      |         24%          |      4.54      |
 |  2015  |   TRUE   |  26   |       13.40       |       4.74       |     0.14      |      97%      |      1.43      |         25%          |      7.23      |
 |  2016  |  FALSE   |  410  |       12.58       |       4.81       |     0.21      |      96%      |      1.58      |         28%          |      6.18      |

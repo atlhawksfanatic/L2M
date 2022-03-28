@@ -15,7 +15,7 @@ dir_create <- function(x) {
 
 local_dir   <- dir_create("0-data/official_nba")
 data_source <- dir_create(paste0(local_dir, "/raw"))
-ref_source  <- dir_create(paste0(data_source, "/referee2"))
+ref_source  <- dir_create(paste0(data_source, "/referee"))
 map(paste(ref_source, c("nba", "gl", "wnba"), sep = "/"), dir_create)
 
 
