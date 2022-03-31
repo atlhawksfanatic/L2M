@@ -60,7 +60,7 @@ day_number <- function(season, datex) {
 # source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
 # source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
 # source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
-source("0-data/0-official-nba-referee-assign.R")
+# source("0-data/0-official-nba-referee-assign.R")
 source("0-data/0-official-nba-l2m.R")
 
 source("0-data/0-L2M-download-2021-22.R") # Download the L2M reports
