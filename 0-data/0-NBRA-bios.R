@@ -78,6 +78,8 @@ map_bios <- map(tidy_links$ref_url, function(x) {
     # Hack for inconsistent "stats" about the referee
     mutate(x1 = case_when(x1 == "" ~ NA_character_,
                           x1 == "NBRA EXPERIENCE" ~ "NBA EXPERIENCE",
+                          x1 == "MBA EXPERIENCE" ~ "NBA EXPERIENCE",
+                          x1 == "BIRTHDAY" ~ "BORN",
                           x1 == "RESIDE" ~ "RESIDES",
                           x1 == "HIGH SCHOOL" ~ "HS",
                           x1 == "HS GLENDORA, CALIF. COLLEGE" ~ "COLLEGE",
@@ -132,8 +134,8 @@ recent_bios <- both_bios %>%
   group_by(ref_name) %>% 
   filter(scrape == max(scrape))
 
-write_csv(recent_bios, paste0(local_dir, "/ref_bios_all.csv"))
-write_rds(recent_bios, paste0(local_dir, "/ref_bios_all.rds"))
+write_csv(recent_bios, paste0(local_dir, "/ref_bios_recent.csv"))
+write_rds(recent_bios, paste0(local_dir, "/ref_bios_recent.rds"))
 
 write_csv(recent_bios, "3-shiny/ref-shiny/ref_bios.csv")
 write_rds(recent_bios, "3-shiny/ref-shiny/ref_bios.rds")
