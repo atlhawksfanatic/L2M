@@ -90,3 +90,58 @@ season_calc %>%
 
 write_csv(season_calc, "2-eda/L2M/figures/haberstroh_team_ratings.csv")
 write_csv(ref_rate_szn, "2-eda/L2M/figures/haberstroh_ref_ratings.csv")
+
+
+# ---- playoffs -----------------------------------------------------------
+
+# Bad/NBRA on left, good/NBA on right
+ref_cross <- c("Joshua Tiven" = "Josh Tiven",
+               "J.T. Orr" = "JT Orr",
+               "Lauren Holtkamp-Sterling" = "Lauren Holtkamp",
+               "Matthew Boland" = "Matt Boland",
+               "Suyash Metha" = "Suyash Mehta")
+
+ref_bios <- read_csv("0-data/NBRA/bios/ref_bios_recent.csv") %>% 
+  select(ref_name, ref_number, nba_exp) %>% 
+  mutate(official = ifelse(is.na(ref_cross[ref_name]),
+                           ref_name,
+                           ref_cross[ref_name]))
+
+# https://official.nba.com/nba-announces-36-officials-selected-for-2022-nba-playoffs-presented-by-google-pixel/
+p_off <- paste0("Brent Barnaky, Curtis Blair, Tony Brothers, Nick Buchert, ",
+                "James Capers, Kevin Cutler, Eric Dalen, Marc Davis, JB DeRosa,",
+                " Mitchell Ervin, Kane Fitzgerald, Tyler Ford, Brian Forte, ",
+                "Scott Foster, Pat Fraher, Jacyn Goble, John Goble, ",
+                "David Guthrie, Bill Kennedy, Courtney Kirkland, Karl Lane, ",
+                "Eric Lewis, Mark Lindsay, Tre Maddox, Ed Malloy, Rodney Mott,",
+                " Gediminas Petraitis, Michael Smith, Ben Taylor, Josh Tiven, ",
+                "Scott Twardoski, Justin Van Duyne, Tom Washington, ",
+                "James Williams, Sean Wright, Zach Zarba")
+p_alt <- paste0("Ray Acosta, Matt Boland, Derrick Collins, Lauren Holtkamp, ",
+                "Brett Nansel, Aaron Smith, Dedric Taylor, Leon Wood")
+
+ref_p <- p_off %>% 
+  str_split(",", simplify = T) %>% 
+  t() %>% 
+  data.frame(official = .) %>% 
+  mutate(official = str_trim(official),
+         status = "Playoff")
+
+ref_playoff <- p_alt %>% 
+  str_split(",", simplify = T) %>% 
+  t() %>% 
+  data.frame(official = .) %>% 
+  mutate(official = str_trim(official),
+         status = "Alternate") %>% 
+  bind_rows(ref_p, .)
+
+poffs_2022 <- ref_rate_szn %>% 
+  filter(szn == 2022, szn_type == "regular season") %>% 
+  left_join(ref_playoff) %>% 
+  left_join(ref_bios)
+
+poffs_2022 %>% 
+  arrange(desc(nba_exp)) %>% 
+  select(szn, szn_type, official, nba_exp,
+         ref_points, games, ref_rating, status) %>% 
+  View()
