@@ -31,7 +31,7 @@ nba_dates_long <- tribble(
   2021, "season", "2020-12-22", "2021-5-16",
   2021, "playoffs", "2021-5-18", "2021-7-30",
   2022, "season", "2021-10-18", "2022-4-11",
-  2022, "playoffs", "2022-4-12", "2021-6-20"
+  2022, "playoffs", "2022-4-12", "2022-6-20"
 ) %>% 
   mutate_at(vars(-season, -season_section), as.Date) %>% 
   mutate(days = end_date - start_date + 1)
