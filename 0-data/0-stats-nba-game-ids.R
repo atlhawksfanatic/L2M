@@ -19,7 +19,9 @@ if (!file.exists(id_source)) dir.create(id_source, recursive = T)
 # Set up headers to make requests to API
 stats_nba_headers <- c(
   "Host" = "stats.nba.com",
-  "User-Agent" = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+  "User-Agent" = paste0("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) ",
+                        "AppleWebKit/537.36 (KHTML, like Gecko) ",
+                        "Chrome/79.0.3945.130 Safari/537.36"),
   "Accept" = "application/json, text/plain, */*",
   "Accept-Language" = "en-US,en;q=0.5",
   "Accept-Encoding" = "gzip, deflate, br",
@@ -208,11 +210,23 @@ if (file.exists(paste0(id_source, "/game_ids_2015_playoffs.csv"))) {
 
 # Query for all of the existing schedules for NBA game ids, not sure what to do
 #  when a season starts to add on playoff games
-years <- seq(2015, format(Sys.Date(), "%Y"))
+end_year <- ifelse(Sys.Date() > paste0(format(Sys.Date(), "%Y"), "-10-01"),
+                   as.numeric(format(Sys.Date(), "%Y")),
+                   as.numeric(format(Sys.Date(), "%Y")) - 1)
+years <- seq(2015, end_year)
 
 ids_map <- map(years, function(x) {
-  Sys.sleep(runif(1, 5, 10))
+  Sys.sleep(runif(1, 2.5, 5))
   print(paste(x, "at", Sys.time()))
+  
+  # Only need to scrape the latest season
+  if (file.exists(paste0(id_source, "/game_ids_", x, ".csv")) &
+      x != end_year) {
+    id_info <- read_csv(paste0(id_source, "/game_ids_", x, ".csv"),
+                        col_types = cols(.default = "c")) %>% 
+      mutate(date = as.Date(date))
+    return(id_info)
+  }
   # https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/2021/league/00_full_schedule.json
   x_url <- paste0("https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/",
                   x,
@@ -233,6 +247,8 @@ ids_map <- map(years, function(x) {
       .$mscd.g %>% 
       bind_rows() %>% 
       mutate(date = as.Date(gdte)) %>% 
+      # Turn the broadcast into consistent data.frames and not lists
+      mutate(bd.b = map(bd.b, as.data.frame)) %>% 
       # Unravel the broadcast variables for each game
       unnest(bd.b, keep_empty = T, names_sep = "_") %>%
       group_by(gid, gcode, date, home = h.ta, away = v.ta,
