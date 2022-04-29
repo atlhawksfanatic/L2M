@@ -23,7 +23,7 @@ l2m_games <- read_csv("1-tidy/L2M/L2M_raw_api.csv")
 # Download all NBA game_id and schedule information
 if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
   id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) %>% 
-    select(-national_tv)
+    select(-networks)
 } else {
   print("Please download game schedule from 0-stats-nba-game-ids.R")
   id_list <- data.frame(gid = NA_character_) 
@@ -42,7 +42,9 @@ if (file.exists("0-data/stats_nba/stats_nba_box.csv")) {
   old_box <- read_csv("0-data/stats_nba/stats_nba_box.csv",
                       col_types = cols(.default = "c")) %>% 
     mutate(MIN = as.numeric(MIN),
-           date = as.Date(date))
+           date = as.Date(date)) %>% 
+    select(-any_of(c("home_score", "away_score", "networks", "national_tv"))) %>% 
+    left_join(stats_nba_game_ids)
 } else {
   old_box <- data.frame(gid = NA)
   # In case you need to reread in the box scores
