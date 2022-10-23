@@ -31,7 +31,9 @@ nba_dates_long <- tribble(
   2021, "season", "2020-12-22", "2021-5-16",
   2021, "playoffs", "2021-5-18", "2021-7-30",
   2022, "season", "2021-10-18", "2022-4-11",
-  2022, "playoffs", "2022-4-12", "2022-6-20"
+  2022, "playoffs", "2022-4-12", "2022-6-20",
+  2023, "season", "2022-10-17", "2023-4-10",
+  2023, "playoffs", "2023-4-11", "2023-6-20"
 ) %>% 
   mutate_at(vars(-season, -season_section), as.Date) %>% 
   mutate(days = end_date - start_date + 1)
@@ -57,13 +59,17 @@ day_number <- function(season, datex) {
 
 ```{r automated, include = FALSE}
 # Automated process
+# Have you updated the game log for the season/playoffs yet?
+# source("0-data/0-stats-nba-game-ids.R")
+
 # source("0-data/0-L2M-download-2019-20.R") # Download the L2M reports
 # source("0-data/0-L2M-pdftools-2019-20.R") # Parse any junk PDFs from L2M
 # source("0-data/0-L2M-download-2020-21.R") # Download the L2M reports
+# source("0-data/0-L2M-download-2021-22.R") # Download the L2M reports
 # source("0-data/0-official-nba-referee-assign.R")
-source("0-data/0-official-nba-l2m.R")
+# source("0-data/0-official-nba-l2m.R")
 
-source("0-data/0-L2M-download-2021-22.R") # Download the L2M reports
+source("0-data/0-L2M-download-2022-23.R") # Download the L2M reports
 source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
 
 source("0-data/0-bkref-data.R") # Download bkref box scores
@@ -200,13 +206,14 @@ The process for compiling the L2M dataset is to:
     - [2018-19](0-data/0-L2M-download-2018-19.R) - which changes formats to online only after the 2019 NBA All Star Game (February 21, 2019 is the first). This requires the [splashr](https://github.com/hrbrmstr/splashr) package to handle scraping of the NBA website.
     - [2019-20](0-data/0-L2M-download-2019-20.R) - almost exclusively online with only a few PDF games. Use of the [splashr](https://github.com/hrbrmstr/splashr) package is required.
     - [2020-21](0-data/0-L2M-download-2020-21.R) - no substantial changes from the previous season and all were able to be downloaded with the [splashr](https://github.com/hrbrmstr/splashr) package.
-    - [2021-22](0-data/0-L2M-download-2021-22.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
+    - [2021-22](0-data/0-L2M-download-2021-22.R) - no substantial changes from the previous season and all were able to be downloaded with the [splashr](https://github.com/hrbrmstr/splashr) package.
+    - [2022-23](0-data/0-L2M-download-2022-23.R) - current season and so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr) package required.
 2. Read in the pdf files through the [pdftools](https://github.com/ropensci/pdftools) package:
     - [Archived](0-data/0-L2M-pdftools-archive.R)
     - [2017-18](0-data/0-L2M-pdftools-2017-18.R)
     - [2018-19](0-data/0-L2M-pdftools-2018-19.R)
     - [2019-20](0-data/0-L2M-pdftools-2019-20.R)
-    - None for 2020-21 and so far none for the 2021-22 season.
+    - None for 2020-21, 2021-22 and so far none for the 2022-23 season.
 3. Download box scores for games from [basketball-reference.com](https://www.basketball-reference.com/) for score and rosters to match up committing/disadvantaged players.
     - [File](0-data/0-bkref-data.R) depends on .rds files created in step 2 to be present in directory.
 4. Combine L2M reports with box score information

@@ -145,6 +145,23 @@ scraped_2022 <- read_csv("0-data/L2M/2021-22/scraped_202122.csv",
          home = team_dictionary[home_team],
          away = team_dictionary[away_team])
 
+# 2022-23 scraped
+scraped_2023 <- read_csv("0-data/L2M/2022-23/scraped_202223.csv",
+                         col_types = cols(.default = "c")) %>% 
+  # select(-game_id, -away_score, -home_score) %>% 
+  mutate(date = mdy(game_date),
+         decision = case_when(decision == "NCC" ~ "CNC",
+                              decision == "NCI" ~ "INC",
+                              decision == "Undetectable" ~ "",
+                              T ~ decision),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team])
+
 # L2M are not consistent with the names of teams
 team_cross <- c("BRK" = "BKN", "PHO" = "PHX")
 
@@ -158,6 +175,7 @@ l2m_games <- archived %>%
   bind_rows(scraped_2020) %>% 
   bind_rows(scraped_2021) %>% 
   bind_rows(scraped_2022) %>% 
+  bind_rows(scraped_2023) %>% 
   # select(-away_score, -home_score) %>% 
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),

@@ -33,8 +33,9 @@ the raw data (in pdf form).
 |  2020  |  389  |       18.07       |       3.79       |     0.15      |      96%      |      1.08      |         25%          |     13.19      |
 |  2021  |  405  |       17.18       |       3.85       |     0.19      |      95%      |      0.87      |         22%          |     12.47      |
 |  2022  |  441  |       17.53       |       4.18       |     0.19      |      95%      |      1.18      |         26%          |     12.18      |
+|  2023  |  17   |       19.20       |       5.25       |     0.30      |      94%      |      1.15      |         23%          |     12.80      |
 
-All games with L2M Call Accuracy updated through 2022-06-10
+All games with L2M Call Accuracy updated through 2022-10-22
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
@@ -54,8 +55,9 @@ All games with L2M Call Accuracy updated through 2022-06-10
 |  2021  |   TRUE   |  26   |       17.87       |       4.26       |     0.29      |      93%      |      1.26      |         28%          |     12.35      |
 |  2022  |  FALSE   |  412  |       17.31       |       4.16       |     0.19      |      95%      |      1.17      |         25%          |     11.98      |
 |  2022  |   TRUE   |  29   |       21.17       |       4.47       |     0.23      |      95%      |      1.33      |         27%          |     15.37      |
+|  2023  |  FALSE   |  17   |       19.20       |       5.25       |     0.30      |      94%      |      1.15      |         23%          |     12.80      |
 
-L2M Call Accuracy updated through 2022-06-10
+L2M Call Accuracy updated through 2022-10-22
 
 The process for compiling the L2M dataset is to:
 
@@ -77,7 +79,11 @@ The process for compiling the L2M dataset is to:
         changes from the previous season and all were able to be
         downloaded with the
         [splashr](https://github.com/hrbrmstr/splashr) package.
-    -   [2021-22](0-data/0-L2M-download-2021-22.R) - current season and
+    -   [2021-22](0-data/0-L2M-download-2021-22.R) - no substantial
+        changes from the previous season and all were able to be
+        downloaded with the
+        [splashr](https://github.com/hrbrmstr/splashr) package.
+    -   [2022-23](0-data/0-L2M-download-2022-23.R) - current season and
         so far no PDFs. [splashr](https://github.com/hrbrmstr/splashr)
         package required.
 2.  Read in the pdf files through the
@@ -86,7 +92,8 @@ The process for compiling the L2M dataset is to:
     -   [2017-18](0-data/0-L2M-pdftools-2017-18.R)
     -   [2018-19](0-data/0-L2M-pdftools-2018-19.R)
     -   [2019-20](0-data/0-L2M-pdftools-2019-20.R)
-    -   None for 2020-21 and so far none for the 2021-22 season.
+    -   None for 2020-21, 2021-22 and so far none for the 2022-23
+        season.
 3.  Download box scores for games from
     [basketball-reference.com](https://www.basketball-reference.com/)
     for score and rosters to match up committing/disadvantaged players.
