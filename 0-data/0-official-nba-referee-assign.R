@@ -25,7 +25,7 @@ map(paste(ref_source, c("nba", "gl", "wnba"), sep = "/"), dir_create)
 if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
   id_list <- read_csv("0-data/stats_nba/nba_game_schedule.csv")
 } else {
-  print("Please download game schedule from 0-stats-nba-box-data.R")
+  print("Please download game schedule from 0-stats-nba-game-ids.R")
   id_list <- data.frame(gid = NA_character_) 
 }
 
