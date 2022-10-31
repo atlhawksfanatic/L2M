@@ -36,37 +36,28 @@ names(team_dictionary) <- team_list$simpleName
 if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
   id_list <- read_csv("0-data/stats_nba/nba_game_schedule.csv")
 } else {
-  print("Please download game schedule from 0-stats-nba-box-data.R")
+  print("Please download game schedule from 0-stats-nba-game-ids.R")
   id_list <- data.frame(gid = NA_character_) 
 }
 
 # ---- game-calls ---------------------------------------------------------
 
-# pdftools data
-pdftools_files <- dir("0-data/L2M", pattern = "(pdftools).*\\.csv$",
-                      recursive = T, full.names = T)
-pdftools_files <- pdftools_files[!grepl("archive2", pdftools_files)]
+# Archived PDFs
+pdf_archived <- "0-data/L2M/archived-pdf/pdftools_L2M_archive_all.csv" %>% 
+  read_csv(col_types = cols(.default = "c")) %>% 
+  mutate(date = mdy(game_date),
+         #PCTime = parse_time(time),
+         call_type = ifelse(call_type == "N/A" | call_type == "Other",
+                            NA_character_, call_type),
+         call_type = str_squish(call_type),
+         call = str_remove(call_type, ":.*"),
+         type = str_trim(str_remove(call_type, ".*:")),
+         home = team_dictionary[home_team],
+         away = team_dictionary[away_team],
+         away_score = as.numeric(away_score),
+         home_score = as.numeric(home_score))
 
-pdfs_map <- map(pdftools_files, function(x) {
-  temp <- read_csv(x,
-                   col_types = cols(.default = "c")) %>% 
-    mutate(date = mdy(game_date),
-           #PCTime = parse_time(time),
-           call_type = ifelse(call_type == "N/A" | call_type == "Other",
-                              NA_character_, call_type),
-           call_type = str_squish(call_type),
-           call = str_remove(call_type, ":.*"),
-           type = str_trim(str_remove(call_type, ".*:")),
-           home = team_dictionary[home_team],
-           away = team_dictionary[away_team],
-           away_score = as.numeric(away_score),
-           home_score = as.numeric(home_score))
-  
-  return(temp)
-})
-
-l2m_pdfs <- bind_rows(pdfs_map) %>% 
-  left_join(id_list)
+l2m_pdfs <- left_join(pdf_archived, id_list)
 
 # API names: left is API right is PDF
 api_cross <- c("PeriodName" = "period",
@@ -125,7 +116,6 @@ l2m_games <- l2m_pdfs %>%
   filter(!(gid %in% unique(l2m_api$GameId))) %>% 
   bind_rows(l2m_api) %>% 
   arrange(date, game_id, period, desc(time))
-
 
 write_csv(l2m_games, paste0(local_dir, "/L2M_raw_api.csv"))
 write_rds(l2m_games, paste0(local_dir, "/L2M_raw_api.rds"))
