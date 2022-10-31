@@ -129,6 +129,7 @@ pdf_raw <- map(raw_files, function(x) {
                               "committing", "disadvantaged",
                               "X6",
                               "decision", "junk")
+        # HACK for L2M-CLE-CHI-01-27-2019.pdf
         play_data <- play_data %>% 
           mutate(call_type = ifelse(X6 == "Robin Lopez",
                                     paste(call_type, committing),
