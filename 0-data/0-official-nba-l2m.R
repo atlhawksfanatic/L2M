@@ -10,7 +10,7 @@ library(tidyverse)
 
 local_dir   <- "0-data/official_nba"
 data_source <- paste0(local_dir, "/raw")
-l2m_source  <- paste0(data_source, "/l2m")
+l2m_source  <- paste0(data_source, "/l2m-api")
 l2m_bad     <- paste0(l2m_source, "/bad")
 if (!file.exists(local_dir)) dir.create(local_dir, recursive = T)
 if (!file.exists(data_source)) dir.create(data_source, recursive = T)

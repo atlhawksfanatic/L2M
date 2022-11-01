@@ -332,6 +332,7 @@ l2m_games_stats3 <-
                             date < as.Date("2020-11-01") ~ 2020,
                             date < as.Date("2021-10-01") ~ 2021,
                             date < as.Date("2022-10-01") ~ 2022,
+                            date < as.Date("2023-10-01") ~ 2023,
                             T ~ NA_real_),
          # Last day of the regular season
          # April 15, 2015
@@ -356,6 +357,8 @@ l2m_games_stats3 <-
                                date < as.Date("2021-7-30") ~ T,
                              date > as.Date("2022-4-11") &
                                date < as.Date("2022-6-20") ~ T,
+                             date > as.Date("2023-4-11") &
+                               date < as.Date("2023-6-20") ~ T,
                              T ~ F))
 
 write_csv(l2m_games_stats3, paste0(local_dir, "/L2M-stats-nba.csv"))

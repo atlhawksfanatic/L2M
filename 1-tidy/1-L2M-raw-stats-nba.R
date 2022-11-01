@@ -57,7 +57,9 @@ pdf_archived <- "0-data/L2M/archived-pdf/pdftools_L2M_archive_all.csv" %>%
          away_score = as.numeric(away_score),
          home_score = as.numeric(home_score))
 
-l2m_pdfs <- left_join(pdf_archived, id_list)
+l2m_pdfs <- left_join(pdf_archived,
+                      # currently away/home scores missing pre 2015-16
+                      select(id_list, -away_score, -home_score))
 
 # API names: left is API right is PDF
 api_cross <- c("PeriodName" = "period",

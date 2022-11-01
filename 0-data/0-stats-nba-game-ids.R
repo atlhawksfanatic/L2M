@@ -49,7 +49,7 @@ stats_nba_headers <- c(
 # 005 : Play-In
 # https://raw.githubusercontent.com/gmf05/nba/master/data/csv/games_96-14.csv
 
-# Pre 2015-16 gameids
+# Pre 2015-16 gameids, note no scores are present.
 if (file.exists(paste0(id_source, "/game_ids_pre2015.csv"))) {
   pre2015_ids <- read_csv(paste0(id_source, "/game_ids_pre2015.csv"))
 } else {
@@ -227,7 +227,8 @@ ids_map <- map(years, function(x) {
       mutate(date = as.Date(date))
     return(id_info)
   }
-  # https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/2021/league/00_full_schedule.json
+  # https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/
+  #  2021/league/00_full_schedule.json
   x_url <- paste0("https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/",
                   x,
                   "/league/00_full_schedule.json")
