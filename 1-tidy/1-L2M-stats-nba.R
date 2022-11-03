@@ -265,14 +265,14 @@ l2m_games_stats <-
          call = str_to_upper(call), type = str_to_upper(type),
          # Committing/Disadvantaged side to teams if NA
          committing_side = case_when(is.na(committing_side) &
-                                       (committing_team == home_team) ~ "home",
+                                       (committing_team == home) ~ "home",
                                      is.na(committing_side) &
-                                       (committing_team == away_team) ~ "away",
+                                       (committing_team == away) ~ "away",
                                      T ~ committing_side),
          disadvantaged_side = case_when(is.na(disadvantaged_side) &
-                                          (disadvantaged_team == home_team) ~ "home",
+                                          (disadvantaged_team == home) ~ "home",
                                         is.na(disadvantaged_side) &
-                                          (disadvantaged_team == away_team) ~ "away",
+                                          (disadvantaged_team == away) ~ "away",
                                         T ~ disadvantaged_side))
 
 # Make corrections to types and calls
