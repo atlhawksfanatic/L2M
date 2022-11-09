@@ -45,6 +45,11 @@ day_number <- function(season, datex) {
   
   day_num = datex - nba_dates_long$start_date[indx] + 1
   
+  if (length(season_section) == 0) {
+    day_num = NA_integer_
+    return(day_num)
+  }
+  
   if (season_section == "bubble") {
     day_num = nba_dates_long$days[nba_dates_long$season == season &
                                     nba_dates_long$season_section == "season"] +

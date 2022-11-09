@@ -91,6 +91,7 @@ box_mapped <- purrr::map(missing_ids$gid, function(x) {
   # Box Score Info:
   # EndPeriod=1&EndRange=0&GameID=0021700807&
   # RangeType=0&StartPeriod=1&StartRange=0
+  # x = "0022100747"
   x_url <- paste0("https://stats.nba.com/stats/boxscoretraditionalv2?",
                   "EndPeriod=1&EndRange=0&GameID=",
                   x,
