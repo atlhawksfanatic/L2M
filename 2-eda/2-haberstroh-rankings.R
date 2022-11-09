@@ -84,7 +84,7 @@ season_calc <- team_calc %>%
   select(szn, szn_type, team, ref_rating, tv_games, games)
 
 season_calc %>% 
-  filter(szn == 2022, szn_type == "regular season") %>% 
+  filter(szn == 2023, szn_type == "regular season") %>% 
   arrange(desc(ref_rating)) %>% 
   knitr::kable()
 
