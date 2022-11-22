@@ -111,7 +111,7 @@ l2m_api <- read_csv("0-data/official_nba/official_nba_l2m_api.csv",
   mutate_at(vars(HomeTeamScore, VisitorTeamScore), as.numeric) %>% 
   # rename uses the opposite convention
   rename(setNames(names(api_cross), api_cross))%>% 
-  left_join(id_list)
+  left_join(select(id_list, -away_score, -home_score))
 
 # If a game has both a PDF and API set of calls, then only take the API version
 l2m_games <- l2m_pdfs %>% 
