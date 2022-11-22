@@ -50,8 +50,8 @@ stats_nba_headers <- c(
 # https://raw.githubusercontent.com/gmf05/nba/master/data/csv/games_96-14.csv
 
 # Pre 2015-16 gameids, note no scores are present.
-if (file.exists(paste0(id_source, "/game_ids_pre2015.csv"))) {
-  pre2015_ids <- read_csv(paste0(id_source, "/game_ids_pre2015.csv"))
+if (file.exists(paste0(id_source, "/game_ids_pre2015_scores.csv"))) {
+  pre2015_ids <- read_csv(paste0(id_source, "/game_ids_pre2015_scores.csv"))
 } else {
   # Make the franchise names consistent for pre-2015, bad on left good on right
   team_cross <- c(#"ATL" = "",
