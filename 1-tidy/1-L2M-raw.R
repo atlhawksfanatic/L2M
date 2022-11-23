@@ -29,6 +29,16 @@ if (file.exists(paste0(local_dir, "/team_ids.csv"))) {
 team_dictionary        <- team_list$abbreviation
 names(team_dictionary) <- team_list$simpleName
 
+# ---- game-ids -----------------------------------------------------------
+
+# Download all NBA game_id and schedule information
+if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
+  id_list <- read_csv("0-data/stats_nba/nba_game_schedule.csv")
+} else {
+  print("Please download game schedule from 0-stats-nba-game-ids.R")
+  id_list <- data.frame(gid = NA_character_) 
+}
+
 # ---- game-calls ---------------------------------------------------------
 
 # Archived
@@ -39,7 +49,8 @@ archived <- read_csv("0-data/L2M/archive/pdftools_L2M_archive_all.csv",
          type = str_trim(str_remove(call_type, ".*:")),
          date = mdy(game_date),
          home = team_dictionary[home_team],
-         away = team_dictionary[away_team])
+         away = team_dictionary[away_team]) %>% 
+  left_join(select(id_list, nba_game_id = gid, date, home, away))
 
 # 2017-18
 l2m_2018 <- read_csv("0-data/L2M/2017-18/pdftools_L2M_201718.csv",
@@ -51,7 +62,8 @@ l2m_2018 <- read_csv("0-data/L2M/2017-18/pdftools_L2M_201718.csv",
          call = str_remove(call_type, ":.*"),
          type = str_trim(str_remove(call_type, ".*:")),
          home = team_dictionary[home_team],
-         away = team_dictionary[away_team])
+         away = team_dictionary[away_team]) %>% 
+  left_join(select(id_list, nba_game_id = gid, date, home, away))
 
 # 2018-19 pdfs
 l2mpdf_2019 <- read_csv("0-data/L2M/2018-19/pdftools_L2M_201819_all.csv",
@@ -63,7 +75,8 @@ l2mpdf_2019 <- read_csv("0-data/L2M/2018-19/pdftools_L2M_201819_all.csv",
          call = str_remove(call_type, ":.*"),
          type = str_trim(str_remove(call_type, ".*:")),
          home = team_dictionary[home_team],
-         away = team_dictionary[away_team])
+         away = team_dictionary[away_team]) %>% 
+  left_join(select(id_list, nba_game_id = gid, date, home, away))
 
 # 2018-19 scraped
 scraped_2019 <- read_csv("0-data/L2M/2018-19/scraped_201819.csv",
@@ -92,7 +105,8 @@ l2mpdf_2020 <- read_csv("0-data/L2M/2019-20/pdftools_L2M_201920_all.csv",
          call = str_remove(call_type, ":.*"),
          type = str_trim(str_remove(call_type, ".*:")),
          home = team_dictionary[home_team],
-         away = team_dictionary[away_team])
+         away = team_dictionary[away_team]) %>% 
+  left_join(select(id_list, nba_game_id = gid, date, home, away))
 
 # 2019-20 scraped
 scraped_2020 <- read_csv("0-data/L2M/2019-20/scraped_201920.csv",
@@ -194,8 +208,11 @@ l2m_games <- archived %>%
          
          bkref_id = paste0(str_remove_all(date, "-"), "0",
                            home_bkref),
-         nba_game_id = str_remove(game_id, "gameId=")) %>% 
-  arrange(date, game_id, period, desc(time), scrape_time)
+         nba_game_id = ifelse(is.na(nba_game_id),
+                              str_remove(game_id, "gameId="),
+                              nba_game_id)) %>% 
+  arrange(date, game_id, period, desc(time), scrape_time) %>% 
+  select(period:away, scrape_time:bkref_id, nba_game_id)
 
 # Minor corrections
 l2m_games_corrected <- l2m_games %>% 
