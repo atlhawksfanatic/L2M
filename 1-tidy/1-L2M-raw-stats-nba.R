@@ -57,9 +57,9 @@ pdf_archived <- "0-data/L2M/archived-pdf/pdftools_L2M_archive_all.csv" %>%
          away_score = as.numeric(away_score),
          home_score = as.numeric(home_score))
 
-l2m_pdfs <- left_join(pdf_archived,
-                      # currently away/home scores missing pre 2015-16
-                      select(id_list, -away_score, -home_score))
+l2m_pdfs <- pdf_archived %>% 
+  select(-home_score, -away_score) %>% 
+  left_join(id_list)
 
 # API names: left is API right is PDF
 api_cross <- c("PeriodName" = "period",
@@ -118,7 +118,7 @@ l2m_api <- read_csv("0-data/official_nba/official_nba_l2m_api.csv",
 l2m_games <- l2m_pdfs %>% 
   filter(!(gid %in% unique(l2m_api$GameId))) %>% 
   bind_rows(l2m_api) %>% 
-  arrange(date, game_id, period, desc(time))
+  arrange(date, gid, period, desc(time))
 
 write_csv(l2m_games, paste0(local_dir, "/L2M_raw_api.csv"))
 write_rds(l2m_games, paste0(local_dir, "/L2M_raw_api.rds"))

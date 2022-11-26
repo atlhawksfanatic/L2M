@@ -320,8 +320,8 @@ l2m_games_stats2 <-
   arrange(gcode)
 
 
-write_csv(l2m_games_stats2, paste0(local_dir, "/L2M-stats-nba.csv"))
-write_rds(l2m_games_stats2, paste0(local_dir, "/L2M-stats-nba.rds"))
+write_csv(l2m_games_stats2, paste0(local_dir, "/L2M_stats_nba.csv"))
+write_rds(l2m_games_stats2, paste0(local_dir, "/L2M_stats_nba.rds"))
 
 
 # ---- ref-shiny --------------------------------------------------------------
@@ -342,7 +342,7 @@ l2m_shiny <-
          temp_date = as.Date(paste(temp_year, month(date),
                                    day(date), sep = "/"), "%Y/%m/%d"))
 
-if (file.exists("3-shiny/ref-shiny/L2M-stats-nba.csv")) {
-  write_csv(l2m_shiny, "3-shiny/ref-shiny/L2M-stats-nba.csv")
-  write_rds(l2m_shiny, "3-shiny/ref-shiny/L2M-stats-nba.rds")
+if (file.exists("3-shiny/ref-shiny/L2M_stats_nba.csv")) {
+  write_csv(l2m_shiny, "3-shiny/ref-shiny/L2M_stats_nba.csv")
+  write_rds(l2m_shiny, "3-shiny/ref-shiny/L2M_stats_nba.rds")
 }
