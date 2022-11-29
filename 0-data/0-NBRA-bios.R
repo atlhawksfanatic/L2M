@@ -87,7 +87,8 @@ map_bios <- map(tidy_links$ref_url, function(x) {
                           x1 == "FAVORITE TV SHOWS" ~ "FAVORITE TV SHOW",
                           x1 == "FAVORITE MEAT" ~ "FAVORITE MEAL",
                           x1 == "HIDDEN TALENTS" ~ "HIDDEN TALENT",
-                          x1 == "WOULD MOST LIKE TO TRAVEL" ~ "WOULD MOST LIKE TO VISIT",
+                          x1 == "WOULD MOST LIKE TO TRAVEL" ~
+                            "WOULD MOST LIKE TO VISIT",
                           T ~ x1)) %>% 
     fill(x1) %>% 
     group_by(x1) %>% 
