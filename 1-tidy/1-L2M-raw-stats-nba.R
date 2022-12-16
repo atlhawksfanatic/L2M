@@ -97,6 +97,9 @@ api_cross <- c("PeriodName" = "period",
 # L2M API
 l2m_api <- read_csv("0-data/official_nba/official_nba_l2m_api.csv",
                     col_types = cols(.default = "c")) %>% 
+  # Get rid of reports that don't exist and only have game_id non-NA
+  filter_at(vars(-game_id),
+            any_vars(!is.na(.))) %>% 
   mutate(CallRatingName = case_when(CallRatingName == "NCC" ~ "CNC",
                                     CallRatingName == "NCI" ~ "INC",
                                     CallRatingName == "Undetectable" ~ "",
