@@ -28,3 +28,6 @@ L2M.Rproj
 junk
 notes
 project.Rproj
+.Rprofile
+renv
+renv.lock
