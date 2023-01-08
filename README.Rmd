@@ -78,7 +78,7 @@ source("0-data/0-L2M-download-2022-23.R") # Download the L2M reports
 source("1-tidy/1-L2M-raw.R") # Gather up and tidy the L2M reports
 
 source("0-data/0-bkref-data.R") # Download bkref box scores
-source("0-data/0-stats-nba-pbp-data.R")
+# source("0-data/0-stats-nba-pbp-data.R")
 source("0-data/0-stats-nba-box-data.R")
 
 source("1-tidy/1-L2M-bkref.R") # Combine tidy L2Ms with bkref box scores
