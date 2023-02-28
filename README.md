@@ -33,9 +33,9 @@ the raw data (in pdf form).
 |  2020  |  389  |       18.07       |       3.79       |     0.15      |      96%      |      1.08      |         25%          |     13.19      |
 |  2021  |  405  |       17.18       |       3.85       |     0.19      |      95%      |      0.87      |         22%          |     12.47      |
 |  2022  |  441  |       17.53       |       4.18       |     0.19      |      95%      |      1.18      |         26%          |     12.18      |
-|  2023  |  336  |       20.83       |       4.33       |     0.15      |      96%      |      1.19      |         24%          |     15.31      |
+|  2023  |  338  |       20.84       |       4.33       |     0.15      |      96%      |      1.19      |         24%          |     15.32      |
 
-All games with L2M Call Accuracy updated through 2023-02-26
+All games with L2M Call Accuracy updated through 2023-02-27
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
@@ -55,9 +55,9 @@ All games with L2M Call Accuracy updated through 2023-02-26
 |  2021  |   TRUE   |  26   |       17.87       |       4.26       |     0.29      |      93%      |      1.26      |         28%          |     12.35      |
 |  2022  |  FALSE   |  412  |       17.31       |       4.16       |     0.19      |      95%      |      1.17      |         25%          |     11.98      |
 |  2022  |   TRUE   |  29   |       21.17       |       4.47       |     0.23      |      95%      |      1.33      |         27%          |     15.37      |
-|  2023  |  FALSE   |  336  |       20.83       |       4.33       |     0.15      |      96%      |      1.19      |         24%          |     15.31      |
+|  2023  |  FALSE   |  338  |       20.84       |       4.33       |     0.15      |      96%      |      1.19      |         24%          |     15.32      |
 
-L2M Call Accuracy updated through 2023-02-26
+L2M Call Accuracy updated through 2023-02-27
 
 The process for compiling the L2M dataset is to:
 
@@ -105,20 +105,24 @@ The process for compiling the L2M dataset is to:
     -   [Final version](1-tidy/1-L2M-bkref.R) which includes box score
         info, the [csv file](1-tidy/L2M/L2M.csv)
 
+### Variables
+
 The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 
 -   `period`: period at which point the play occurred
 -   `time`: time remaining in the period when play occurred
 -   `call_type`: raw call type variable in L2M
--   `committing`: committing player or team in L2M, may be blank
--   `disadvantaged`: disadvantaged player or team in L2M, may be blank
+-   `committing`: committing player or team of the graded infraction in
+    L2M, may be blank
+-   `disadvantaged`: disadvantaged player or team of the graded
+    infraction in L2M, may be blank
 -   `decision`: judgment of L2M for the call, could be CC, CNC, IC, INC,
     or blank where CC = Correct Call, CNC = Correct Non-Call, IC =
     Incorrect Call, INC = Incorrect Non-Call and blank = not detectable
     without technology
 -   `comments`: L2M comments on the play
 -   `game_details`: game details on L2M
--   `page`: page of L2M for pdf
+-   `page`: page of L2M for pdf, will be NA for scraped data
 -   `file`: name of L2M file, will be NA for scraped data
 -   `game_date`: game date according to L2M report header
 -   `away_score`: away final score from the L2M reports, incomplete
