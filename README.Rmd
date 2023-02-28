@@ -225,17 +225,20 @@ The process for compiling the L2M dataset is to:
     - [Raw version](1-tidy/1-L2M-raw.R) which does not include box score info, the [csv file](1-tidy/L2M/L2M_raw.csv)
     - [Final version](1-tidy/1-L2M-bkref.R) which includes box score info, the [csv file](1-tidy/L2M/L2M.csv)
 
+
+### Variables
+
 The final [output](1-tidy/L2M/L2M.csv) includes the following variables:
 
 - `period`: period at which point the play occurred
 - `time`: time remaining in the period when play occurred
 - `call_type`: raw call type variable in L2M
-- `committing`: committing player or team in L2M, may be blank
-- `disadvantaged`: disadvantaged player or team in L2M, may be blank
+- `committing`: committing player or team of the graded infraction in L2M, may be blank
+- `disadvantaged`: disadvantaged player or team of the graded infraction in L2M, may be blank
 - `decision`: judgment of L2M for the call, could be CC, CNC, IC, INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC = Incorrect Call, INC = Incorrect Non-Call and blank = not detectable without technology
 - `comments`: L2M comments on the play
 - `game_details`: game details on L2M
-- `page`: page of L2M for pdf
+- `page`: page of L2M for pdf, will be NA for scraped data
 - `file`: name of L2M file, will be NA for scraped data
 - `game_date`: game date according to L2M report header
 - `away_score`: away final score from the L2M reports, incomplete variable
