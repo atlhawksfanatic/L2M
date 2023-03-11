@@ -1,0 +1,297 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit README.Rmd for corrections file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE
+)
+library(tidyverse)
+library(lubridate)
+
+# NBA Season time periods
+nba_dates_long <- tribble(
+  ~season, ~season_section, ~start_date, ~end_date,
+  2015, "season", "2014-10-28", "2015-4-15",
+  2015, "playoffs", "2015-4-18", "2015-6-16",
+  2016, "season", "2015-10-27", "2016-4-13",
+  2016, "playoffs", "2016-4-16", "2016-6-19",
+  2017, "season", "2016-10-25", "2017-4-12",
+  2017, "playoffs", "2017-4-15", "2017-6-12",
+  2018, "season", "2017-10-17", "2018-4-11",
+  2018, "playoffs", "2018-4-14", "2018-6-8",
+  2019, "season", "2018-10-16", "2019-4-10",
+  2019, "playoffs", "2019-4-13", "2019-6-13",
+  2020, "season", "2019-10-22", "2020-3-11",
+  2020, "playoffs", "2020-8-15", "2020-10-13",
+  2020, "bubble", "2020-7-30", "2020-8-14",
+  2021, "season", "2020-12-22", "2021-5-16",
+  2021, "playoffs", "2021-5-18", "2021-7-30",
+  2022, "season", "2021-10-18", "2022-4-11",
+  2022, "playoffs", "2022-4-12", "2022-6-20",
+  2023, "season", "2022-10-17", "2023-4-10",
+  2023, "playoffs", "2023-4-11", "2023-6-20"
+) %>% 
+  mutate_at(vars(-season, -season_section), as.Date) %>% 
+  mutate(days = end_date - start_date + 1)
+
+# Function to convert date within a season to day number
+day_number <- function(season, datex) {
+  if (!is.Date(datex)) datex = as_date(datex)
+  indx = nba_dates_long$start_date <= datex & nba_dates_long$end_date >= datex
+  season_section = nba_dates_long$season_section[indx]
+  
+  day_num = datex - nba_dates_long$start_date[indx] + 1
+  
+  if (length(season_section) == 0) {
+    day_num = NA_integer_
+    return(day_num)
+  }
+
+  if (season_section == "bubble") {
+    day_num = nba_dates_long$days[nba_dates_long$season == season &
+                                    nba_dates_long$season_section == "season"] +
+      day_num
+  }
+  
+  
+  return(day_num)
+}
+
+```
+
+```{r automated, include = FALSE}
+# Automated process
+# Have you updated the game log for the season/playoffs yet?
+# source("0-data/0-stats-nba-game-ids.R")
+
+# Download reports
+source("0-data/0-official-nba-referee-assign.R")
+source("0-data/0-official-nba-l2m.R")
+
+# Gather up and tidy the L2M reports
+source("1-tidy/1-L2M-raw-stats-nba.R") 
+
+# Game info
+# source("0-data/0-stats-nba-pbp-data.R")
+source("0-data/0-stats-nba-box-data.R")
+
+# Combine tidy L2Ms with bkref box scores
+source("1-tidy/1-L2M-stats-nba.R") 
+```
+
+# L2M
+
+## Articles
+
+-   [How To Extract The Last Two Minute Reports](2-eda/2-how-to-last-two-minutes)
+-   [Updating The Last Two Minute Reports: data through the 2019 NBA Finals](2-eda/2-through-2019-finals)
+
+## Description
+
+This repository maintains the [Last Two Minute (L2M) reports](https://official.nba.com/2021-22-nba-officiating-last-two-minute-reports/) that the NBA releases for some NBA games depending on how close the game was in the final two minutes. The clean, processed version of the data can be found in [1-tidy/L2M/L2M-stats-nba.csv](1-tidy/L2M/L2M-stats-nba.csv) while the corresponding [`R`](https://www.r-project.org/) code to create this data is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders. The [0-data/L2M/archived-pdf](0-data/L2M/archived-pdf) folder hosts the raw pdf data from the games before the NBA utilized an API for storing L2M information. The [0-data/official_nba/raw/l2m-api](0-data/official_nba/raw/l2m-api) folder hosts individual game files from the API.
+
+```{r calls, echo = FALSE, warning = FALSE}
+# Eight games are API tests
+api_tests <- c("0012000007", "0012100023", "0021900215",
+               "0021900505", "0021900688", "0021900732",
+               "0021900973", "0041900152")
+
+l2m <- read_csv("1-tidy/L2M/L2M_stats_nba.csv") %>% 
+  filter(!(gid %in% api_tests)) %>% 
+  mutate(decision_2 = ifelse(is.na(decision) | decision == "",
+                             "INC", decision),
+         decision_3 = ifelse(is.na(decision) | decision == "",
+                             "inc", decision),
+         correct = ifelse(decision_2 %in% c("CC", "CNC"),
+                          "correct", "incorrect"),
+         correct_num = 1*(correct == "correct"),
+         foul = ifelse(decision_2 %in% c("CC", "INC"),
+                       "foul", "clean"),
+         foul_num = 1*(foul == "foul"),
+         temp_year = ifelse(month(date) < 10, 2016, 2015),
+         temp_date = as.Date(paste(temp_year, month(date),
+                                   day(date), sep = "/"), "%Y/%m/%d"),
+         bubble = date > "2020-03-11" & date < "2020-10-31",
+         bubble_seasons = ifelse(bubble,
+                                 paste0(season, " bubble"),
+                                 paste0(season)),
+         day_num = purrr::pmap_dbl(list(season, date), day_number)) %>% 
+  group_by(season) %>% 
+  mutate(day_num_all = ifelse(playoff, day_num + max(day_num), day_num))
+
+
+games <- l2m %>% 
+  group_by(temp_date, season, bubble) %>% 
+  summarise(games = n_distinct(gid),
+            quarters = n_distinct(gid, period))
+
+games_days <- l2m %>% 
+  group_by(day_num, season, bubble, playoff) %>% 
+  summarise(games = n_distinct(gid),
+            quarters = n_distinct(gid, period))
+
+l2m_freq <- l2m %>%
+  group_by(temp_date, season, bubble) %>% 
+  count(decision_2) %>% 
+  spread(decision_2, n) %>% 
+  replace(is.na(.), 0) %>% 
+  mutate(calls = CC + CNC + IC + INC) %>% 
+  left_join(games)
+
+l2m_freq_days <- l2m %>%
+  group_by(day_num, season, bubble, playoff) %>% 
+  count(decision_2) %>% 
+  spread(decision_2, n) %>% 
+  replace(is.na(.), 0) %>% 
+  mutate(calls = CC + CNC + IC + INC) %>% 
+  left_join(games_days)
+
+l2m_freq_days %>%
+  mutate(playoffs = factor(playoff, levels = c("FALSE", "TRUE"),
+                           labels = c("Regular Season", "Playoffs"))) %>% 
+  filter(!playoff) %>% 
+  ggplot(aes(day_num, calls/quarters, color = factor(season),
+             group = season)) +
+  geom_smooth(aes(linetype = factor(season)), method = "loess") +
+  # geom_vline(xintercept = as.numeric(as.Date("2016-04-15")),
+  #            linetype = 4, color = "black") +
+  # facet_wrap(~playoffs, nrow = 1, scales = "free_x") +
+  scale_y_continuous(limits = c(NA, 30)) +
+  # scale_y_continuous(labels=percent) +
+  scale_color_viridis_d() +
+  labs(color = "Season", linetype = "Season", x = "Day Number", y = "",
+       title = "Number of Graded Action",
+       subtitle = "per period graded",
+       caption = paste0("@atlhawksfanatic", "\nL2M Reports through ",
+                        max(l2m$date))) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+```
+
+```{r whistles, echo = FALSE}
+l2m %>%
+  rename(Season = season) %>% 
+  group_by(Season) %>%
+  summarise(Games = n_distinct(gid),
+            "Grades per period" = round(n() / n_distinct(gid, period), digits = 2),
+            "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(gid, period), digits = 2),
+            "IC per period" = round(sum(decision_3 == "IC") / n_distinct(gid, period), digits = 2),
+            "CC Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
+            "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(gid, period), digits = 2),
+            "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
+            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(gid, period), digits = 2)) %>% 
+  knitr::kable(caption = paste0("All games with L2M Call Accuracy updated through ",
+                                max(l2m$date)), align = "c")
+
+```
+
+```{r whistles-breakdown, echo = FALSE}
+l2m %>%
+  rename(Season = season, Playoffs = playoff) %>% 
+  group_by(Season, Playoffs) %>%
+  summarise(Games = n_distinct(gid),
+            "Grades per period" = round(n() / n_distinct(gid, period), digits = 2),
+            "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(gid, period), digits = 2),
+            "IC per period" = round(sum(decision_3 == "IC") / n_distinct(gid, period), digits = 2),
+            "CC Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
+            "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(gid, period), digits = 2),
+            "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
+            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(gid, period), digits = 2)) %>% 
+  knitr::kable(caption = paste0("L2M Call Accuracy updated through ",
+                                max(l2m$date)), align = "c")
+
+```
+
+### Organization
+
+The process for compiling the L2M dataset is to:
+
+1.  Download the raw data, either from the older PDF system or through their API:
+    -   [Game IDs](0-data/stats_nba) from when the L2M began in 2014. Downloaded with [0-stats-nba-game-ids.R](0-data/0-stats-nba-game-ids.R) and [0-stats-nba-game-ids-pre-2015.R](0-data/0-stats-nba-game-ids-pre-2015.R). These provide the list of games that potentially could contain an L2M.
+    -   [Archived PDFs](0-data/L2M/archived-pdf) where the [0-L2M-download-archive-updated.R](0-data/0-L2M-download-archive-updated.R) file downloads all the PDFs then [0-L2M-pdftools-archived-pdf.R](0-data/0-L2M-pdftools-archived-pdf.R) will parse through the information with the [pdftools](https://github.com/ropensci/pdftools) package. Output can be found [pdftools_L2M_archive_all.csv](0-data/L2M/archived-pdf/pdftools_L2M_archive_all.csv).
+    -   [Official API](0-data/official_nba) contains data extracted from the API of official.nba.com. The [0-official-nba-l2m.R](0-data/0-official-nba-l2m.R) file accesses the API based on the previous day's date and checking the games that have been played based on Game IDs. Output can be found [official_nba_l2m_api.csv](0-data/official_nba/official_nba_l2m_api.csv).
+2.  Tidy up the raw L2M data
+    -   [L2M Folder](1-tidy/L2M/) contains tidied data. First pass is through [1-L2M-raw-stats-nba.R](1-tidy/1-L2M-raw-stats-nba.R) which combines the PDF L2M reports with the L2M reports accessed through the API. Resulting output is [L2M_raw_api.csv](1-tidy/L2M/L2M_raw_api.csv).
+3.  Download box scores for games from [stats.nba.com](https://stats.nba.com/) game information to supplement reports and to match up committing/disadvantaged players.
+    -   [NBA Stats](0-data/stats_nba/) for both [box scores](0-data/0-stats-nba-box-data.R) and [play by play](0-data/0-stats-nba-pbp-data.R) data. Both utilize the NBA's API for Stats, although there is no current use for the play by play data.
+4.  Combine L2M reports with box score information
+    -   [Raw version](1-tid1-L2M-raw-stats-nba.R) which does not include box score info, the [csv file](1-tidy/L2M_raw_api.csv)
+    -   [Final version](1-tidy/1-L2M-stats-nba.R) which includes box score info, the [csv file](1-tidy/L2M/L2M_stats_nba.csv)
+
+### Variables
+
+The final [output](1-tidy/L2M/L2M_stats_nba.csv) includes the following variables:
+
+-   `period`: period at which point the play occurred
+-   `time`: time remaining in the period when play occurred
+-   `call_type`: raw call type variable in L2M
+-   `committing`: committing player or team of the graded infraction in L2M, may be blank
+-   `disadvantaged`: disadvantaged player or team of the graded infraction in L2M, may be blank
+-   `decision`: judgment of L2M for the call, could be CC, CNC, IC, INC, or blank where CC = Correct Call, CNC = Correct Non-Call, IC = Incorrect Call, INC = Incorrect Non-Call and blank = not detectable without technology
+-   `comments`: L2M comments on the play
+-   `game_details`: game details of L2M, only relevant for PDFs
+-   `page`: page of L2M for pdf, not applicable for games accessed through API
+-   `file`: name of L2M file, will be the saved .csv file for API data
+-   `game_date`: game date according to L2M report header
+-   `away_team`: away team nickname
+-   `home_team`: home team nickname
+-   `date`: date of game in YYYY-MM-DD format
+-   `call`: first part of call_type, this is before the colon in call_type
+-   `type`: second part of call_type, this is after the colon in call_type
+-   `home`: home team abbreviation
+-   `away`: away team abbreviation
+-   `gid`: NBA game ID
+-   `gcode`: NBA game code
+-   `home_score`: home final score from the L2M reports, incomplete variable
+-   `away_score`: away final score from the L2M reports, incomplete variable
+-   `national_tv`: national TV network for the game, "no" indicates none
+-   `networks`: shorthand TV network for the game, NBALP indicates league pass
+-   `game_id`: nba.com url for L2M game, last part of "<https://official.nba.com/l2m/L2MReport.html/>", not applicable for PDFs
+-   ` PCTime `:  from official API
+-   ` ImposibleIndicator `:  from official API
+-   ` Difficulty `:  from official API
+-   ` VideolLink `:  from official API
+-   ` Qualifier `:  from official API
+-   ` posID `:  from official API
+-   ` posStart `:  from official API
+-   ` posEnd `:  from official API
+-   ` posTeamId `:  from official API
+-   ` teamIdInFavor `:  from official API
+-   ` errorInFavor `:  from official API
+-   ` imgChart `:  from official API
+-   ` GameId `:  from official API
+-   ` GameDate `:  from official API
+-   ` HomeTeamId `:  from official API
+-   ` AwayTeamId `:  from official API
+-   ` L2M_Comments `:  from official API
+-   `season`: NBA season for which the graded play was a part of, convention is to use the last year of the NBA season so 2015 refers to the 2014-15 Season
+-   `playoff`: dummy variable equal to `TRUE` if the game occurred in the playoffs
+-   `GAME_ID`: NBA API game ID, same as `gid`
+-   `OFFICIAL_1`: name of first referee for game
+-   `OFFICIAL_2`: name of second referee for game
+-   `OFFICIAL_3`: name of third referee for game
+-   `OFFICIAL_ID_1`: ID of first referee for game
+-   `OFFICIAL_ID_2`: ID of second referee for game
+-   `OFFICIAL_ID_3`: ID of third referee for game
+-   `OFFICIAL_4`: name of fourth referee for game, typically only for playoff games
+-   `OFFICIAL_ID_4`: ID of fourth referee for game, typically only for playoff games
+-   `ATTENDANCE`: attendance for the game
+-   `committing_min`: total minutes played by player committing action (note, may be NA because the player did not play and likely an input error from NBA on L2M)
+-   `committing_team`: team for committing player
+-   `committing_side`: home/away for committing player
+-   `disadvantaged_min`: total minutes played by player disadvantaged by action
+-   `disadvantaged_team`: team for disadvantaged player
+-   `disadvantaged_side`: home/away for disadvantaged player
+-   `type2`: consistent format for type of infraction
+-   `time_min`: minutes remaining in period
+-   `time_sec`: seconds remaining in period
+-   `time2`: fractional minutes left (ie 1.9 would be one minute and 54 seconds)
+
+
+And an overview of the changes in L2M reporting is provided in [2-eda/2-through-2019-finals](2-eda/2-through-2019-finals). Further, there is a bit of a how-to for downloading and extracting data on the L2M that is provided in [2-eda/2-how-to-last-two-minutes](2-eda/2-how-to-last-two-minutes)
