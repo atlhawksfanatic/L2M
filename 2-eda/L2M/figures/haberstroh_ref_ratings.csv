@@ -59,12 +59,12 @@ szn,szn_type,official,ref_points,games,ref_rating
 2016,regular season,Gary Zielinski,46,46,1
 2016,regular season,Gediminas Petraitis,75,41,1.829268292682927
 2016,regular season,Haywoode Workman,46,46,1
+2016,regular season,JT Orr,66,44,1.5
 2016,regular season,James Capers,230,46,5
 2016,regular season,James Williams,55,51,1.0784313725490196
 2016,regular season,Jason Phillips,240,48,5
 2016,regular season,John Goble,251,53,4.735849056603773
 2016,regular season,Josh Tiven,67,53,1.2641509433962264
-2016,regular season,JT Orr,66,44,1.5
 2016,regular season,Justin Van Duyne,51,43,1.186046511627907
 2016,regular season,Kane Fitzgerald,100,48,2.0833333333333335
 2016,regular season,Karl Lane,86,40,2.15
@@ -159,16 +159,16 @@ szn,szn_type,official,ref_points,games,ref_rating
 2017,pre-season,Gary Zielinski,6,6,1
 2017,pre-season,Gediminas Petraitis,4,4,1
 2017,pre-season,Haywoode Workman,5,5,1
+2017,pre-season,JB DeRosa,8,4,2
+2017,pre-season,JT Orr,6,4,1.5
 2017,pre-season,Jacyn Goble,4,2,2
 2017,pre-season,James Capers,20,4,5
 2017,pre-season,James Williams,17,5,3.4
 2017,pre-season,Jason Goldenberg,8,4,2
 2017,pre-season,Jason Phillips,25,5,5
-2017,pre-season,JB DeRosa,8,4,2
 2017,pre-season,John Goble,23,5,4.6
 2017,pre-season,Jonathan Sterling,2,2,1
 2017,pre-season,Josh Tiven,11,5,2.2
-2017,pre-season,JT Orr,6,4,1.5
 2017,pre-season,Justin Van Duyne,4,4,1
 2017,pre-season,Kane Fitzgerald,19,5,3.8
 2017,pre-season,Karl Lane,7,5,1.4
@@ -229,6 +229,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2017,regular season,Gary Zielinski,59,59,1
 2017,regular season,Gediminas Petraitis,83,51,1.6274509803921569
 2017,regular season,Haywoode Workman,58,52,1.1153846153846154
+2017,regular season,JT Orr,90,54,1.6666666666666667
 2017,regular season,Jacyn Goble,56,34,1.6470588235294117
 2017,regular season,James Capers,310,62,5
 2017,regular season,James Williams,123,69,1.7826086956521738
@@ -236,7 +237,6 @@ szn,szn_type,official,ref_points,games,ref_rating
 2017,regular season,Jason Phillips,165,33,5
 2017,regular season,John Goble,314,70,4.485714285714286
 2017,regular season,Josh Tiven,97,69,1.4057971014492754
-2017,regular season,JT Orr,90,54,1.6666666666666667
 2017,regular season,Justin Van Duyne,68,58,1.1724137931034482
 2017,regular season,Kane Fitzgerald,245,69,3.550724637681159
 2017,regular season,Karl Lane,133,67,1.9850746268656716
@@ -332,15 +332,15 @@ szn,szn_type,official,ref_points,games,ref_rating
 2018,pre-season,Gary Zielinski,8,4,2
 2018,pre-season,Gediminas Petraitis,5,3,1.6666666666666667
 2018,pre-season,Haywoode Workman,3,3,1
+2018,pre-season,JB DeRosa,2,2,1
+2018,pre-season,JT Orr,8,4,2
 2018,pre-season,Jacyn Goble,8,4,2
 2018,pre-season,James Capers,15,3,5
 2018,pre-season,James Williams,15,3,5
 2018,pre-season,Jason Goldenberg,4,4,1
-2018,pre-season,JB DeRosa,2,2,1
 2018,pre-season,John Goble,20,4,5
 2018,pre-season,Jonathan Sterling,6,4,1.5
 2018,pre-season,Josh Tiven,6,4,1.5
-2018,pre-season,JT Orr,8,4,2
 2018,pre-season,Justin Van Duyne,6,4,1.5
 2018,pre-season,Kane Fitzgerald,15,3,5
 2018,pre-season,Karl Lane,10,4,2.5
@@ -402,16 +402,16 @@ szn,szn_type,official,ref_points,games,ref_rating
 2018,regular season,Gary Zielinski,60,60,1
 2018,regular season,Gediminas Petraitis,98,60,1.6333333333333333
 2018,regular season,Haywoode Workman,66,56,1.1785714285714286
+2018,regular season,JB DeRosa,87,37,2.3513513513513513
+2018,regular season,JT Orr,100,60,1.6666666666666667
 2018,regular season,Jacyn Goble,102,50,2.04
 2018,regular season,James Capers,295,59,5
 2018,regular season,James Williams,211,61,3.459016393442623
 2018,regular season,Jason Goldenberg,93,39,2.3846153846153846
 2018,regular season,Jason Phillips,160,32,5
-2018,regular season,JB DeRosa,87,37,2.3513513513513513
 2018,regular season,John Goble,305,61,5
 2018,regular season,Jonathan Sterling,57,41,1.3902439024390243
 2018,regular season,Josh Tiven,99,61,1.6229508196721312
-2018,regular season,JT Orr,100,60,1.6666666666666667
 2018,regular season,Justin Van Duyne,67,55,1.2181818181818183
 2018,regular season,Kane Fitzgerald,296,60,4.933333333333334
 2018,regular season,Karl Lane,133,63,2.111111111111111
@@ -508,17 +508,17 @@ szn,szn_type,official,ref_points,games,ref_rating
 2019,pre-season,Gary Zielinski,6,2,3
 2019,pre-season,Gediminas Petraitis,12,4,3
 2019,pre-season,Haywoode Workman,4,4,1
+2019,pre-season,JB DeRosa,3,3,1
+2019,pre-season,JT Orr,15,5,3
 2019,pre-season,Jacyn Goble,4,4,1
 2019,pre-season,James Capers,15,3,5
 2019,pre-season,James Williams,20,4,5
 2019,pre-season,Jason Goldenberg,4,4,1
 2019,pre-season,Jason Phillips,15,3,5
-2019,pre-season,JB DeRosa,3,3,1
 2019,pre-season,John Butler,2,2,1
 2019,pre-season,John Goble,15,3,5
 2019,pre-season,Jonathan Sterling,4,4,1
 2019,pre-season,Josh Tiven,20,4,5
-2019,pre-season,JT Orr,15,5,3
 2019,pre-season,Justin Van Duyne,3,3,1
 2019,pre-season,Kane Fitzgerald,15,3,5
 2019,pre-season,Karl Lane,10,4,2.5
@@ -575,17 +575,17 @@ szn,szn_type,official,ref_points,games,ref_rating
 2019,regular season,Evan Scott,10,10,1
 2019,regular season,Gediminas Petraitis,149,63,2.365079365079365
 2019,regular season,Haywoode Workman,46,46,1
+2019,regular season,JB DeRosa,54,54,1
+2019,regular season,JT Orr,113,61,1.8524590163934427
 2019,regular season,Jacyn Goble,49,49,1
 2019,regular season,James Capers,295,59,5
 2019,regular season,James Williams,276,62,4.451612903225806
 2019,regular season,Jason Goldenberg,48,48,1
 2019,regular season,Jason Phillips,310,62,5
-2019,regular season,JB DeRosa,54,54,1
 2019,regular season,John Butler,9,9,1
 2019,regular season,John Goble,315,63,5
 2019,regular season,Jonathan Sterling,45,45,1
 2019,regular season,Josh Tiven,297,63,4.714285714285714
-2019,regular season,JT Orr,113,61,1.8524590163934427
 2019,regular season,Justin Van Duyne,49,49,1
 2019,regular season,Kane Fitzgerald,315,63,5
 2019,regular season,Karl Lane,189,63,3
@@ -691,18 +691,18 @@ szn,szn_type,official,ref_points,games,ref_rating
 2020,pre-season,Evan Scott,4,4,1
 2020,pre-season,Gediminas Petraitis,15,5,3
 2020,pre-season,Haywoode Workman,3,3,1
+2020,pre-season,JB DeRosa,12,6,2
+2020,pre-season,JT Orr,10,6,1.6666666666666667
 2020,pre-season,Jacyn Goble,11,7,1.5714285714285714
 2020,pre-season,James Capers,25,5,5
 2020,pre-season,James Williams,24,6,4
 2020,pre-season,Jason Goldenberg,8,4,2
-2020,pre-season,JB DeRosa,12,6,2
 2020,pre-season,Jenna Schroeder,4,4,1
 2020,pre-season,John Butler,4,4,1
 2020,pre-season,John Conley,3,3,1
 2020,pre-season,John Goble,25,5,5
 2020,pre-season,Jonathan Sterling,9,3,3
 2020,pre-season,Josh Tiven,26,6,4.333333333333333
-2020,pre-season,JT Orr,10,6,1.6666666666666667
 2020,pre-season,Justin Van Duyne,3,3,1
 2020,pre-season,Kane Fitzgerald,25,5,5
 2020,pre-season,Karl Lane,11,5,2.2
@@ -765,18 +765,18 @@ szn,szn_type,official,ref_points,games,ref_rating
 2020,regular season,Evan Scott,28,28,1
 2020,regular season,Gediminas Petraitis,160,56,2.857142857142857
 2020,regular season,Haywoode Workman,15,15,1
+2020,regular season,JB DeRosa,49,49,1
+2020,regular season,JT Orr,119,53,2.2452830188679247
 2020,regular season,Jacyn Goble,48,48,1
 2020,regular season,James Capers,260,52,5
 2020,regular season,James Williams,233,57,4.087719298245614
 2020,regular season,Jason Goldenberg,36,36,1
-2020,regular season,JB DeRosa,49,49,1
 2020,regular season,Jenna Schroeder,27,27,1
 2020,regular season,John Butler,30,30,1
 2020,regular season,John Conley,8,8,1
 2020,regular season,John Goble,275,55,5
 2020,regular season,Jonathan Sterling,40,40,1
 2020,regular season,Josh Tiven,276,56,4.928571428571429
-2020,regular season,JT Orr,119,53,2.2452830188679247
 2020,regular season,Justin Van Duyne,43,43,1
 2020,regular season,Kane Fitzgerald,275,55,5
 2020,regular season,Karl Lane,150,56,2.6785714285714284
@@ -841,10 +841,10 @@ szn,szn_type,official,ref_points,games,ref_rating
 2021,playoffs,Derrick Collins,2,2,1
 2021,playoffs,Ed Malloy,11,5,2.2
 2021,playoffs,Eric Lewis,47,13,3.6153846153846154
+2021,playoffs,JB DeRosa,1,1,1
 2021,playoffs,Jacyn Goble,1,1,1
 2021,playoffs,James Capers,65,13,5
 2021,playoffs,James Williams,18,10,1.8
-2021,playoffs,JB DeRosa,1,1,1
 2021,playoffs,John Goble,44,10,4.4
 2021,playoffs,Josh Tiven,40,12,3.3333333333333335
 2021,playoffs,Kane Fitzgerald,44,10,4.4
@@ -889,16 +889,16 @@ szn,szn_type,official,ref_points,games,ref_rating
 2021,pre-season,Evan Scott,2,2,1
 2021,pre-season,Gediminas Petraitis,15,3,5
 2021,pre-season,Haywoode Workman,3,3,1
+2021,pre-season,JB DeRosa,6,2,3
+2021,pre-season,JT Orr,6,2,3
 2021,pre-season,Jacyn Goble,6,2,3
 2021,pre-season,James Williams,10,2,5
 2021,pre-season,Jason Goldenberg,9,3,3
-2021,pre-season,JB DeRosa,6,2,3
 2021,pre-season,Jenna Schroeder,3,3,1
 2021,pre-season,John Butler,2,2,1
 2021,pre-season,John Conley,2,2,1
 2021,pre-season,Jonathan Sterling,4,2,2
 2021,pre-season,Josh Tiven,15,3,5
-2021,pre-season,JT Orr,6,2,3
 2021,pre-season,Justin Van Duyne,8,4,2
 2021,pre-season,Karl Lane,6,2,3
 2021,pre-season,Ken Mauer,10,2,5
@@ -955,18 +955,18 @@ szn,szn_type,official,ref_points,games,ref_rating
 2021,regular season,Evan Scott,36,36,1
 2021,regular season,Gediminas Petraitis,156,52,3
 2021,regular season,Haywoode Workman,40,40,1
+2021,regular season,JB DeRosa,115,51,2.2549019607843137
+2021,regular season,JT Orr,7,3,2.3333333333333335
 2021,regular season,Jacyn Goble,119,47,2.5319148936170213
 2021,regular season,James Capers,265,53,5
 2021,regular season,James Williams,216,48,4.5
 2021,regular season,Jason Goldenberg,41,41,1
-2021,regular season,JB DeRosa,115,51,2.2549019607843137
 2021,regular season,Jenna Schroeder,38,38,1
 2021,regular season,John Butler,39,39,1
 2021,regular season,John Conley,25,25,1
 2021,regular season,John Goble,250,50,5
 2021,regular season,Jonathan Sterling,64,44,1.4545454545454546
 2021,regular season,Josh Tiven,270,54,5
-2021,regular season,JT Orr,7,3,2.3333333333333335
 2021,regular season,Justin Van Duyne,67,51,1.3137254901960784
 2021,regular season,Kane Fitzgerald,205,41,5
 2021,regular season,Karl Lane,152,52,2.923076923076923
@@ -1039,10 +1039,10 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,playoffs,Eric Dalen,1,1,1
 2022,playoffs,Eric Lewis,36,10,3.6
 2022,playoffs,Gediminas Petraitis,4,4,1
+2022,playoffs,JB DeRosa,2,2,1
 2022,playoffs,Jacyn Goble,4,4,1
 2022,playoffs,James Capers,73,15,4.866666666666666
 2022,playoffs,James Williams,26,10,2.6
-2022,playoffs,JB DeRosa,2,2,1
 2022,playoffs,John Goble,45,13,3.4615384615384617
 2022,playoffs,Josh Tiven,33,13,2.5384615384615383
 2022,playoffs,Justin Van Duyne,1,1,1
@@ -1074,8 +1074,8 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,pre-season,Brent Haskill,2,2,1
 2022,pre-season,Brett Nansel,7,3,2.3333333333333335
 2022,pre-season,Brian Forte,13,3,4.333333333333333
-2022,pre-season,Cheryl Flores,3,3,1
 2022,pre-season,CJ Washington,2,2,1
+2022,pre-season,Cheryl Flores,3,3,1
 2022,pre-season,Courtney Kirkland,5,1,5
 2022,pre-season,Curtis Blair,15,3,5
 2022,pre-season,Danielle Scott,2,2,1
@@ -1089,18 +1089,18 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,pre-season,Eric Lewis,15,3,5
 2022,pre-season,Evan Scott,3,3,1
 2022,pre-season,Gediminas Petraitis,7,3,2.3333333333333335
+2022,pre-season,JB DeRosa,9,3,3
+2022,pre-season,JD Ralls,3,3,1
+2022,pre-season,JT Orr,9,3,3
 2022,pre-season,Jacyn Goble,9,3,3
 2022,pre-season,James Capers,10,2,5
 2022,pre-season,James Williams,15,3,5
-2022,pre-season,JB DeRosa,9,3,3
-2022,pre-season,JD Ralls,3,3,1
 2022,pre-season,Jenna Reneau,3,3,1
 2022,pre-season,Jenna Schroeder,2,2,1
 2022,pre-season,John Butler,3,3,1
 2022,pre-season,John Conley,5,3,1.6666666666666667
 2022,pre-season,Jonathan Sterling,2,2,1
 2022,pre-season,Josh Tiven,10,2,5
-2022,pre-season,JT Orr,9,3,3
 2022,pre-season,Justin Van Duyne,9,3,3
 2022,pre-season,Kane Fitzgerald,10,2,5
 2022,pre-season,Karl Lane,15,3,5
@@ -1151,8 +1151,8 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,regular season,Brent Haskill,7,5,1.4
 2022,regular season,Brett Nansel,58,52,1.1153846153846154
 2022,regular season,Brian Forte,221,61,3.622950819672131
-2022,regular season,Cheryl Flores,12,12,1
 2022,regular season,CJ Washington,47,39,1.205128205128205
+2022,regular season,Cheryl Flores,12,12,1
 2022,regular season,Clare Aubry,3,3,1
 2022,regular season,Courtney Kirkland,275,55,5
 2022,regular season,Curtis Blair,271,61,4.442622950819672
@@ -1168,12 +1168,13 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,regular season,Evan Scott,40,40,1
 2022,regular season,Gediminas Petraitis,128,60,2.1333333333333333
 2022,regular season,Isaac Barnett,1,1,1
+2022,regular season,JB DeRosa,190,64,2.96875
+2022,regular season,JD Ralls,12,12,1
+2022,regular season,JT Orr,113,55,2.0545454545454547
 2022,regular season,Jacyn Goble,192,64,3
 2022,regular season,James Capers,250,50,5
 2022,regular season,James Williams,300,60,5
 2022,regular season,Jason Goldenberg,55,41,1.3414634146341464
-2022,regular season,JB DeRosa,190,64,2.96875
-2022,regular season,JD Ralls,12,12,1
 2022,regular season,Jenna Reneau,14,12,1.1666666666666667
 2022,regular season,Jenna Schroeder,37,37,1
 2022,regular season,John Butler,45,45,1
@@ -1181,7 +1182,6 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,regular season,John Goble,230,46,5
 2022,regular season,Jonathan Sterling,67,53,1.2641509433962264
 2022,regular season,Josh Tiven,315,63,5
-2022,regular season,JT Orr,113,55,2.0545454545454547
 2022,regular season,Justin Van Duyne,94,56,1.6785714285714286
 2022,regular season,Kane Fitzgerald,240,48,5
 2022,regular season,Karl Lane,197,61,3.2295081967213113
@@ -1233,8 +1233,8 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,Brent Haskill,3,3,1
 2023,pre-season,Brett Nansel,9,3,3
 2023,pre-season,Brian Forte,15,3,5
-2023,pre-season,Cheryl Flores,2,2,1
 2023,pre-season,CJ Washington,2,2,1
+2023,pre-season,Cheryl Flores,2,2,1
 2023,pre-season,Courtney Kirkland,15,3,5
 2023,pre-season,Curtis Blair,15,3,5
 2023,pre-season,Danielle Scott,2,2,1
@@ -1249,12 +1249,13 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,Evan Scott,2,2,1
 2023,pre-season,Gediminas Petraitis,16,4,4
 2023,pre-season,Intae hwang,3,3,1
+2023,pre-season,JB DeRosa,5,3,1.6666666666666667
+2023,pre-season,JD Ralls,3,3,1
+2023,pre-season,JT Orr,2,2,1
 2023,pre-season,Jacyn Goble,13,3,4.333333333333333
 2023,pre-season,James Capers,10,2,5
 2023,pre-season,James Williams,15,3,5
 2023,pre-season,Jason Goldenberg,2,2,1
-2023,pre-season,JB DeRosa,5,3,1.6666666666666667
-2023,pre-season,JD Ralls,3,3,1
 2023,pre-season,Jenna Reneau,3,3,1
 2023,pre-season,Jenna Schroeder,2,2,1
 2023,pre-season,John Butler,2,2,1
@@ -1262,7 +1263,6 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,John Goble,15,3,5
 2023,pre-season,Jonathan Sterling,4,2,2
 2023,pre-season,Josh Tiven,15,3,5
-2023,pre-season,JT Orr,2,2,1
 2023,pre-season,Justin Van Duyne,12,4,3
 2023,pre-season,Karl Lane,13,3,4.333333333333333
 2023,pre-season,Kevin Cutler,13,3,4.333333333333333
@@ -1299,81 +1299,83 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,Tyler Mirkovich,3,3,1
 2023,pre-season,Tyler Ricks,3,3,1
 2023,pre-season,Zach Zarba,15,3,5
-2023,regular season,Aaron Smith,86,32,2.6875
-2023,regular season,Andy Nagy,23,23,1
-2023,regular season,Ashley Moyer-Gleich,77,31,2.4838709677419355
-2023,regular season,Ben Taylor,140,32,4.375
-2023,regular season,Bill Kennedy,160,32,5
-2023,regular season,Brandon Adair,49,27,1.8148148148148149
-2023,regular season,Brandon Schwab,20,20,1
-2023,regular season,Brent Barnaky,87,29,3
+2023,regular season,Aaron Smith,148,58,2.5517241379310347
+2023,regular season,Andy Nagy,45,45,1
+2023,regular season,Ashley Moyer-Gleich,135,59,2.288135593220339
+2023,regular season,Ben Taylor,279,63,4.428571428571429
+2023,regular season,Bill Kennedy,295,59,5
+2023,regular season,Brandon Adair,78,48,1.625
+2023,regular season,Brandon Schwab,41,41,1
+2023,regular season,Brent Barnaky,180,60,3
 2023,regular season,Brent Haskill,6,6,1
-2023,regular season,Brett Nansel,59,29,2.0344827586206895
-2023,regular season,Brian Forte,111,31,3.5806451612903225
-2023,regular season,Cheryl Flores,20,20,1
-2023,regular season,CJ Washington,19,19,1
-2023,regular season,Courtney Kirkland,160,32,5
-2023,regular season,Curtis Blair,116,26,4.461538461538462
+2023,regular season,Brett Nansel,105,55,1.9090909090909092
+2023,regular season,Brian Forte,205,61,3.360655737704918
+2023,regular season,CJ Washington,45,41,1.0975609756097562
+2023,regular season,Cheryl Flores,33,33,1
+2023,regular season,Courtney Kirkland,295,59,5
+2023,regular season,Curtis Blair,254,60,4.233333333333333
 2023,regular season,Danielle Scott,9,9,1
-2023,regular season,Dannica Mosher,18,18,1
-2023,regular season,David Guthrie,130,26,5
-2023,regular season,Dedric Taylor,66,28,2.357142857142857
-2023,regular season,Derek Richardson,16,10,1.6
-2023,regular season,Derrick Collins,3,3,1
-2023,regular season,Ed Malloy,140,28,5
-2023,regular season,Eric Dalen,75,25,3
-2023,regular season,Eric Lewis,145,29,5
-2023,regular season,Evan Scott,21,21,1
-2023,regular season,Gediminas Petraitis,108,32,3.375
+2023,regular season,Dannica Mosher,31,31,1
+2023,regular season,David Guthrie,280,56,5
+2023,regular season,Dedric Taylor,107,53,2.018867924528302
+2023,regular season,Derek Richardson,31,25,1.24
+2023,regular season,Derrick Collins,32,24,1.3333333333333333
+2023,regular season,Ed Malloy,280,56,5
+2023,regular season,Eric Dalen,99,37,2.675675675675676
+2023,regular season,Eric Lewis,300,60,5
+2023,regular season,Evan Scott,39,39,1
+2023,regular season,Gediminas Petraitis,203,61,3.3278688524590163
 2023,regular season,Intae Hwang,7,7,1
-2023,regular season,Jacyn Goble,107,31,3.4516129032258065
-2023,regular season,James Capers,170,34,5
-2023,regular season,James Williams,155,31,5
-2023,regular season,Jason Goldenberg,23,23,1
-2023,regular season,JB DeRosa,96,32,3
+2023,regular season,JB DeRosa,190,62,3.064516129032258
 2023,regular season,JD Ralls,6,6,1
+2023,regular season,JT Orr,47,47,1
+2023,regular season,Jacyn Goble,198,60,3.3
+2023,regular season,James Capers,215,43,5
+2023,regular season,James Williams,300,60,5
+2023,regular season,Jason Goldenberg,45,45,1
 2023,regular season,Jenna Reneau,5,5,1
-2023,regular season,Jenna Schroeder,18,18,1
-2023,regular season,John Butler,26,24,1.0833333333333333
-2023,regular season,John Conley,19,19,1
-2023,regular season,John Goble,145,29,5
-2023,regular season,Jonathan Sterling,26,26,1
-2023,regular season,Josh Tiven,170,34,5
-2023,regular season,JT Orr,27,27,1
-2023,regular season,Justin Van Duyne,85,31,2.7419354838709675
-2023,regular season,Karl Lane,105,31,3.3870967741935485
-2023,regular season,Kevin Cutler,88,26,3.3846153846153846
-2023,regular season,Kevin Scott,160,32,5
-2023,regular season,Lauren Holtkamp,68,28,2.4285714285714284
-2023,regular season,Leon Wood,42,24,1.75
-2023,regular season,Marat Kogut,51,23,2.217391304347826
-2023,regular season,Marc Davis,160,32,5
-2023,regular season,Mark Lindsay,25,5,5
-2023,regular season,Matt Boland,63,29,2.1724137931034484
-2023,regular season,Matt Kallio,16,16,1
-2023,regular season,Matt Myers,27,27,1
-2023,regular season,Michael Smith,84,28,3
-2023,regular season,Mitchell Ervin,112,32,3.5
-2023,regular season,Mousa Dagher,24,24,1
-2023,regular season,Natalie Sago,74,30,2.466666666666667
-2023,regular season,Nate Green,19,19,1
-2023,regular season,Nick Buchert,99,33,3
-2023,regular season,Pat Fraher,145,29,5
+2023,regular season,Jenna Schroeder,33,33,1
+2023,regular season,John Butler,58,46,1.2608695652173914
+2023,regular season,John Conley,34,34,1
+2023,regular season,John Goble,295,59,5
+2023,regular season,Jonathan Sterling,48,46,1.0434782608695652
+2023,regular season,Josh Tiven,310,62,5
+2023,regular season,Justin Van Duyne,174,60,2.9
+2023,regular season,Karl Lane,208,60,3.466666666666667
+2023,regular season,Kevin Cutler,163,51,3.196078431372549
+2023,regular season,Kevin Scott,290,58,5
+2023,regular season,Lauren Holtkamp,85,37,2.2972972972972974
+2023,regular season,Leon Wood,68,46,1.4782608695652173
+2023,regular season,Marat Kogut,92,42,2.1904761904761907
+2023,regular season,Marc Davis,290,58,5
+2023,regular season,Mark Lindsay,155,31,5
+2023,regular season,Matt Boland,94,50,1.88
+2023,regular season,Matt Kallio,31,31,1
+2023,regular season,Matt Myers,50,50,1
+2023,regular season,Michael Smith,159,53,3
+2023,regular season,Mitchell Ervin,211,63,3.3492063492063493
+2023,regular season,Mousa Dagher,42,42,1
+2023,regular season,Natalie Sago,141,59,2.389830508474576
+2023,regular season,Nate Green,35,35,1
+2023,regular season,Nick Buchert,176,58,3.0344827586206895
+2023,regular season,Pat Fraher,295,59,5
 2023,regular season,Pat OConnell,6,6,1
-2023,regular season,Phenizee Ransom,25,25,1
-2023,regular season,Ray Acosta,64,32,2
-2023,regular season,Robert Hussey,18,18,1
-2023,regular season,Rodney Mott,116,28,4.142857142857143
-2023,regular season,Scott Foster,135,27,5
-2023,regular season,Scott Twardoski,80,30,2.6666666666666665
-2023,regular season,Scott Wall,20,20,1
-2023,regular season,Sean Corbin,81,27,3
-2023,regular season,Sean Wright,165,33,5
+2023,regular season,Phenizee Ransom,44,44,1
+2023,regular season,Ray Acosta,124,62,2
+2023,regular season,Robert Hussey,32,32,1
+2023,regular season,Rodney Mott,201,51,3.9411764705882355
+2023,regular season,Scott Foster,275,55,5
+2023,regular season,Scott Twardoski,120,46,2.608695652173913
+2023,regular season,Scott Wall,39,39,1
+2023,regular season,Sean Corbin,147,49,3
+2023,regular season,Sean Wright,300,60,5
 2023,regular season,Sharae Mitchell,7,7,1
-2023,regular season,Suyash Mehta,20,20,1
-2023,regular season,Tony Brothers,155,31,5
-2023,regular season,Tre Maddox,106,30,3.533333333333333
-2023,regular season,Tyler Ford,144,32,4.5
+2023,regular season,Simone Jelks,6,6,1
+2023,regular season,Suyash Mehta,38,38,1
+2023,regular season,Tom Washington,57,19,3
+2023,regular season,Tony Brothers,305,61,5
+2023,regular season,Tre Maddox,188,56,3.357142857142857
+2023,regular season,Tyler Ford,262,62,4.225806451612903
 2023,regular season,Tyler Mirkovich,7,7,1
 2023,regular season,Tyler Ricks,6,6,1
-2023,regular season,Zach Zarba,155,31,5
+2023,regular season,Zach Zarba,310,62,5

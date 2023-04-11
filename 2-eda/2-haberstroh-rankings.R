@@ -108,17 +108,30 @@ ref_bios <- read_csv("0-data/NBRA/bios/ref_bios_recent.csv") %>%
                            ref_cross[ref_name]))
 
 # https://official.nba.com/nba-announces-36-officials-selected-for-2022-nba-playoffs-presented-by-google-pixel/
-p_off <- paste0("Brent Barnaky, Curtis Blair, Tony Brothers, Nick Buchert, ",
-                "James Capers, Kevin Cutler, Eric Dalen, Marc Davis, JB DeRosa,",
-                " Mitchell Ervin, Kane Fitzgerald, Tyler Ford, Brian Forte, ",
-                "Scott Foster, Pat Fraher, Jacyn Goble, John Goble, ",
-                "David Guthrie, Bill Kennedy, Courtney Kirkland, Karl Lane, ",
-                "Eric Lewis, Mark Lindsay, Tre Maddox, Ed Malloy, Rodney Mott,",
-                " Gediminas Petraitis, Michael Smith, Ben Taylor, Josh Tiven, ",
-                "Scott Twardoski, Justin Van Duyne, Tom Washington, ",
+# p_off <- paste0("Brent Barnaky, Curtis Blair, Tony Brothers, Nick Buchert, ",
+#                 "James Capers, Kevin Cutler, Eric Dalen, Marc Davis, JB DeRosa,",
+#                 " Mitchell Ervin, Kane Fitzgerald, Tyler Ford, Brian Forte, ",
+#                 "Scott Foster, Pat Fraher, Jacyn Goble, John Goble, ",
+#                 "David Guthrie, Bill Kennedy, Courtney Kirkland, Karl Lane, ",
+#                 "Eric Lewis, Mark Lindsay, Tre Maddox, Ed Malloy, Rodney Mott,",
+#                 " Gediminas Petraitis, Michael Smith, Ben Taylor, Josh Tiven, ",
+#                 "Scott Twardoski, Justin Van Duyne, Tom Washington, ",
+#                 "James Williams, Sean Wright, Zach Zarba")
+# p_alt <- paste0("Ray Acosta, Matt Boland, Derrick Collins, Lauren Holtkamp, ",
+#                 "Brett Nansel, Aaron Smith, Dedric Taylor, Leon Wood")
+
+# https://official.nba.com/nba-announces-36-officials-selected-for-2023-nba-playoffs-presented-by-google-pixel/
+p_off <- paste0("Ray Acosta, Brent Barnaky, Curtis Blair, Tony Brothers, ",
+                "Nick Buchert, Sean Corbin, Kevin Cutler, Eric Dalen, ",
+                "Marc Davis, JB DeRosa, Mitchell Ervin, Tyler Ford, ",
+                "Brian Forte, Scott Foster, Pat Fraher, Jacyn Goble, ",
+                "John Goble, David Guthrie, Bill Kennedy, Courtney Kirkland, ",
+                "Karl Lane, Eric Lewis, Mark Lindsay, Tre Maddox, Ed Malloy, ",
+                "Rodney Mott, Gediminas Petraitis, Kevin Scott, Aaron Smith, ",
+                "Michael Smith, Ben Taylor, Josh Tiven, Justin Van Duyne, ",
                 "James Williams, Sean Wright, Zach Zarba")
-p_alt <- paste0("Ray Acosta, Matt Boland, Derrick Collins, Lauren Holtkamp, ",
-                "Brett Nansel, Aaron Smith, Dedric Taylor, Leon Wood")
+p_alt <- paste0("Lauren Holtkamp, Ashley Moyer-Gleich, Natalie Sago, ",
+                "Dedric Taylor, Scott Twardoski")
 
 ref_p <- p_off %>% 
   str_split(",", simplify = T) %>% 
@@ -135,12 +148,12 @@ ref_playoff <- p_alt %>%
          status = "Alternate") %>% 
   bind_rows(ref_p, .)
 
-poffs_2022 <- ref_rate_szn %>% 
-  filter(szn == 2022, szn_type == "regular season") %>% 
+poffs_2023 <- ref_rate_szn %>% 
+  filter(szn == 2023, szn_type == "regular season") %>% 
   left_join(ref_playoff) %>% 
   left_join(ref_bios)
 
-poffs_2022 %>% 
+poffs_2023 %>% 
   arrange(desc(nba_exp)) %>% 
   select(szn, szn_type, official, nba_exp,
          ref_points, games, ref_rating, status) %>% 
