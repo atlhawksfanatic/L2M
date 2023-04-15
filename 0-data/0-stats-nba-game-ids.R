@@ -216,7 +216,6 @@ end_year <- ifelse(Sys.Date() > paste0(format(Sys.Date(), "%Y"), "-10-01"),
 years <- seq(2015, end_year)
 
 ids_map <- map(years, function(x) {
-  Sys.sleep(runif(1, 2.5, 5))
   print(paste(x, "at", Sys.time()))
   
   # Only need to scrape the latest season
@@ -226,6 +225,10 @@ ids_map <- map(years, function(x) {
                         col_types = cols(.default = "c")) %>% 
       mutate(date = as.Date(date))
     return(id_info)
+  } else {
+    # If the file didn't exist then pause.
+    Sys.sleep(runif(1, 2.5, 5))
+    
   }
   # https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/
   #  2021/league/00_full_schedule.json
