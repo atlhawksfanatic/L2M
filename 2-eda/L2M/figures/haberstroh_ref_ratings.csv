@@ -1222,6 +1222,60 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,regular season,Tyler Mirkovich,1,1,1
 2022,regular season,Tyler Ricks,9,9,1
 2022,regular season,Zach Zarba,300,60,5
+2023,play-in,Ben Taylor,3,1,3
+2023,play-in,Courtney Kirkland,3,1,3
+2023,play-in,David Guthrie,5,1,5
+2023,play-in,Eric Lewis,5,1,5
+2023,play-in,Gediminas Petraitis,1,1,1
+2023,play-in,JB DeRosa,1,1,1
+2023,play-in,James Williams,5,1,5
+2023,play-in,John Goble,5,1,5
+2023,play-in,Josh Tiven,3,1,3
+2023,play-in,Karl Lane,1,1,1
+2023,play-in,Kevin Scott,3,1,3
+2023,play-in,Mitchell Ervin,1,1,1
+2023,play-in,Scott Foster,5,1,5
+2023,play-in,Sean Corbin,1,1,1
+2023,play-in,Sean Wright,3,1,3
+2023,play-in,Tony Brothers,5,1,5
+2023,play-in,Tre Maddox,1,1,1
+2023,play-in,Tyler Ford,3,1,3
+2023,playoffs,Aaron Smith,1,1,1
+2023,playoffs,Ben Taylor,11,5,2.2
+2023,playoffs,Bill Kennedy,15,5,3
+2023,playoffs,Brent Barnaky,1,1,1
+2023,playoffs,Brian Forte,6,4,1.5
+2023,playoffs,Courtney Kirkland,12,4,3
+2023,playoffs,Curtis Blair,15,5,3
+2023,playoffs,David Guthrie,30,6,5
+2023,playoffs,Ed Malloy,9,3,3
+2023,playoffs,Eric Dalen,1,1,1
+2023,playoffs,Eric Lewis,16,4,4
+2023,playoffs,Gediminas Petraitis,2,2,1
+2023,playoffs,JB DeRosa,2,2,1
+2023,playoffs,Jacyn Goble,3,3,1
+2023,playoffs,James Williams,21,5,4.2
+2023,playoffs,John Goble,25,5,5
+2023,playoffs,Josh Tiven,25,5,5
+2023,playoffs,Justin Van Duyne,2,2,1
+2023,playoffs,Karl Lane,3,3,1
+2023,playoffs,Kevin Cutler,1,1,1
+2023,playoffs,Kevin Scott,15,5,3
+2023,playoffs,Marc Davis,25,5,5
+2023,playoffs,Mark Lindsay,12,4,3
+2023,playoffs,Michael Smith,1,1,1
+2023,playoffs,Mitchell Ervin,3,3,1
+2023,playoffs,Nick Buchert,3,3,1
+2023,playoffs,Pat Fraher,8,4,2
+2023,playoffs,Ray Acosta,1,1,1
+2023,playoffs,Rodney Mott,2,2,1
+2023,playoffs,Scott Foster,25,5,5
+2023,playoffs,Sean Corbin,3,3,1
+2023,playoffs,Sean Wright,10,4,2.5
+2023,playoffs,Tony Brothers,30,6,5
+2023,playoffs,Tre Maddox,6,4,1.5
+2023,playoffs,Tyler Ford,8,4,2
+2023,playoffs,Zach Zarba,25,5,5
 2023,pre-season,Aaron Smith,9,3,3
 2023,pre-season,Andy Nagy,5,3,1.6666666666666667
 2023,pre-season,Ashley Moyer-Gleich,9,3,3
@@ -1299,83 +1353,84 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,Tyler Mirkovich,3,3,1
 2023,pre-season,Tyler Ricks,3,3,1
 2023,pre-season,Zach Zarba,15,3,5
-2023,regular season,Aaron Smith,148,58,2.5517241379310347
-2023,regular season,Andy Nagy,45,45,1
-2023,regular season,Ashley Moyer-Gleich,135,59,2.288135593220339
-2023,regular season,Ben Taylor,279,63,4.428571428571429
-2023,regular season,Bill Kennedy,295,59,5
-2023,regular season,Brandon Adair,78,48,1.625
-2023,regular season,Brandon Schwab,41,41,1
-2023,regular season,Brent Barnaky,180,60,3
+2023,regular season,Aaron Smith,155,61,2.540983606557377
+2023,regular season,Andy Nagy,48,48,1
+2023,regular season,Ashley Moyer-Gleich,142,62,2.2903225806451615
+2023,regular season,Ben Taylor,287,65,4.415384615384616
+2023,regular season,Bill Kennedy,310,62,5
+2023,regular season,Brandon Adair,82,50,1.64
+2023,regular season,Brandon Schwab,42,42,1
+2023,regular season,Brent Barnaky,189,63,3
 2023,regular season,Brent Haskill,6,6,1
-2023,regular season,Brett Nansel,105,55,1.9090909090909092
-2023,regular season,Brian Forte,205,61,3.360655737704918
-2023,regular season,CJ Washington,45,41,1.0975609756097562
-2023,regular season,Cheryl Flores,33,33,1
-2023,regular season,Courtney Kirkland,295,59,5
-2023,regular season,Curtis Blair,254,60,4.233333333333333
+2023,regular season,Brett Nansel,108,58,1.8620689655172413
+2023,regular season,Brian Forte,214,64,3.34375
+2023,regular season,CJ Washington,48,44,1.0909090909090908
+2023,regular season,Che Flores,1,1,1
+2023,regular season,Cheryl Flores,34,34,1
+2023,regular season,Courtney Kirkland,310,62,5
+2023,regular season,Curtis Blair,267,63,4.238095238095238
 2023,regular season,Danielle Scott,9,9,1
-2023,regular season,Dannica Mosher,31,31,1
-2023,regular season,David Guthrie,280,56,5
-2023,regular season,Dedric Taylor,107,53,2.018867924528302
-2023,regular season,Derek Richardson,31,25,1.24
-2023,regular season,Derrick Collins,32,24,1.3333333333333333
-2023,regular season,Ed Malloy,280,56,5
-2023,regular season,Eric Dalen,99,37,2.675675675675676
-2023,regular season,Eric Lewis,300,60,5
-2023,regular season,Evan Scott,39,39,1
-2023,regular season,Gediminas Petraitis,203,61,3.3278688524590163
+2023,regular season,Dannica Mosher,33,33,1
+2023,regular season,David Guthrie,295,59,5
+2023,regular season,Dedric Taylor,114,56,2.0357142857142856
+2023,regular season,Derek Richardson,32,26,1.2307692307692308
+2023,regular season,Derrick Collins,34,26,1.3076923076923077
+2023,regular season,Ed Malloy,295,59,5
+2023,regular season,Eric Dalen,104,40,2.6
+2023,regular season,Eric Lewis,315,63,5
+2023,regular season,Evan Scott,40,40,1
+2023,regular season,Gediminas Petraitis,214,64,3.34375
 2023,regular season,Intae Hwang,7,7,1
-2023,regular season,JB DeRosa,190,62,3.064516129032258
+2023,regular season,JB DeRosa,199,65,3.0615384615384613
 2023,regular season,JD Ralls,6,6,1
-2023,regular season,JT Orr,47,47,1
-2023,regular season,Jacyn Goble,198,60,3.3
+2023,regular season,JT Orr,49,49,1
+2023,regular season,Jacyn Goble,204,62,3.2903225806451615
 2023,regular season,James Capers,215,43,5
-2023,regular season,James Williams,300,60,5
-2023,regular season,Jason Goldenberg,45,45,1
+2023,regular season,James Williams,315,63,5
+2023,regular season,Jason Goldenberg,48,48,1
 2023,regular season,Jenna Reneau,5,5,1
-2023,regular season,Jenna Schroeder,33,33,1
-2023,regular season,John Butler,58,46,1.2608695652173914
-2023,regular season,John Conley,34,34,1
-2023,regular season,John Goble,295,59,5
-2023,regular season,Jonathan Sterling,48,46,1.0434782608695652
-2023,regular season,Josh Tiven,310,62,5
-2023,regular season,Justin Van Duyne,174,60,2.9
-2023,regular season,Karl Lane,208,60,3.466666666666667
-2023,regular season,Kevin Cutler,163,51,3.196078431372549
-2023,regular season,Kevin Scott,290,58,5
+2023,regular season,Jenna Schroeder,34,34,1
+2023,regular season,John Butler,60,48,1.25
+2023,regular season,John Conley,36,36,1
+2023,regular season,John Goble,310,62,5
+2023,regular season,Jonathan Sterling,49,47,1.0425531914893618
+2023,regular season,Josh Tiven,325,65,5
+2023,regular season,Justin Van Duyne,183,63,2.9047619047619047
+2023,regular season,Karl Lane,220,64,3.4375
+2023,regular season,Kevin Cutler,177,55,3.2181818181818183
+2023,regular season,Kevin Scott,305,61,5
 2023,regular season,Lauren Holtkamp,85,37,2.2972972972972974
-2023,regular season,Leon Wood,68,46,1.4782608695652173
-2023,regular season,Marat Kogut,92,42,2.1904761904761907
-2023,regular season,Marc Davis,290,58,5
-2023,regular season,Mark Lindsay,155,31,5
-2023,regular season,Matt Boland,94,50,1.88
-2023,regular season,Matt Kallio,31,31,1
-2023,regular season,Matt Myers,50,50,1
-2023,regular season,Michael Smith,159,53,3
-2023,regular season,Mitchell Ervin,211,63,3.3492063492063493
-2023,regular season,Mousa Dagher,42,42,1
-2023,regular season,Natalie Sago,141,59,2.389830508474576
-2023,regular season,Nate Green,35,35,1
-2023,regular season,Nick Buchert,176,58,3.0344827586206895
-2023,regular season,Pat Fraher,295,59,5
+2023,regular season,Leon Wood,69,47,1.4680851063829787
+2023,regular season,Marat Kogut,98,44,2.227272727272727
+2023,regular season,Marc Davis,305,61,5
+2023,regular season,Mark Lindsay,170,34,5
+2023,regular season,Matt Boland,99,53,1.8679245283018868
+2023,regular season,Matt Kallio,32,32,1
+2023,regular season,Matt Myers,52,52,1
+2023,regular season,Michael Smith,165,55,3
+2023,regular season,Mitchell Ervin,217,65,3.3384615384615386
+2023,regular season,Mousa Dagher,44,44,1
+2023,regular season,Natalie Sago,148,62,2.3870967741935485
+2023,regular season,Nate Green,36,36,1
+2023,regular season,Nick Buchert,185,61,3.0327868852459017
+2023,regular season,Pat Fraher,310,62,5
 2023,regular season,Pat OConnell,6,6,1
-2023,regular season,Phenizee Ransom,44,44,1
-2023,regular season,Ray Acosta,124,62,2
-2023,regular season,Robert Hussey,32,32,1
-2023,regular season,Rodney Mott,201,51,3.9411764705882355
-2023,regular season,Scott Foster,275,55,5
-2023,regular season,Scott Twardoski,120,46,2.608695652173913
-2023,regular season,Scott Wall,39,39,1
-2023,regular season,Sean Corbin,147,49,3
-2023,regular season,Sean Wright,300,60,5
+2023,regular season,Phenizee Ransom,45,45,1
+2023,regular season,Ray Acosta,129,65,1.9846153846153847
+2023,regular season,Robert Hussey,33,33,1
+2023,regular season,Rodney Mott,212,54,3.925925925925926
+2023,regular season,Scott Foster,290,58,5
+2023,regular season,Scott Twardoski,125,49,2.5510204081632653
+2023,regular season,Scott Wall,42,42,1
+2023,regular season,Sean Corbin,156,52,3
+2023,regular season,Sean Wright,315,63,5
 2023,regular season,Sharae Mitchell,7,7,1
 2023,regular season,Simone Jelks,6,6,1
-2023,regular season,Suyash Mehta,38,38,1
+2023,regular season,Suyash Mehta,39,39,1
 2023,regular season,Tom Washington,57,19,3
-2023,regular season,Tony Brothers,305,61,5
-2023,regular season,Tre Maddox,188,56,3.357142857142857
-2023,regular season,Tyler Ford,262,62,4.225806451612903
+2023,regular season,Tony Brothers,320,64,5
+2023,regular season,Tre Maddox,197,59,3.3389830508474576
+2023,regular season,Tyler Ford,267,63,4.238095238095238
 2023,regular season,Tyler Mirkovich,7,7,1
 2023,regular season,Tyler Ricks,6,6,1
-2023,regular season,Zach Zarba,310,62,5
+2023,regular season,Zach Zarba,325,65,5
