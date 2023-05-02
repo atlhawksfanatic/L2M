@@ -35,8 +35,8 @@ nba_dates_long <- tribble(
   2022, "playoffs", "2022-4-12", "2022-6-20",
   2023, "season", "2022-10-17", "2023-4-10",
   2023, "playoffs", "2023-4-11", "2023-6-20"
-) %>% 
-  mutate_at(vars(-season, -season_section), as.Date) %>% 
+) |> 
+  mutate_at(vars(-season, -season_section), as.Date) |> 
   mutate(days = end_date - start_date + 1)
 
 # Function to convert date within a season to day number
@@ -101,8 +101,8 @@ api_tests <- c("0012000007", "0012100023", "0021900215",
                "0021900505", "0021900688", "0021900732",
                "0021900973", "0041900152")
 
-l2m <- read_csv("1-tidy/L2M/L2M_stats_nba.csv") %>% 
-  filter(!(gid %in% api_tests)) %>% 
+l2m <- read_csv("1-tidy/L2M/L2M_stats_nba.csv") |> 
+  filter(!(gid %in% api_tests)) |> 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
                              "INC", decision),
          decision_3 = ifelse(is.na(decision) | decision == "",
@@ -120,41 +120,41 @@ l2m <- read_csv("1-tidy/L2M/L2M_stats_nba.csv") %>%
          bubble_seasons = ifelse(bubble,
                                  paste0(season, " bubble"),
                                  paste0(season)),
-         day_num = purrr::pmap_dbl(list(season, date), day_number)) %>% 
-  group_by(season) %>% 
+         day_num = purrr::pmap_dbl(list(season, date), day_number)) |> 
+  group_by(season) |> 
   mutate(day_num_all = ifelse(playoff, day_num + max(day_num), day_num))
 
 
-games <- l2m %>% 
-  group_by(temp_date, season, bubble) %>% 
+games <- l2m |> 
+  group_by(temp_date, season, bubble) |> 
   summarise(games = n_distinct(gid),
             quarters = n_distinct(gid, period))
 
-games_days <- l2m %>% 
-  group_by(day_num, season, bubble, playoff) %>% 
+games_days <- l2m |> 
+  group_by(day_num, season, bubble, playoff) |> 
   summarise(games = n_distinct(gid),
             quarters = n_distinct(gid, period))
 
-l2m_freq <- l2m %>%
-  group_by(temp_date, season, bubble) %>% 
-  count(decision_2) %>% 
-  spread(decision_2, n) %>% 
-  replace(is.na(.), 0) %>% 
-  mutate(calls = CC + CNC + IC + INC) %>% 
+l2m_freq <- l2m |>
+  group_by(temp_date, season, bubble) |> 
+  count(decision_2) |> 
+  spread(decision_2, n) |> 
+  {\(.) {replace(.,is.na(.),0)}}() |> 
+  mutate(calls = CC + CNC + IC + INC) |> 
   left_join(games)
 
-l2m_freq_days <- l2m %>%
-  group_by(day_num, season, bubble, playoff) %>% 
-  count(decision_2) %>% 
-  spread(decision_2, n) %>% 
-  replace(is.na(.), 0) %>% 
-  mutate(calls = CC + CNC + IC + INC) %>% 
+l2m_freq_days <- l2m |>
+  group_by(day_num, season, bubble, playoff) |> 
+  count(decision_2) |> 
+  spread(decision_2, n) |> 
+  {\(.) {replace(.,is.na(.),0)}}() |> 
+  mutate(calls = CC + CNC + IC + INC) |> 
   left_join(games_days)
 
-l2m_freq_days %>%
+l2m_freq_days |>
   mutate(playoffs = factor(playoff, levels = c("FALSE", "TRUE"),
-                           labels = c("Regular Season", "Playoffs"))) %>% 
-  filter(!playoff) %>% 
+                           labels = c("Regular Season", "Playoffs"))) |> 
+  filter(!playoff) |> 
   ggplot(aes(day_num, calls/quarters, color = factor(season),
              group = season)) +
   geom_smooth(aes(linetype = factor(season)), method = "loess") +
@@ -175,9 +175,9 @@ l2m_freq_days %>%
 ```
 
 ```{r whistles, echo = FALSE}
-l2m %>%
-  rename(Season = season) %>% 
-  group_by(Season) %>%
+l2m |>
+  rename(Season = season) |> 
+  group_by(Season) |>
   summarise(Games = n_distinct(gid),
             "Grades per period" = round(n() / n_distinct(gid, period), digits = 2),
             "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(gid, period), digits = 2),
@@ -185,16 +185,16 @@ l2m %>%
             "CC Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
             "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(gid, period), digits = 2),
             "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
-            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(gid, period), digits = 2)) %>% 
+            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(gid, period), digits = 2)) |> 
   knitr::kable(caption = paste0("All games with L2M Call Accuracy updated through ",
                                 max(l2m$date)), align = "c")
 
 ```
 
 ```{r whistles-breakdown, echo = FALSE}
-l2m %>%
-  rename(Season = season, Playoffs = playoff) %>% 
-  group_by(Season, Playoffs) %>%
+l2m |>
+  rename(Season = season, Playoffs = playoff) |> 
+  group_by(Season, Playoffs) |>
   summarise(Games = n_distinct(gid),
             "Grades per period" = round(n() / n_distinct(gid, period), digits = 2),
             "Calls per period" = round((sum(decision_3 == "CC") + sum(decision_3 == "IC")) / n_distinct(gid, period), digits = 2),
@@ -202,7 +202,7 @@ l2m %>%
             "CC Percentage" = scales::percent(sum(decision_3 == "CC") / (sum(decision_3 == "CC") + sum(decision_3 == "IC"))),
             "INC per period" = round((sum(decision_3 == "INC") + sum(decision_3 == "inc")) / n_distinct(gid, period), digits = 2),
             "Bad Calls Percentage" = scales::percent((sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc")) / (sum(decision_3 == "CC") + sum(decision_3 == "IC") + sum(decision_3 == "INC") + sum(decision_3 == "inc"))),
-            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(gid, period), digits = 2)) %>% 
+            "CNC per period" = round(sum(decision_3 == "CNC") / n_distinct(gid, period), digits = 2)) |> 
   knitr::kable(caption = paste0("L2M Call Accuracy updated through ",
                                 max(l2m$date)), align = "c")
 

@@ -20,10 +20,10 @@ if (file.exists(paste0(local_dir, "/team_ids.csv"))) {
   team_list <- read_csv(paste0(local_dir, "/team_ids.csv"))
 } else {
   team_list <- paste0("https://raw.githubusercontent.com/bttmly/",
-                      "nba/master/data/teams.json") %>% 
-    httr::GET() %>% 
-    httr::content(as = "text", encoding = "UTF-8") %>% 
-    jsonlite::fromJSON() %>% 
+                      "nba/master/data/teams.json") |> 
+    httr::GET() |> 
+    httr::content(as = "text", encoding = "UTF-8") |> 
+    jsonlite::fromJSON() |> 
     mutate_all(as.character)
   
   write_csv(team_list, paste0(local_dir, "/team_ids.csv"))
@@ -39,11 +39,11 @@ bkref_cross <- c("BKN" = "BRK", "PHX" = "PHO", "CHA" = "CHO")
 # ---- l2m-games ----------------------------------------------------------
 
 l2m_raw   <- read_csv("1-tidy/L2M/L2M_raw_api.csv",
-                      col_types = cols(.default = "c")) %>% 
+                      col_types = cols(.default = "c")) |> 
   mutate(date = as.Date(date))
 
 stats_box <- read_csv("0-data/stats_nba/stats_nba_box.csv",
-                      col_types = cols(.default = "c")) %>% 
+                      col_types = cols(.default = "c")) |> 
   mutate(MIN = as.numeric(MIN),
          date = as.Date(date))
 
@@ -51,7 +51,7 @@ stats_box <- read_csv("0-data/stats_nba/stats_nba_box.csv",
 
 
 l2m_raw_szns <-
-  l2m_raw %>% 
+  l2m_raw |> 
   mutate(season = case_when(date < as.Date("2015-10-01") ~ 2015,
                             date < as.Date("2016-10-01") ~ 2016,
                             date < as.Date("2017-10-01") ~ 2017,
@@ -150,7 +150,7 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  #2021-22
                  "Enes Kanter" = "Enes Freedom")
 
-l2m_games <- l2m_raw_szns %>% 
+l2m_games <- l2m_raw_szns |> 
   mutate(committing = ifelse(is.na(bad_players[committing]),
                              committing,
                              bad_players[committing]),
@@ -161,8 +161,8 @@ l2m_games <- l2m_raw_szns %>%
 # ---- stats-nba-players ------------------------------------------------------
 
 # Game specific box score parts
-stats_box_base <- stats_box %>% 
-  select(GAME_ID, contains("OFFICIAL"), ATTENDANCE, date, home, away) %>% 
+stats_box_base <- stats_box |> 
+  select(GAME_ID, contains("OFFICIAL"), ATTENDANCE, date, home, away) |> 
   distinct()
 
 
@@ -184,18 +184,18 @@ bad_stat_names <- c("P.J. Tucker" = "PJ Tucker", # NBA is inconsistent in L2Ms
                     "Walt Lemon Jr." = "Walter Lemon Jr.")
 # Since the committing/disadvantaged can be from either roster, create 
 #  situations where it could be either
-stats_games <- stats_box %>% 
+stats_games <- stats_box |> 
   mutate(player_name = ifelse(is.na(bad_stat_names[PLAYER_NAME]),
                               PLAYER_NAME,
                               bad_stat_names[PLAYER_NAME]))
 
-committing_box <- stats_games %>% 
+committing_box <- stats_games |> 
   select(GAME_ID,
          committing = player_name,
          committing_min = MIN,
          committing_team = TEAM_ABBREVIATION,
          committing_side = PLAYER_SIDE)
-disadvantaged_box <- stats_games %>% 
+disadvantaged_box <- stats_games |> 
   select(GAME_ID,
          disadvantaged = player_name,
          disadvantaged_min = MIN,
@@ -231,7 +231,7 @@ coach_stats <- tribble(
   "Stan Van Gundy", "NOP", 2021,
   "Stephen Silas", "HOU", 2021:still,
   "Steve Clifford", "CHA", 2015:2018,
-  "Tyronn Lue", "CLE",  2016:2019) %>% 
+  "Tyronn Lue", "CLE",  2016:2019) |> 
   unnest(season)
 
 # Coach could be committing or disadvantaged
@@ -245,24 +245,24 @@ coach_stats_d <- rename(coach_stats,
 # Combine all the elements to the L2M calls
 
 l2m_games_stats <- 
-  l2m_games %>% 
-  left_join(stats_box_base) %>% 
-  left_join(committing_box) %>% 
-  left_join(disadvantaged_box) %>%
-  left_join(coach_stats_c) %>% 
-  left_join(coach_stats_d) %>% 
+  l2m_games |> 
+  left_join(stats_box_base) |> 
+  left_join(committing_box) |> 
+  left_join(disadvantaged_box) |>
+  left_join(coach_stats_c) |> 
+  left_join(coach_stats_d) |> 
   mutate(committing_team = ifelse(is.na(team_dictionary[committing]),
                                   committing_team, team_dictionary[committing]),
          disadvantaged_team = ifelse(is.na(team_dictionary[disadvantaged]),
                                      disadvantaged_team,
-                                     team_dictionary[disadvantaged])) %>% 
+                                     team_dictionary[disadvantaged])) |> 
   # Was a coach involved?
   mutate(committing_team = ifelse(is.na(committing_team),
                                   coach_committing,
                                   committing_team),
          disadvantaged_team = ifelse(is.na(disadvantaged_team),
                                      coach_disadvantaged,
-                                     disadvantaged_team)) %>% 
+                                     disadvantaged_team)) |> 
   mutate(call = str_to_upper(call), type = str_to_upper(type),
          # Committing/Disadvantaged side to teams if NA
          committing_side = case_when(is.na(committing_side) &
@@ -274,7 +274,7 @@ l2m_games_stats <-
                                           (disadvantaged_team == home) ~ "home",
                                         is.na(disadvantaged_side) &
                                           (disadvantaged_team == away) ~ "away",
-                                        T ~ disadvantaged_side)) %>% 
+                                        T ~ disadvantaged_side)) |> 
   select(-contains("coach"))
   
 
@@ -310,13 +310,13 @@ type_correct <- c("10 SECOND" = "10 SECOND VIOLATION",
                   "DOUBLE TECHNICAL" = "TECHNICAL")
 
 l2m_games_stats2 <-
-  l2m_games_stats %>% 
+  l2m_games_stats |> 
   mutate(type2 = ifelse(is.na(type_correct[type]), type, type_correct[type]),
          time = ifelse(time == "00:96", "00:56", time),
          # Time Remaining is problematic here
          time_min = parse_number(str_extract(time, ".+?(?=:)")),
          time_sec = parse_number(str_remove(time, ".+?(?=:)")),
-         time2 = time_min + time_sec / 60) %>% 
+         time2 = time_min + time_sec / 60) |> 
   arrange(gcode)
 
 
@@ -327,7 +327,7 @@ write_rds(l2m_games_stats2, paste0(local_dir, "/L2M_stats_nba.rds"))
 # ---- ref-shiny --------------------------------------------------------------
 
 l2m_shiny <-
-  l2m_games_stats2 %>% 
+  l2m_games_stats2 |> 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
                              "INC", decision),
          decision_3 = ifelse(is.na(decision) | decision == "",

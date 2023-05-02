@@ -20,10 +20,10 @@ if (file.exists(paste0(local_dir, "/team_ids.csv"))) {
   team_list <- read_csv(paste0(local_dir, "/team_ids.csv"))
 } else {
   team_list <- paste0("https://raw.githubusercontent.com/bttmly/",
-                      "nba/master/data/teams.json") %>% 
-    httr::GET() %>% 
-    httr::content(as = "text", encoding = "UTF-8") %>% 
-    jsonlite::fromJSON() %>% 
+                      "nba/master/data/teams.json") |> 
+    httr::GET() |> 
+    httr::content(as = "text", encoding = "UTF-8") |> 
+    jsonlite::fromJSON() |> 
     mutate_all(as.character)
   
   write_csv(team_list, paste0(local_dir, "/team_ids.csv"))
@@ -101,7 +101,7 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "OG Anunoby" = "O.G. Anunoby",
                  "Jeff Dowtin" = "Jeff Dowtin Jr.")
 
-l2m_games <- l2m_games %>% 
+l2m_games <- l2m_games |> 
   mutate(committing = ifelse(is.na(bad_players[committing]),
                              committing,
                              bad_players[committing]),
@@ -241,10 +241,10 @@ names(odd_bkref_dic) <- odd_bkref$player_name
 
 # Box scores from bkref
 bkref_games <- read_csv("0-data/bkref/bkref_box.csv",
-                        col_types = cols(.default = "c")) %>% 
+                        col_types = cols(.default = "c")) |> 
   # 2019-20 bkref now has accents on names
   mutate(player_name = stringi::stri_trans_general(player_name,
-                                                   id = "Latin-ASCII")) %>% 
+                                                   id = "Latin-ASCII")) |> 
   
   mutate(home = ifelse(is.na(team_cross[home]),
                        home, team_cross[home]),
@@ -253,20 +253,20 @@ bkref_games <- read_csv("0-data/bkref/bkref_box.csv",
          player_name = ifelse(is.na(bad_bkref[player_name]),
                               player_name, bad_bkref[player_name]),
          player_team = ifelse(is.na(team_dictionary[player_team]),
-                              player_team, team_dictionary[player_team])) %>% 
+                              player_team, team_dictionary[player_team])) |> 
   bind_rows(odd_bkref)
 
 # Game specific box score parts from bkref
-bkref_game_base <- bkref_games %>% 
-  select(bkref_id, ref_1, ref_2, ref_3, attendance, date, home, away) %>% 
+bkref_game_base <- bkref_games |> 
+  select(bkref_id, ref_1, ref_2, ref_3, attendance, date, home, away) |> 
   distinct()
 
 # Since the committing/disadvantaged can be from either roster, create 
 #  situations where it could be either
-committing_bkref <- bkref_games %>% 
+committing_bkref <- bkref_games |> 
   select(bkref_id, committing = player_name, committing_min = player_min,
          committing_team = player_team, committing_side = player_side)
-disadvantaged_bkref <- bkref_games %>% 
+disadvantaged_bkref <- bkref_games |> 
   select(bkref_id, disadvantaged = player_name, disadvantaged_min = player_min,
          disadvantaged_team = player_team, disadvantaged_side = player_side)
 
@@ -277,10 +277,10 @@ odd_bkref_d <- rename(odd_bkref,
                       disadvantaged = player_name,
                       disadvantaged_team = player_team)
 
-l2m_games_bkref <- l2m_games %>% 
-  left_join(bkref_game_base) %>% 
-  left_join(committing_bkref) %>% 
-  left_join(disadvantaged_bkref) %>% 
+l2m_games_bkref <- l2m_games |> 
+  left_join(bkref_game_base) |> 
+  left_join(committing_bkref) |> 
+  left_join(disadvantaged_bkref) |> 
   mutate(committing_team = ifelse(is.na(odd_bkref_dic[committing]),
                                   committing_team, odd_bkref_dic[committing]),
          disadvantaged_team = ifelse(is.na(odd_bkref_dic[disadvantaged]),
@@ -329,25 +329,25 @@ type_correct <- c("10 SECOND" = "10 SECOND VIOLATION",
                   "SECOND TECHNICAL" = "TECHNICAL",
                   "DELAY TECHNICAL" = "TECHNICAL",
                   "DOUBLE TECHNICAL" = "TECHNICAL")
-l2m_games_bkref <- l2m_games_bkref %>% 
+l2m_games_bkref <- l2m_games_bkref |> 
   mutate(type2 = ifelse(is.na(type_correct[type]), type, type_correct[type]),
          time = ifelse(time == "00:96", "00:56", time),
          # Time Remaining is problematic here
          time_min = parse_number(str_extract(time, ".+?(?=:)")),
          time_sec = parse_number(str_remove(time, ".+?(?=:)")),
-         time2 = time_min + time_sec / 60) %>% 
+         time2 = time_min + time_sec / 60) |> 
   arrange(bkref_id)
 
 # new_season <- filter(l2m_games_bkref, date > "2019-10-10")
-# new_season %>% 
+# new_season |> 
 #   filter(is.na(committing_min))
-# new_season %>% 
+# new_season |> 
 #   filter(is.na(disadvantaged_min))
 
 # ---- season-dates -------------------------------------------------------
 
 l2m_games_bkref <-
-  l2m_games_bkref %>% 
+  l2m_games_bkref |> 
   mutate(season = case_when(date < as.Date("2015-10-01") ~ 2015,
                             date < as.Date("2016-10-01") ~ 2016,
                             date < as.Date("2017-10-01") ~ 2017,
@@ -392,7 +392,7 @@ write_rds(l2m_games_bkref, paste0(local_dir, "/L2M.rds"))
 # ---- ref-shiny --------------------------------------------------------------
 
 l2m_shiny <-
-  l2m_games_bkref %>% 
+  l2m_games_bkref |> 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
                              "INC", decision),
          decision_3 = ifelse(is.na(decision) | decision == "",
