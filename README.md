@@ -33,9 +33,9 @@ the raw data (in pdf form).
 |  2020  |  389  |       18.07       |       3.79       |     0.15      |      96%      |      1.08      |         25%          |     13.19      |
 |  2021  |  405  |       17.18       |       3.85       |     0.19      |      95%      |      0.87      |         22%          |     12.47      |
 |  2022  |  441  |       17.53       |       4.18       |     0.19      |      95%      |      1.18      |         26%          |     12.18      |
-|  2023  |  460  |       20.66       |       4.41       |     0.16      |      96%      |      1.14      |         23%          |     15.12      |
+|  2023  |  463  |       20.68       |       4.40       |     0.16      |      96%      |      1.14      |         23%          |     15.14      |
 
-All games with L2M Call Accuracy updated through 2023-04-26
+All games with L2M Call Accuracy updated through 2023-05-02
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
@@ -56,9 +56,9 @@ All games with L2M Call Accuracy updated through 2023-04-26
 |  2022  |  FALSE   |  412  |       17.31       |       4.16       |     0.19      |      95%      |      1.17      |         25%          |     11.98      |
 |  2022  |   TRUE   |  29   |       21.17       |       4.47       |     0.23      |      95%      |      1.33      |         27%          |     15.37      |
 |  2023  |  FALSE   |  442  |       20.64       |       4.40       |     0.16      |      96%      |      1.15      |         24%          |     15.09      |
-|  2023  |   TRUE   |  18   |       21.19       |       4.62       |     0.05      |      99%      |      0.95      |         18%          |     15.62      |
+|  2023  |   TRUE   |  21   |       21.62       |       4.58       |     0.04      |      99%      |      1.00      |         19%          |     16.04      |
 
-L2M Call Accuracy updated through 2023-04-26
+L2M Call Accuracy updated through 2023-05-02
 
 The process for compiling the L2M dataset is to:
 
