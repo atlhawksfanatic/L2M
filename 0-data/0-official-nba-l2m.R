@@ -29,8 +29,8 @@ if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
 
 # # Read the list of already queried L2Ms
 # queried_l2m <- dir(l2m_source, pattern = ".csv",
-#                    recursive = T, full.names = T) %>% 
-#   as_tibble() %>% 
+#                    recursive = T, full.names = T) |> 
+#   as_tibble() |> 
 #   mutate(game_id = tools::file_path_sans_ext(basename(value)))
 
 # Read in previous L2M
@@ -41,9 +41,9 @@ if (file.exists(paste0(local_dir, "/official_nba_l2m_api.csv"))) {
   l2m_old <- data.frame(game_id = NA_character_) 
 }
 
-new_game_ids <- id_list %>% 
+new_game_ids <- id_list |> 
   # L2Ms began on 2015-03-01, so only use those dates onward in the id_list
-  filter(date > "2015-02-28", date < Sys.Date() - 1) %>% 
+  filter(date > "2015-02-28", date < Sys.Date() - 1) |> 
   # And don't download for a date that has already occurred
   filter(!gid %in% l2m_old$game_id)
 
@@ -89,13 +89,13 @@ l2m_mapped <- purrr::map(new_game_ids$gid, function(x) {
     return(l2m)
   } else {
     json <-
-      res$content %>%
-      rawToChar() %>%
+      res$content |>
+      rawToChar() |>
       jsonlite::fromJSON(simplifyVector = T, flatten = T)
     
     l2m       <- json$l2m
     game_info <- json$game
-    results   <- bind_cols(l2m, game_info) %>% 
+    results   <- bind_cols(l2m, game_info) |> 
       mutate(game_id = x)
     return(results)
   }
@@ -121,22 +121,22 @@ ind_games_csv <- purrr::map(l2m_mapped, function(x) {
 })
 
 # Combine with previously queried in L2Ms
-l2m_all <- l2m_mapped %>% 
-  bind_rows() %>% 
-  mutate(across(everything(), as.character)) %>% 
-  bind_rows(l2m_old) %>% 
+l2m_all <- l2m_mapped |> 
+  bind_rows() |> 
+  mutate(across(everything(), as.character)) |> 
+  bind_rows(l2m_old) |> 
   arrange(GameDate, GameId, PeriodName, desc(PCTime))
 
 # Minor corrections
-l2m_games_corrected <- l2m_all %>% 
+l2m_games_corrected <- l2m_all |> 
   # https://official.nba.com/l2m/L2MReport.html?gameId=0021800788 shows a play
   # occurs at "00:96" for a Westbrook play but video shows 00:56.9
   mutate(PCTime = ifelse(PCTime == "00:96" & game_id == "0021800788",
-                         "00:56.9", PCTime)) %>% 
+                         "00:56.9", PCTime)) |> 
   # https://official.nba.com/l2m/L2MReport.html?gameId=0021801148 has two plays
   #  at the bottom with PCTime of "00:18." which are missing the milliseconds
   mutate(PCTime = ifelse(PCTime == "00:18." & game_id == "0021801148",
-                         "00:18.1", PCTime)) %>% 
+                         "00:18.1", PCTime)) |> 
   # https://official.nba.com/l2m/L2MReport.html?gameId=0022000029 has a play
   #  missing the millisecond in overtime at "01:16."
   mutate(PCTime = ifelse(PCTime == "01:16." & game_id == "0022000029",

@@ -20,8 +20,8 @@ l2m_games <- read_csv("1-tidy/L2M/L2M_raw.csv")
 
 # Structure is simply: 201503010HOU.html - date then home team
 
-bkref_games <- l2m_games %>% 
-  select(bkref_id, date, home, away) %>% 
+bkref_games <- l2m_games |> 
+  select(bkref_id, date, home, away) |> 
   distinct()
 
 # Been getting an error about HTTP2 framing layer
@@ -51,8 +51,8 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
     return(bkref_results)
     
   } else {
-    url_tables <- url_get %>% 
-      read_html() %>% 
+    url_tables <- url_get |> 
+      read_html() |> 
       html_table(fill = TRUE)
     
     home_players <- url_tables[[1 + length(url_tables)/2]][-1, 1][[1]]
@@ -71,33 +71,33 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
     away <- tibble(player_name = away_players, player_min = away_mins,
                    player_side = "away")
     
-    players <- bind_rows(home, away) %>% 
+    players <- bind_rows(home, away) |> 
       filter(!(player_name %in% c("Reserves", "Team Totals")))
     
-    bottom_info <- url_get %>% 
-      read_html() %>% 
-      html_nodes(paste0("#all_box_", tolower(home_team), "_advanced+ div")) %>% 
-      html_text(trim = T) #%>% 
+    bottom_info <- url_get |> 
+      read_html() |> 
+      html_nodes(paste0("#all_box_", tolower(home_team), "_advanced+ div")) |> 
+      html_text(trim = T) #|> 
       # str_remove_all("\\n")
     
     if (length(bottom_info) == 0) {
-      bottom_info <- url_get %>% 
-        read_html() %>% 
+      bottom_info <- url_get |> 
+        read_html() |> 
         # Problems with the bottom_info no longer detectable. 
-        html_text(trim = T) #%>% 
+        html_text(trim = T) #|> 
         # str_remove_all("\\n")
     }
     
-    refs <- bottom_info %>% 
-      str_extract(pattern = "(?<=Officials:).*") %>% 
-      str_split(",", simplify = T) %>% 
+    refs <- bottom_info |> 
+      str_extract(pattern = "(?<=Officials:).*") |> 
+      str_split(",", simplify = T) |> 
       str_trim()
-    attendance <- bottom_info %>% 
-      str_extract(pattern = "(?<=Attendance:).*") %>% 
+    attendance <- bottom_info |> 
+      str_extract(pattern = "(?<=Attendance:).*") |> 
       parse_number()
     if (is.na(attendance)) {
-        attendance <- bottom_info %>% 
-          str_extract(pattern = "(?<=Attendance:).*") %>% 
+        attendance <- bottom_info |> 
+          str_extract(pattern = "(?<=Attendance:).*") |> 
           parse_number()
       }
     
@@ -116,27 +116,27 @@ bkref_box_scores <- map(bkref_games$bkref_id, function(x) {
 if (is_empty(bkref_box_scores)) {
   box_scores <- old_box
 } else {
-  new_box <- bkref_box_scores %>% 
-    bind_rows() %>% 
-    left_join(bkref_games) %>% 
+  new_box <- bkref_box_scores |> 
+    bind_rows() |> 
+    left_join(bkref_games) |> 
     mutate(player_team = ifelse(player_side == "home", home, away))
   
   # Add in the new box scores to the old ones
-  box_scores <- bind_rows(old_box, new_box) %>% 
+  box_scores <- bind_rows(old_box, new_box) |> 
     filter(!is.na(bkref_id))
 }
 
 # Hack for Lauren Holtkamp missing from referee assignments
 holt_missing = c("201912090NOP", "201912060CHI")
-box_scores <- box_scores %>% 
+box_scores <- box_scores |> 
   mutate(ref_3 = ifelse(is.na(ref_3) & bkref_id %in% holt_missing,
-                        "Lauren Holtkamp", ref_3)) %>% 
+                        "Lauren Holtkamp", ref_3)) |> 
   # Digit issue, limit to write only 15 digits
-  mutate(player_min = format(player_min, digits = 14)) %>% 
+  mutate(player_min = format(player_min, digits = 14)) |> 
   # Change instances of "Lauren Holtkamp" to "Lauren Holtkamp-Sterling"
   mutate(ref_1 = str_replace(ref_1, "Holtkamp$", "Holtkamp-Sterling"),
          ref_2 = str_replace(ref_2, "Holtkamp$", "Holtkamp-Sterling"),
-         ref_3 = str_replace(ref_3, "Holtkamp$", "Holtkamp-Sterling")) %>% 
+         ref_3 = str_replace(ref_3, "Holtkamp$", "Holtkamp-Sterling")) |> 
   arrange(bkref_id)
 
 

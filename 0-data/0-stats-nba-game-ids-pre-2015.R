@@ -92,18 +92,18 @@ if (file.exists(paste0(id_source, "/game_ids_pre2015.csv"))) {
     "VAN" = "MEM")
   
   pre2015_ids <- paste0("https://raw.githubusercontent.com/gmf05/",
-                        "nba/master/data/csv/games_96-14.csv") %>% 
-    read_csv(col_types = cols(.default = "c")) %>% 
+                        "nba/master/data/csv/games_96-14.csv") |> 
+    read_csv(col_types = cols(.default = "c")) |> 
     janitor::clean_names()
   
-  pre2015_ids <- pre2015_ids %>% 
+  pre2015_ids <- pre2015_ids |> 
     mutate(date = as.Date(str_sub(game_code, 1, 8), format = "%Y%m%d"),
            home = ifelse(is.na(team_cross[home]),
                          home,
                          team_cross[home]),
            away = ifelse(is.na(team_cross[away]),
                          away,
-                         team_cross[away])) %>% 
+                         team_cross[away])) |> 
     select(gid = game_id, gcode = game_code, date, home, away)
   
   write_csv(pre2015_ids, paste0(id_source, "/game_ids_pre2015.csv"))
@@ -121,17 +121,18 @@ if (file.exists(paste0(id_source, "/game_ids_pre2015_scores.csv"))) {
   }
 
 
-missing_ids <- pre2015_ids %>% 
-  mutate(home_score = if("home_score" %in% colnames(.)) home_score else NA_integer_,
-         away_score = if("away_score" %in% colnames(.)) away_score else NA_integer_) %>% 
-  # Let's only get post 2014 games
-  filter(!(gid %in% pre2015_scores$gid))
+missing_ids <- pre2015_ids  |>  
+  mutate(home_score = if("home_score" %in% colnames(pre2015_ids)) home_score else NA_integer_,
+         away_score = if("away_score" %in% colnames(pre2015_ids)) away_score else NA_integer_) |> 
+  # Let's only get post 2013-14 games
+  filter(!(gid %in% pre2015_scores$gid),
+         date > "2013-10-01")
 
 
 # ---- query --------------------------------------------------------------
 
 # x = "0022100747"
-missing_games <- top_n(missing_ids, 75, date) %>% 
+missing_games <- top_n(missing_ids, 75, date) |> 
   pull(gid)
 
 info_mapped <- purrr::map(missing_games, function(x) {
@@ -150,8 +151,8 @@ info_mapped <- purrr::map(missing_games, function(x) {
     return(game_output)
   } else {
     json <- tryCatch({
-      res$content %>%
-        rawToChar() %>%
+      res$content |>
+        rawToChar() |>
         jsonlite::fromJSON(simplifyVector = T, flatten = T)
     }, error = function(e) {
       message(paste("Looks like an error for game: ", x))
@@ -174,36 +175,36 @@ info_mapped <- purrr::map(missing_games, function(x) {
       names(results) <- headers
       results$table <- name
       return(results)
-    }) %>% 
+    }) |> 
       bind_rows()
     
-    team_ids <- json_map %>% 
-      select(TEAM_ID, TEAM_ABBREVIATION) %>% 
-      filter(!is.na(TEAM_ID)) %>% 
-      distinct() %>% 
+    team_ids <- json_map |> 
+      select(TEAM_ID, TEAM_ABBREVIATION) |> 
+      filter(!is.na(TEAM_ID)) |> 
+      distinct() |> 
       column_to_rownames("TEAM_ID")
     
-    id_info <- json_map %>% 
-      filter(table == "GameSummary") %>% 
-      select_if(~ !any(is.na(.))) %>% 
+    id_info <- json_map |> 
+      filter(table == "GameSummary") |> 
+      select_if(~ !any(is.na(.))) |> 
       mutate(date = as.Date(str_sub(GAME_DATE_EST, 1, 10)),
              home = team_ids[HOME_TEAM_ID,],
-             away = team_ids[VISITOR_TEAM_ID,]) %>% 
+             away = team_ids[VISITOR_TEAM_ID,]) |> 
       select(gid = GAME_ID, gcode = GAMECODE,
              date, home, away)
     
-    score <- json_map %>% 
-      filter(table == "LineScore") %>% 
-      select_if(~ !any(is.na(.))) %>% 
+    score <- json_map |> 
+      filter(table == "LineScore") |> 
+      select_if(~ !any(is.na(.))) |> 
       mutate(date = as.Date(str_sub(GAME_DATE_EST, 1, 10)),
              team_abr = TEAM_ABBREVIATION,
              side = if_else(team_abr == id_info$home, "home", "away"),
-             score = PTS) %>% 
-      select(gid = GAME_ID, date, side, team_abr, score) %>% 
+             score = PTS) |> 
+      select(gid = GAME_ID, date, side, team_abr, score) |> 
       pivot_wider( c("gid", "date"),
                    names_from = "side",
                    names_glue = "{side}_{.value}",
-                   values_from = c(team_abr, score)) %>% 
+                   values_from = c(team_abr, score)) |> 
       select(gid, date, home = home_team_abr, home_score,
              away = away_team_abr, away_score)
     
@@ -213,16 +214,16 @@ info_mapped <- purrr::map(missing_games, function(x) {
   }
 })
 
-info_scores <- info_mapped %>% 
+info_scores <- info_mapped |> 
   bind_rows()
 
 # Then add in info_scores
-info_scores %>% 
-  mutate_all(as.character) %>% 
-  bind_rows(pre2015_scores) %>% 
-  arrange(gid) %>% 
-  distinct() %>% 
-  filter(!is.na(gid), !is.na(gcode)) %>% 
+info_scores |> 
+  mutate_all(as.character) |> 
+  bind_rows(pre2015_scores) |> 
+  arrange(gid) |> 
+  distinct() |> 
+  filter(!is.na(gid), !is.na(gcode)) |> 
   write_csv(paste0(id_source, "/game_ids_pre2015_scores.csv"))
 
 # 

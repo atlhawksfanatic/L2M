@@ -22,7 +22,7 @@ l2m_games <- read_csv("1-tidy/L2M/L2M_raw_api.csv")
 
 # Download all NBA game_id and schedule information
 if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
-  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) %>% 
+  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) |> 
     select(-networks)
 } else {
   print("Please download game schedule from 0-stats-nba-game-ids.R")
@@ -30,20 +30,20 @@ if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
 }
 
 # Games in the L2M
-stats_nba_games <- l2m_games %>% 
-  select(date, home, away) %>% 
+stats_nba_games <- l2m_games |> 
+  select(date, home, away) |> 
   distinct()
 
-stats_nba_game_ids <- stats_nba_games %>% 
-  left_join(id_list) %>% 
+stats_nba_game_ids <- stats_nba_games |> 
+  left_join(id_list) |> 
   arrange(date)
 
 if (file.exists("0-data/stats_nba/stats_nba_box.csv")) {
   old_box <- read_csv("0-data/stats_nba/stats_nba_box.csv",
-                      col_types = cols(.default = "c")) %>% 
+                      col_types = cols(.default = "c")) |> 
     mutate(MIN = as.numeric(MIN),
-           date = as.Date(date)) %>% 
-    select(-any_of(c("home_score", "away_score", "networks", "national_tv"))) %>% 
+           date = as.Date(date)) |> 
+    select(-any_of(c("home_score", "away_score", "networks", "national_tv"))) |> 
     left_join(stats_nba_game_ids)
 } else {
   old_box <- data.frame(gid = NA)
@@ -51,14 +51,14 @@ if (file.exists("0-data/stats_nba/stats_nba_box.csv")) {
   # Read the list of already downloaded box scores
   # queried_box <- dir(box_source, pattern = ".csv", full.names = T)
   # old_map <- map(queried_box, ~read_csv(., col_types = cols(.default = "c")))
-  # old_box <- old_map %>% 
-  #   bind_rows() %>% 
+  # old_box <- old_map |> 
+  #   bind_rows() |> 
   #   mutate(MIN = as.numeric(MIN),
   #          date = as.Date(date))
 }
 
 # Only download the missing box scores:
-missing_ids <- stats_nba_game_ids %>% 
+missing_ids <- stats_nba_game_ids |> 
   filter(!is.na(gid), !(gid %in% unique(old_box$gid)))
 
 # ---- nba-stats-api ------------------------------------------------------
@@ -106,8 +106,8 @@ box_mapped <- purrr::map(missing_ids$gid, function(x) {
     return(box_score_info)
   } else {
     json <-
-      res$content %>%
-      rawToChar() %>%
+      res$content |>
+      rawToChar() |>
       jsonlite::fromJSON(simplifyVector = T, flatten = T)
     
     json_map <- pmap(json$resultSets, function(name, headers, rowSet) {
@@ -117,9 +117,9 @@ box_mapped <- purrr::map(missing_ids$gid, function(x) {
       return(results)
     })
     
-    box_score_info <- json_map %>% 
-      bind_rows() %>% 
-      filter(table == "PlayerStats") %>% 
+    box_score_info <- json_map |> 
+      bind_rows() |> 
+      filter(table == "PlayerStats") |> 
       select(any_of(c("GAME_ID", "TEAM_ID", "TEAM_ABBREVIATION",
                       "PLAYER_ID", "PLAYER_NAME", "NICKNAME", "MIN")))
     
@@ -143,8 +143,8 @@ info_mapped <- purrr::map(missing_ids$gid, function(x) {
     return(game_output)
   } else {
     json <-
-      res$content %>%
-      rawToChar() %>%
+      res$content |>
+      rawToChar() |>
       jsonlite::fromJSON(simplifyVector = T, flatten = T)
     
     json_map <- pmap(json$resultSets, function(name, headers, rowSet) {
@@ -160,28 +160,28 @@ info_mapped <- purrr::map(missing_ids$gid, function(x) {
       return(results)
     })
     
-    game_info <- json_map %>% 
-      bind_rows() %>% 
-      filter(table == "GameInfo") %>% 
-      select_if(~ !any(is.na(.))) %>% 
+    game_info <- json_map |> 
+      bind_rows() |> 
+      filter(table == "GameInfo") |> 
+      select_if(~ !any(is.na(.))) |> 
       select(-table)
     
-    officials <- json_map %>% 
-      bind_rows() %>% 
-      filter(table == "Officials") %>% 
-      select_if(~ !any(is.na(.))) %>% 
+    officials <- json_map |> 
+      bind_rows() |> 
+      filter(table == "Officials") |> 
+      select_if(~ !any(is.na(.))) |> 
       select(-table)
     
-    officials_wide <- officials %>% 
-      arrange(OFFICIAL_ID) %>% 
+    officials_wide <- officials |> 
+      arrange(OFFICIAL_ID) |> 
       mutate(OFFICIAL = paste(FIRST_NAME, LAST_NAME),
-             num = 1:n()) %>% 
-      select(-FIRST_NAME, -LAST_NAME) %>% 
+             num = 1:n()) |> 
+      select(-FIRST_NAME, -LAST_NAME) |> 
       pivot_wider(names_from = num,
                   values_from = c(OFFICIAL, OFFICIAL_ID, JERSEY_NUM),
                   names_glue = "{.value}_{num}")
     
-    game_output <- bind_cols(game_info, officials_wide) %>% 
+    game_output <- bind_cols(game_info, officials_wide) |> 
       mutate(GAME_ID = json$parameters$GameID)
     
     return(game_output)
@@ -195,10 +195,10 @@ info_mapped <- purrr::map(missing_ids$gid, function(x) {
 
 # Take new box score info and combine along with ID information to determine
 # home/away players
-new_box <- box_mapped %>% 
+new_box <- box_mapped |> 
   bind_rows()
 
-new_info <- info_mapped %>% 
+new_info <- info_mapped |> 
   bind_rows()
 
 
@@ -207,10 +207,10 @@ if (is_empty(new_box) & is_empty(new_info)) {
   new_box_info <- data.frame(gid = NA)
 } else {
   # get player's side and convert the minutes into a numeric
-  new_box_info <- new_box %>% 
-    left_join(new_info) %>% 
-    mutate(gid = GAME_ID) %>% 
-    left_join(stats_nba_game_ids) %>% 
+  new_box_info <- new_box |> 
+    left_join(new_info) |> 
+    mutate(gid = GAME_ID) |> 
+    left_join(stats_nba_game_ids) |> 
     mutate(PLAYER_SIDE = ifelse(home == TEAM_ABBREVIATION, "home", "away"),
            MIN = as.numeric(str_extract(MIN, ".+?(?=:)")) +
              as.numeric(str_remove(MIN, ".*:")) / 60)
@@ -230,8 +230,8 @@ ind_games_csv <- purrr::map(unique(new_box_info$gid), function(x) {
 })
 
 # Add in the already scrapped box score info, then arrange by ID
-fresh_box_info <- bind_rows(old_box, new_box_info) %>% 
-  filter(!is.na(gid)) %>% 
+fresh_box_info <- bind_rows(old_box, new_box_info) |> 
+  filter(!is.na(gid)) |> 
   arrange(date, gid)
 
 

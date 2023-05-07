@@ -31,13 +31,13 @@ if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
 
 # Read the list of already downloaded referee assignments
 queried_ref <- dir(ref_source, pattern = ".csv", full.names = T,
-                   recursive = T) %>% 
-  as_tibble() %>% 
+                   recursive = T) |> 
+  as_tibble() |> 
   mutate(date = as.Date(tools::file_path_sans_ext(basename(value))))
 
-new_game_dates <- id_list %>% 
+new_game_dates <- id_list |> 
   # L2Ms began on 2015-03-01, so only use those dates onward in the id_list
-  filter(date > "2015-02-28") %>% 
+  filter(date > "2015-02-28") |> 
   # And don't download for a date that has already occurred
   filter(!date %in% queried_ref$date)
 
@@ -66,15 +66,15 @@ official_nba_headers <- c(
 #  anytime before 10AM Eastern of current day when assignments are typically
 #  released, then query API
 
-map_dates <- new_game_dates %>% 
+map_dates <- new_game_dates |> 
   # Check if it is after 10AM in New York or not
-  filter(date < floor_date(now(tz = "America/New_York") - 60*60*10) + 1) %>% 
+  filter(date < floor_date(now(tz = "America/New_York") - 60*60*10) + 1) |> 
   # filter(date < ifelse(format(Sys.time(), tz = "America/New_York") >
   #                        as.POSIXct(paste(Sys.Date(), "10:00"),
   #                                   tz = "America/New_York"),
   #                      Sys.Date() + 1,
-  #                      Sys.Date())) %>% 
-  select(date) %>% 
+  #                      Sys.Date())) |> 
+  select(date) |> 
   distinct()
 
 ref_mapped <- purrr::map(map_dates$date[1:min(100, length(map_dates$date))],
@@ -95,8 +95,8 @@ ref_mapped <- purrr::map(map_dates$date[1:min(100, length(map_dates$date))],
     return(ref_info)
   } else {
     json <-
-      res$content %>%
-      rawToChar() %>%
+      res$content |>
+      rawToChar() |>
       jsonlite::fromJSON(simplifyVector = T, flatten = T)
     
     if (is_empty(json$nba$Table$rows)) {
@@ -109,10 +109,10 @@ ref_mapped <- purrr::map(map_dates$date[1:min(100, length(map_dates$date))],
         if (is_empty(y$Table1$rows)) {
           league_replay <- data.frame(date = x)
         } else {
-          league_replay <- y$Table1$rows %>%
-            distinct() %>% 
-            mutate(n = row_number()) %>%
-            rename(replaycenter_official_code = official_code) %>% 
+          league_replay <- y$Table1$rows |>
+            distinct() |> 
+            mutate(n = row_number()) |>
+            rename(replaycenter_official_code = official_code) |> 
             pivot_wider(game_date,
                         names_from = "n",
                         names_sep = "",
@@ -123,8 +123,8 @@ ref_mapped <- purrr::map(map_dates$date[1:min(100, length(map_dates$date))],
         if (is_empty(league_games)) {
           league_date <- tibble(date = x)
         } else {
-          league_date <- league_games %>% 
-            mutate(date = x) %>% 
+          league_date <- league_games |> 
+            mutate(date = x) |> 
             left_join(league_replay)
         }
         return(league_date)
@@ -151,7 +151,7 @@ ind_games_csv <- purrr::map(ref_mapped, function(x) {
     write_csv(temp, paste0(ref_source, "/", yy, "/", game_date, ".csv"))
     
     return(data.frame(temp, league = yy))
-  }) %>% 
+  }) |> 
     bind_rows()
 })
 
@@ -159,84 +159,84 @@ ind_games_csv <- purrr::map(ref_mapped, function(x) {
 
 new_leagues <- bind_rows(ind_games_csv)
 
-new_leagues %>% 
-  split(f = as.factor(.$league)) %>% 
+split(new_leagues, f = as.factor(new_leagues$league)) |> 
   list2env(globalenv())
+
 
 # NBA Data
 if (!file.exists(paste0(local_dir, "/nba_referee_assignments.csv"))) {
-  nba %>% 
-    mutate(across(everything(), as.character)) %>% 
+  nba |> 
+    mutate(across(everything(), as.character)) |> 
     # For some reason there are duplicated dates
-    select(-date, -league) %>% 
-    distinct() %>% 
-    filter(!is.na(game_date)) %>% 
-    relocate(contains("replaycenter_official_code"), .after = last_col()) %>% 
-    arrange(game_code, game_id) %>% 
+    select(-date, -league) |> 
+    distinct() |> 
+    filter(!is.na(game_date)) |> 
+    relocate(contains("replaycenter_official_code"), .after = last_col()) |> 
+    arrange(game_code, game_id) |> 
     write_csv(paste0(local_dir, "/nba_referee_assignments.csv"))
 } else {
   nba_old <- read_csv(paste0(local_dir, "/nba_referee_assignments.csv"),
                       col_types = cols(.default = "c"))
-  nba %>% 
-    mutate(across(everything(), as.character)) %>% 
+  nba |> 
+    mutate(across(everything(), as.character)) |> 
     # For some reason there are duplicated dates
-    select(-date, -league) %>% 
-    bind_rows(nba_old) %>% 
-    distinct() %>% 
-    filter(!is.na(game_date)) %>% 
-    relocate(contains("replaycenter_official_code"), .after = last_col()) %>% 
-    arrange(game_code, game_id) %>% 
+    select(-date, -league) |> 
+    bind_rows(nba_old) |> 
+    distinct() |> 
+    filter(!is.na(game_date)) |> 
+    relocate(contains("replaycenter_official_code"), .after = last_col()) |> 
+    arrange(game_code, game_id) |> 
     write_csv(paste0(local_dir, "/nba_referee_assignments.csv"))
 }
 
 # G League
 if (!file.exists(paste0(local_dir, "/gl_referee_assignments.csv"))) {
-  gl %>% 
-    mutate(across(everything(), as.character)) %>% 
+  gl |> 
+    mutate(across(everything(), as.character)) |> 
     # For some reason there are duplicated dates
-    select(-date, -league) %>% 
-    distinct() %>% 
-    filter(!is.na(game_date)) %>% 
-    relocate(contains("replaycenter_official_code"), .after = last_col()) %>% 
-    arrange(game_code, game_id) %>% 
+    select(-date, -league) |> 
+    distinct() |> 
+    filter(!is.na(game_date)) |> 
+    relocate(contains("replaycenter_official_code"), .after = last_col()) |> 
+    arrange(game_code, game_id) |> 
     write_csv(paste0(local_dir, "/gl_referee_assignments.csv"))
 } else {
   gl_old <- read_csv(paste0(local_dir, "/gl_referee_assignments.csv"),
                       col_types = cols(.default = "c"))
-  gl %>% 
-    mutate(across(everything(), as.character)) %>% 
+  gl |> 
+    mutate(across(everything(), as.character)) |> 
     # For some reason there are duplicated dates
-    select(-date, -league) %>% 
-    bind_rows(gl_old) %>% 
-    distinct() %>% 
-    filter(!is.na(game_date)) %>% 
-    relocate(contains("replaycenter_official_code"), .after = last_col()) %>% 
-    arrange(game_code, game_id) %>% 
+    select(-date, -league) |> 
+    bind_rows(gl_old) |> 
+    distinct() |> 
+    filter(!is.na(game_date)) |> 
+    relocate(contains("replaycenter_official_code"), .after = last_col()) |> 
+    arrange(game_code, game_id) |> 
     write_csv(paste0(local_dir, "/gl_referee_assignments.csv"))
 }
 
 # WNBA Data
 if (!file.exists(paste0(local_dir, "/wnba_referee_assignments.csv"))) {
-  wnba %>% 
-    mutate(across(everything(), as.character)) %>% 
+  wnba |> 
+    mutate(across(everything(), as.character)) |> 
     # For some reason there are duplicated dates
-    select(-date, -league) %>% 
-    distinct() %>% 
-    filter(!is.na(game_date)) %>% 
-    relocate(contains("replaycenter_official_code"), .after = last_col()) %>% 
-    arrange(game_code, game_id) %>% 
+    select(-date, -league) |> 
+    distinct() |> 
+    filter(!is.na(game_date)) |> 
+    relocate(contains("replaycenter_official_code"), .after = last_col()) |> 
+    arrange(game_code, game_id) |> 
     write_csv(paste0(local_dir, "/wnba_referee_assignments.csv"))
 } else {
   wnba_old <- read_csv(paste0(local_dir, "/wnba_referee_assignments.csv"),
                       col_types = cols(.default = "c"))
-  wnba %>% 
-    mutate(across(everything(), as.character)) %>% 
+  wnba |> 
+    mutate(across(everything(), as.character)) |> 
     # For some reason there are duplicated dates
-    select(-date, -league) %>% 
-    bind_rows(wnba_old) %>% 
-    distinct() %>% 
-    filter(!is.na(game_date)) %>% 
-    relocate(contains("replaycenter_official_code"), .after = last_col()) %>% 
-    arrange(game_code, game_id) %>% 
+    select(-date, -league) |> 
+    bind_rows(wnba_old) |> 
+    distinct() |> 
+    filter(!is.na(game_date)) |> 
+    relocate(contains("replaycenter_official_code"), .after = last_col()) |> 
+    arrange(game_code, game_id) |> 
     write_csv(paste0(local_dir, "/wnba_referee_assignments.csv"))
 }

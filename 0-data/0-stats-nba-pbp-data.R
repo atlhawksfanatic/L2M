@@ -22,7 +22,7 @@ l2m_games <- read_csv("1-tidy/L2M/L2M_raw_api.csv")
 
 # Download all NBA game_id and schedule information
 if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
-  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) %>% 
+  id_list <- read_csv(paste0(local_dir, "/nba_game_schedule.csv")) |> 
     select(-national_tv)
 } else {
   print("Please download game schedule from 0-stats-nba-game-ids.R")
@@ -31,19 +31,28 @@ if (file.exists(paste0(local_dir, "/nba_game_schedule.csv"))) {
 
 
 # Games in the L2M
-stats_nba_games <- l2m_games %>% 
-  select(date, home, away) %>% 
+stats_nba_games <- l2m_games |> 
+  select(date, home, away) |> 
   distinct()
 
-stats_nba_game_ids <- stats_nba_games %>% 
-  left_join(id_list) %>% 
+stats_nba_game_ids <- stats_nba_games |> 
+  left_join(id_list) |> 
   arrange(date)
 
 # Read the list of already downloaded box scores
 queried_pbp <- dir(pbp_source, pattern = ".csv", full.names = T)
 
 # Only download the missing pbp scores:
-new_game_ids <- stats_nba_game_ids %>% 
+new_game_ids <- stats_nba_game_ids |> 
+  filter(!is.na(gid),
+         !(gid %in% 
+             tools::file_path_sans_ext(basename(queried_pbp))))
+
+# All games instead of just L2Ms
+new_game_ids <- id_list |> 
+  filter(date < Sys.Date(),
+         # date > "2022-10-01",
+         !is.na(home_score)) |> 
   filter(!is.na(gid),
          !(gid %in% 
              tools::file_path_sans_ext(basename(queried_pbp))))
@@ -69,8 +78,10 @@ stats_nba_headers <- c(
 # ---- query --------------------------------------------------------------
 
 # Take the list of nba_game_ids that are missing pbp, then query API
-pbp_mapped <- purrr::map(new_game_ids$gid, function(x) {
-  Sys.sleep(runif(1, 0.5, 2.5))
+games_to_map <- new_game_ids$gid[1:(min(length(new_game_ids$gid), 25))]
+
+pbp_mapped <- purrr::map(games_to_map, function(x) {
+  Sys.sleep(runif(1, 2.5, 5.5))
   print(paste(x, "at", Sys.time()))
   
   # PBP v2 info:
@@ -93,16 +104,21 @@ pbp_mapped <- purrr::map(new_game_ids$gid, function(x) {
     return(pbp_score_info)
   } else {
     json <-
-      res$content %>%
-      rawToChar() %>%
+      res$content |>
+      rawToChar() |>
       jsonlite::fromJSON(simplifyVector = T, flatten = T)
     
-    json_map <- pmap(json$resultSets, function(name, headers, rowSet) {
-      results <- data.frame(rowSet)
-      names(results) <- headers
-      results$table <- name
-      return(results)
-    })
+    if (is_empty(json$resultSets$rowSet[[1]])) {
+      pbp_score_info <- data.frame(table = NA)
+      return(pbp_score_info)
+    } else {
+      json_map <- pmap(json$resultSets, function(name, headers, rowSet) {
+        results <- data.frame(rowSet)
+        names(results) <- headers
+        results$table <- name
+        return(results)
+      })
+    }
     
     pbp_score_info <- json_map[[1]]
     return(pbp_score_info)
@@ -120,6 +136,8 @@ ind_games_csv <- purrr::map(pbp_mapped, function(x) {
   if (nrow(x) > 1) {
     write_csv(x, paste0(pbp_source, "/", game_id, ".csv"))
     return(data.frame(game_id, status = "good"))
+  } else if (is_null(game_id)) {
+    return(data.frame(game_id = NA_character_, status = "bad"))
   } else {
     return(data.frame(game_id, status = "bad"))
   }

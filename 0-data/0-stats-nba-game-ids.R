@@ -92,18 +92,18 @@ if (file.exists(paste0(id_source, "/game_ids_pre2015_scores.csv"))) {
     "VAN" = "MEM")
   
   pre2015_ids <- paste0("https://raw.githubusercontent.com/gmf05/",
-                      "nba/master/data/csv/games_96-14.csv") %>% 
-    read_csv(col_types = cols(.default = "c")) %>% 
+                      "nba/master/data/csv/games_96-14.csv") |> 
+    read_csv(col_types = cols(.default = "c")) |> 
     janitor::clean_names()
   
-  pre2015_ids <- pre2015_ids %>% 
+  pre2015_ids <- pre2015_ids |> 
     mutate(date = as.Date(str_sub(game_code, 1, 8), format = "%Y%m%d"),
            home = ifelse(is.na(team_cross[home]),
                          home,
                          team_cross[home]),
            away = ifelse(is.na(team_cross[away]),
                          away,
-                         team_cross[away])) %>% 
+                         team_cross[away])) |> 
     select(gid = game_id, gcode = game_code, date, home, away)
   
   write_csv(pre2015_ids, paste0(id_source, "/game_ids_pre2015.csv"))
@@ -139,8 +139,8 @@ if (file.exists(paste0(id_source, "/game_ids_2015_playoffs.csv"))) {
       return(id_info)
     } else {
       json <-
-        res$content %>%
-        rawToChar() %>%
+        res$content |>
+        rawToChar() |>
         jsonlite::fromJSON(simplifyVector = T, flatten = T)
       
       json_map <- pmap(json$resultSets, function(name, headers, rowSet) {
@@ -154,7 +154,7 @@ if (file.exists(paste0(id_source, "/game_ids_2015_playoffs.csv"))) {
         names(results) <- headers
         results$table <- name
         return(results)
-      }) %>% 
+      }) |> 
         bind_rows()
       
       # Is this just a summary of the series? Then exit.
@@ -162,33 +162,33 @@ if (file.exists(paste0(id_source, "/game_ids_2015_playoffs.csv"))) {
         id_info <- data.frame(gid = x)
         print(paste("Series with game ", x, " does not exist"))
       } else {
-        team_ids <- json_map %>% 
-          select(TEAM_ID, TEAM_ABBREVIATION) %>% 
-          filter(!is.na(TEAM_ID)) %>% 
-          distinct() %>% 
+        team_ids <- json_map |> 
+          select(TEAM_ID, TEAM_ABBREVIATION) |> 
+          filter(!is.na(TEAM_ID)) |> 
+          distinct() |> 
           column_to_rownames("TEAM_ID")
         
-        id_info <- json_map %>% 
-          filter(table == "GameSummary") %>% 
-          select_if(~ !any(is.na(.))) %>% 
+        id_info <- json_map |> 
+          filter(table == "GameSummary") |> 
+          select_if(~ !any(is.na(.))) |> 
           mutate(date = as.Date(str_sub(GAME_DATE_EST, 1, 10)),
                  home = team_ids[HOME_TEAM_ID,],
-                 away = team_ids[VISITOR_TEAM_ID,]) %>% 
+                 away = team_ids[VISITOR_TEAM_ID,]) |> 
           select(gid = GAME_ID, gcode = GAMECODE,
                  date, home, away)
         
-        score <- json_map %>% 
-          filter(table == "LineScore") %>% 
-          select_if(~ !any(is.na(.))) %>% 
+        score <- json_map |> 
+          filter(table == "LineScore") |> 
+          select_if(~ !any(is.na(.))) |> 
           mutate(date = as.Date(str_sub(GAME_DATE_EST, 1, 10)),
                  team_abr = TEAM_ABBREVIATION,
                  side = if_else(team_abr == id_info$home, "home", "away"),
-                 score = PTS) %>% 
-          select(gid = GAME_ID, date, side, team_abr, score) %>% 
+                 score = PTS) |> 
+          select(gid = GAME_ID, date, side, team_abr, score) |> 
           pivot_wider( c("gid", "date"),
                        names_from = "side",
                        names_glue = "{side}_{.value}",
-                       values_from = c(team_abr, score)) %>% 
+                       values_from = c(team_abr, score)) |> 
           select(gid, date, home = home_team_abr, home_score,
                  away = away_team_abr, away_score)
         
@@ -200,8 +200,8 @@ if (file.exists(paste0(id_source, "/game_ids_2015_playoffs.csv"))) {
   })
   
   
-  yoffs <- bind_rows(yoffs_mapped) %>% 
-    filter(!is.na(gcode)) %>% 
+  yoffs <- bind_rows(yoffs_mapped) |> 
+    filter(!is.na(gcode)) |> 
     distinct()
   
   write_csv(yoffs, paste0(id_source, "/game_ids_2015_playoffs.csv"))
@@ -222,7 +222,7 @@ ids_map <- map(years, function(x) {
   if (file.exists(paste0(id_source, "/game_ids_", x, ".csv")) &
       x != end_year) {
     id_info <- read_csv(paste0(id_source, "/game_ids_", x, ".csv"),
-                        col_types = cols(.default = "c")) %>% 
+                        col_types = cols(.default = "c")) |> 
       mutate(date = as.Date(date))
     return(id_info)
   } else {
@@ -244,25 +244,25 @@ ids_map <- map(years, function(x) {
     print(paste("Season ", x, " does not exist"))
   } else {
     id_info <-
-      res$content %>%
-      rawToChar() %>%
-      jsonlite::fromJSON(flatten = T) %>% 
-      .$lscd %>% 
-      .$mscd.g %>% 
-      bind_rows() %>% 
-      mutate(date = as.Date(gdte)) %>% 
+      res$content |>
+      rawToChar() |>
+      jsonlite::fromJSON(flatten = T) |> 
+      pluck("lscd") |> 
+      pluck("mscd.g") |> 
+      bind_rows() |> 
+      mutate(date = as.Date(gdte)) |> 
       # Turn the broadcast into consistent data.frames and not lists
-      mutate(bd.b = map(bd.b, as.data.frame)) %>% 
+      mutate(bd.b = map(bd.b, as.data.frame)) |> 
       # Unravel the broadcast variables for each game
-      unnest(bd.b, keep_empty = T, names_sep = "_") %>%
+      unnest(bd.b, keep_empty = T, names_sep = "_") |>
       group_by(gid, gcode, date, home = h.ta, away = v.ta,
-               home_score = h.s, away_score = v.s) %>%
+               home_score = h.s, away_score = v.s) |>
       # Extract only the times a game was on national TV, which could be null
       summarise(national_tv = list(bd.b_disp[bd.b_scope == "natl" &
-                                               bd.b_type == "tv"])) %>%
+                                               bd.b_type == "tv"])) |>
       # Replace the possible nulls with NA for national TV and unravel
-      unnest(national_tv, keep_empty = T) %>%
-      # select(gid, gcode, date, home = h.ta, away = v.ta) %>%
+      unnest(national_tv, keep_empty = T) |>
+      # select(gid, gcode, date, home = h.ta, away = v.ta) |>
       arrange(date, gid)
     
     # Save each season game schedule as csv
@@ -296,27 +296,27 @@ tv_cross <- c(#"ABC" = "",
   "TSN2" = "no",
   "WGN" = "no")
 
-wayback <- "0-data/wayback/tv/NBA dot com Wayback TV Schedule - ALL.csv" %>% 
-  read_csv(col_types = cols(.default = "c")) %>%
-  mutate_all(~str_remove(., "\n")) %>% 
-  type_convert() %>% 
+wayback <- "0-data/wayback/tv/NBA dot com Wayback TV Schedule - ALL.csv" |> 
+  read_csv(col_types = cols(.default = "c")) |>
+  mutate_all(~str_remove(., "\n")) |> 
+  type_convert() |> 
   mutate(date = as.Date(date, "%m/%d/%Y"),
          national_tv = ifelse(is.na(tv_cross[network_1]),
                               network_1,
                               tv_cross[network_1]))
 
-j5 <- bind_rows(pre2015_ids, yoffs) %>% 
-  left_join(wayback) %>% 
+j5 <- bind_rows(pre2015_ids, yoffs) |> 
+  left_join(wayback) |> 
   select(gid, gcode, date, home, away, home_score, away_score,
-         networks, national_tv) %>% 
+         networks, national_tv) |> 
   replace_na(list(national_tv = "no"))
   
 # Bring them all together
-game_list <- bind_rows(ids_map) %>% 
-  replace_na(list(national_tv = "no")) %>% 
-  mutate_at(vars(home_score, away_score), as.numeric) %>% 
-  bind_rows(j5) %>% 
-  filter(!is.na(gid), date > "2001-11-12") %>% 
+game_list <- bind_rows(ids_map) |> 
+  replace_na(list(national_tv = "no")) |> 
+  mutate_at(vars(home_score, away_score), as.numeric) |> 
+  bind_rows(j5) |> 
+  filter(!is.na(gid), date > "2001-11-12") |> 
   arrange(date, gid)
 
 
