@@ -143,6 +143,16 @@ p2_off <- paste0("Curtis Blair, Tony Brothers, Nick Buchert, Sean Corbin, ",
                  "Josh Tiven, James Williams, Sean Wright, Zach Zarba")
 p2_alt <- paste0("Brent Barnaky, JB DeRosa, Aaron Smith, Justin Van Duyne")
 
+# https://twitter.com/NBAOfficial/status/1658527767150096386
+p3_off <- paste0("Curtis Blair, Tony Brothers, Marc Davis, Tyler Ford, ",
+                 "Brian Forte, Scott Foster, John Goble, David Guthrie, ",
+                 "Bill Kennedy, Courtney Kirkland, Eric Lewis, Mark Lindsay, ",
+                 "Tre Maddox, Ed Malloy, Rodney Mott, Kevin Scott, Ben Taylor, ",
+                 "Josh Tiven, James Williams, Zach Zarba")
+p3_alt <- paste0("Nick Buchert, Mitchell Ervin, Pat Fraher, Jacyn Goble")
+
+
+
 parse_officials <- function(ref_string, ref_status) {
   ref_string |> 
     str_split(",", simplify = T) |> 
@@ -160,15 +170,20 @@ second_round <- bind_rows(parse_officials(p2_off, "Selected"),
                           parse_officials(p2_alt, "Alternate")) |> 
   rename(second_round = status)
 
+third_round <- bind_rows(parse_officials(p3_off, "Selected"),
+                         parse_officials(p3_alt, "Alternate")) |> 
+  rename(third_round = status)
+
 poffs_2023 <- ref_rate_szn |> 
   filter(szn == 2023, szn_type == "regular season") |> 
   left_join(first_round) |> 
   left_join(second_round) |> 
+  left_join(third_round) |> 
   left_join(ref_bios)
 
 poffs_2023 |> 
   arrange(desc(nba_exp)) |> 
   select(szn, szn_type, official, nba_exp,
          ref_points, games, ref_rating, first_round,
-         second_round) |> 
+         second_round, third_round) |> 
   View()
