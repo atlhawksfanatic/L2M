@@ -358,6 +358,7 @@ l2m_games_bkref <-
                             date < as.Date("2021-10-01") ~ 2021,
                             date < as.Date("2022-10-01") ~ 2022,
                             date < as.Date("2023-10-01") ~ 2023,
+                            date < as.Date("2024-10-01") ~ 2024,
                             T ~ NA_real_),
          # Last day of the regular season
          # April 15, 2015
@@ -384,6 +385,8 @@ l2m_games_bkref <-
                                date < as.Date("2022-6-20") ~ T,
                              date > as.Date("2023-4-11") &
                                date < as.Date("2023-6-20") ~ T,
+                             date > as.Date("2024-4-16") &
+                               date < as.Date("2024-6-21") ~ T,
                              T ~ F))
 
 write_csv(l2m_games_bkref, paste0(local_dir, "/L2M.csv"))
