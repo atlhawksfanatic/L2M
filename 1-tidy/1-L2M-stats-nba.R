@@ -61,6 +61,7 @@ l2m_raw_szns <-
                             date < as.Date("2021-10-01") ~ 2021,
                             date < as.Date("2022-10-01") ~ 2022,
                             date < as.Date("2023-10-01") ~ 2023,
+                            date < as.Date("2024-10-01") ~ 2024,
                             T ~ NA_real_),
          # Last day of the regular season
          # April 15, 2015
@@ -87,6 +88,8 @@ l2m_raw_szns <-
                                date < as.Date("2022-6-20") ~ T,
                              date > as.Date("2023-4-11") &
                                date < as.Date("2023-6-20") ~ T,
+                             date > as.Date("2024-4-16") &
+                               date < as.Date("2024-6-21") ~ T,
                              T ~ F))
 
 # ---- correct-players ----------------------------------------------------
@@ -204,7 +207,7 @@ disadvantaged_box <- stats_games |>
 
 
 # Some of the odd player names in L2M that are coaches, need a map
-still <- 2023
+still <- 2024
 coach_stats <- tribble(
   ~player_name, ~player_team, ~season,
   "Alvin Gentry", "NOP", 2016:2020,

@@ -20,6 +20,7 @@ if (!file.exists(l2m_bad)) dir.create(l2m_bad, recursive = T)
 # # ---- game-ids -----------------------------------------------------------
 
 # Download all NBA game_id and schedule information
+# Based on: 0-stats-nba-game-ids.R
 if (file.exists("0-data/stats_nba/nba_game_schedule.csv")) {
   id_list <- read_csv("0-data/stats_nba/nba_game_schedule.csv")
 } else {
@@ -125,7 +126,7 @@ l2m_all <- l2m_mapped |>
   bind_rows() |> 
   mutate(across(everything(), as.character)) |> 
   bind_rows(l2m_old) |> 
-  arrange(GameDate, GameId, PeriodName, desc(PCTime))
+  arrange(GameId, PeriodName, desc(PCTime))
 
 # Minor corrections
 l2m_games_corrected <- l2m_all |> 
