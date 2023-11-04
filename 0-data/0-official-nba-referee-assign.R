@@ -113,7 +113,7 @@ ref_mapped <- purrr::map(map_dates$date[1:min(100, length(map_dates$date))],
             distinct() |> 
             mutate(n = row_number()) |>
             rename(replaycenter_official_code = official_code) |> 
-            pivot_wider(game_date,
+            pivot_wider(id_cols = game_date,
                         names_from = "n",
                         names_sep = "",
                         values_from = c("replaycenter_official_code",
