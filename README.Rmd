@@ -74,6 +74,8 @@ day_number <- function(season, datex) {
 # Download reports
 source("0-data/0-official-nba-referee-assign.R")
 source("0-data/0-official-nba-l2m.R")
+# Still manually scrape though
+source("0-data/0-L2M-download-2023-24.R")
 
 # Gather up and tidy the L2M reports
 source("1-tidy/1-L2M-raw-stats-nba.R") 
