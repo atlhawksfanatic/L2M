@@ -150,8 +150,11 @@ bad_players <- c("Alfonso Burke" = "Trey Burke",
                  "P.J. Dozier" = "PJ Dozier",
                  "Michael Frazier" = "Michael Frazier II",
                  "Nic Claxton" = "Nicolas Claxton",
-                 #2021-22
-                 "Enes Kanter" = "Enes Freedom")
+                 # 2021-22
+                 "Enes Kanter" = "Enes Freedom",
+                 # 2023-24
+                 "O.G. Anunoby" = "OG Anunoby",
+                 "Craig Porter" = "Craig Porter Jr.")
 
 l2m_games <- l2m_raw_szns |> 
   mutate(committing = ifelse(is.na(bad_players[committing]),
@@ -184,7 +187,8 @@ bad_stat_names <- c("P.J. Tucker" = "PJ Tucker", # NBA is inconsistent in L2Ms
                     "Kevin Knox II" = "Kevin Knox",
                     "Frank Mason III" = "Frank Mason",
                     "T.J. Leaf" = "TJ Leaf",
-                    "Walt Lemon Jr." = "Walter Lemon Jr.")
+                    "Walt Lemon Jr." = "Walter Lemon Jr.",
+                    "O.G. Anunoby" = "OG Anunoby")
 # Since the committing/disadvantaged can be from either roster, create 
 #  situations where it could be either
 stats_games <- stats_box |> 
@@ -227,12 +231,13 @@ coach_stats <- tribble(
   "Kidd Jason", "MIL", 2015:2018,
   "Kidd, Jason", "MIL", 2015:2018,
   "Michael Malone", "DEN", 2016:still,
-  "Mike Budenholzer", "MIL", 2019:still,
+  "Mike Budenholzer", "MIL", 2019:2023,
   "Mike Woodson", "LAC", 2015:2018,
-  "Nick Nurse", "TOR", 2019:still,
+  "Nick Nurse", "TOR", 2019:2023,
+  "Nick Nurse", "PHI", still,
   "Saunders, Flip", "MIN", 2015,
   "Stan Van Gundy", "NOP", 2021,
-  "Stephen Silas", "HOU", 2021:still,
+  "Stephen Silas", "HOU", 2021:2023,
   "Steve Clifford", "CHA", 2015:2018,
   "Tyronn Lue", "CLE",  2016:2019) |> 
   unnest(season)
