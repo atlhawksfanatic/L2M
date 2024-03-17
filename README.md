@@ -3,6 +3,9 @@
 
 # L2M
 
+[this is the csv of the data that you most likely
+want](1-tidy/L2M/L2M_stats_nba.csv)
+
 ## Articles
 
 - [How To Extract The Last Two Minute
@@ -17,7 +20,7 @@ reports](https://official.nba.com/2021-22-nba-officiating-last-two-minute-report
 that the NBA releases for some NBA games depending on how close the game
 was in the final two minutes. The clean, processed version of the data
 can be found in
-[1-tidy/L2M/L2M-stats-nba.csv](1-tidy/L2M/L2M-stats-nba.csv) while the
+[1-tidy/L2M/L2M_stats_nba.csv](1-tidy/L2M/L2M_stats_nba.csv) while the
 corresponding [`R`](https://www.r-project.org/) code to create this data
 is scattered across the [0-data](0-data) and [1-tidy](1-tidy) folders.
 The [0-data/L2M/archived-pdf](0-data/L2M/archived-pdf) folder hosts the
@@ -39,9 +42,9 @@ folder hosts individual game files from the API.
 |  2021  |  405  |       17.18       |       3.85       |     0.19      |      95%      |      0.87      |         22%          |     12.47      |
 |  2022  |  441  |       17.53       |       4.18       |     0.19      |      95%      |      1.18      |         26%          |     12.18      |
 |  2023  |  474  |       20.80       |       4.41       |     0.16      |      96%      |      1.15      |         24%          |     15.24      |
-|  2024  |  305  |       17.54       |       4.40       |     0.18      |      96%      |      0.94      |         21%          |     12.19      |
+|  2024  |  311  |       17.50       |       4.40       |     0.18      |      96%      |      0.93      |         21%          |     12.17      |
 
-All games with L2M Call Accuracy updated through 2024-03-10
+All games with L2M Call Accuracy updated through 2024-03-15
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
@@ -63,9 +66,9 @@ All games with L2M Call Accuracy updated through 2024-03-10
 |  2022  |   TRUE   |  29   |       21.17       |       4.47       |     0.23      |      95%      |      1.33      |         27%          |     15.37      |
 |  2023  |  FALSE   |  442  |       20.63       |       4.40       |     0.16      |      96%      |      1.15      |         24%          |     15.09      |
 |  2023  |   TRUE   |  32   |       23.17       |       4.58       |     0.14      |      97%      |      1.19      |         23%          |     17.39      |
-|  2024  |  FALSE   |  305  |       17.54       |       4.40       |     0.18      |      96%      |      0.94      |         21%          |     12.19      |
+|  2024  |  FALSE   |  311  |       17.50       |       4.40       |     0.18      |      96%      |      0.93      |         21%          |     12.17      |
 
-L2M Call Accuracy updated through 2024-03-10
+L2M Call Accuracy updated through 2024-03-15
 
 ### Organization
 
