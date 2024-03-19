@@ -26,6 +26,7 @@ url_nbra <- "https://www.nbra.net/nba-officials/referee-biographies/"
 links_nbra <- read_html(url_nbra) %>% 
   html_nodes(".child")
 
+# NEED TO: go back through and convert %% to |> and adjust the .
 tidy_links <- 
   tibble(ref_name = links_nbra %>%
            html_node("[class='title']") %>%
@@ -38,7 +39,8 @@ tidy_links <-
            html_text(),
          ref_url = html_attr(links_nbra, "href"),
          ref_image = links_nbra %>%
-           html_node("[class='image']") %>%
+           html_node("[class='image']") |>
+           as.character() |> 
            str_extract("(?<=\\().+?(?=\\))") %>% 
            str_sub(2, nchar(.) - 1)) %>% 
   mutate(ref_image_file = paste0(data_source, "/",
