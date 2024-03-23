@@ -63,7 +63,9 @@ new_game_ids <- id_list |>
 stats_nba_headers <- c(
   "Host" = "stats.nba.com",
   # "User-Agent" = "libcurl/7.68.0 r-curl/4.3.2 httr/1.4.2",
-  "User-Agent" = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+  "User-Agent" = paste0("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) ",
+                        "AppleWebKit/537.36 (KHTML, like Gecko) ",
+                        "Chrome/79.0.3945.130 Safari/537.36"),
   "Accept" = "application/json, text/plain, */*",
   "Accept-Language" = "en-US,en;q=0.5",
   "Accept-Encoding" = "gzip, deflate, br",
