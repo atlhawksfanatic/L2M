@@ -1202,7 +1202,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,regular season,Nate Green,28,28,1
 2022,regular season,Nick Buchert,168,64,2.625
 2022,regular season,Pat Fraher,300,60,5
-2022,regular season,Pat OConnell,3,3,1
+2022,regular season,Pat O'Connell,3,3,1
 2022,regular season,Phenizee Ransom,51,47,1.0851063829787233
 2022,regular season,Ray Acosta,116,64,1.8125
 2022,regular season,Robert Hussey,10,10,1
@@ -1212,7 +1212,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2022,regular season,Scott Wall,113,47,2.404255319148936
 2022,regular season,Sean Corbin,113,29,3.896551724137931
 2022,regular season,Sean Wright,315,63,5
-2022,regular season,Sharae Mitchell,4,4,1
+2022,regular season,Sha'Rae Mitchell,4,4,1
 2022,regular season,Simone Jelks,1,1,1
 2022,regular season,Suyash Mehta,51,47,1.0851063829787233
 2022,regular season,Tom Washington,188,50,3.76
@@ -1242,26 +1242,26 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,play-in,Tyler Ford,3,1,3
 2023,playoffs,Aaron Smith,1,1,1
 2023,playoffs,Ben Taylor,19,9,2.111111111111111
-2023,playoffs,Bill Kennedy,28,10,2.8
+2023,playoffs,Bill Kennedy,30,12,2.5
 2023,playoffs,Brent Barnaky,1,1,1
 2023,playoffs,Brian Forte,9,7,1.2857142857142858
-2023,playoffs,Courtney Kirkland,21,7,3
+2023,playoffs,Courtney Kirkland,23,9,2.5555555555555554
 2023,playoffs,Curtis Blair,22,10,2.2
-2023,playoffs,David Guthrie,53,11,4.818181818181818
-2023,playoffs,Ed Malloy,21,7,3
+2023,playoffs,David Guthrie,62,14,4.428571428571429
+2023,playoffs,Ed Malloy,22,8,2.75
 2023,playoffs,Eric Dalen,1,1,1
 2023,playoffs,Eric Lewis,31,9,3.4444444444444446
 2023,playoffs,Gediminas Petraitis,4,4,1
 2023,playoffs,JB DeRosa,2,2,1
 2023,playoffs,Jacyn Goble,4,4,1
-2023,playoffs,James Williams,33,9,3.6666666666666665
-2023,playoffs,John Goble,45,9,5
-2023,playoffs,Josh Tiven,37,9,4.111111111111111
+2023,playoffs,James Williams,37,11,3.3636363636363638
+2023,playoffs,John Goble,52,12,4.333333333333333
+2023,playoffs,Josh Tiven,44,12,3.6666666666666665
 2023,playoffs,Justin Van Duyne,2,2,1
 2023,playoffs,Karl Lane,5,5,1
 2023,playoffs,Kevin Cutler,1,1,1
-2023,playoffs,Kevin Scott,30,10,3
-2023,playoffs,Marc Davis,60,12,5
+2023,playoffs,Kevin Scott,31,11,2.8181818181818183
+2023,playoffs,Marc Davis,75,15,5
 2023,playoffs,Mark Lindsay,16,8,2
 2023,playoffs,Michael Smith,1,1,1
 2023,playoffs,Mitchell Ervin,4,4,1
@@ -1269,13 +1269,13 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,playoffs,Pat Fraher,9,5,1.8
 2023,playoffs,Ray Acosta,1,1,1
 2023,playoffs,Rodney Mott,4,4,1
-2023,playoffs,Scott Foster,60,12,5
+2023,playoffs,Scott Foster,75,15,5
 2023,playoffs,Sean Corbin,4,4,1
 2023,playoffs,Sean Wright,11,5,2.2
-2023,playoffs,Tony Brothers,55,11,5
+2023,playoffs,Tony Brothers,63,13,4.846153846153846
 2023,playoffs,Tre Maddox,9,7,1.2857142857142858
 2023,playoffs,Tyler Ford,12,8,1.5
-2023,playoffs,Zach Zarba,55,11,5
+2023,playoffs,Zach Zarba,65,13,5
 2023,pre-season,Aaron Smith,9,3,3
 2023,pre-season,Andy Nagy,5,3,1.6666666666666667
 2023,pre-season,Ashley Moyer-Gleich,9,3,3
@@ -1335,7 +1335,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,Nate Green,2,2,1
 2023,pre-season,Nick Buchert,6,2,3
 2023,pre-season,Pat Fraher,15,3,5
-2023,pre-season,Pat OConnell,3,3,1
+2023,pre-season,Pat O'Connell,3,3,1
 2023,pre-season,Phenizee Ransom,2,2,1
 2023,pre-season,Ray Acosta,5,3,1.6666666666666667
 2023,pre-season,Robert Hussey,2,2,1
@@ -1345,7 +1345,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,pre-season,Scott Wall,2,2,1
 2023,pre-season,Sean Corbin,11,3,3.6666666666666665
 2023,pre-season,Sean Wright,15,3,5
-2023,pre-season,Sharae Mitchell,3,3,1
+2023,pre-season,Sha'Rae Mitchell,3,3,1
 2023,pre-season,Suyash Mehta,2,2,1
 2023,pre-season,Tony Brothers,15,3,5
 2023,pre-season,Tre Maddox,15,3,5
@@ -1414,7 +1414,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,regular season,Nate Green,36,36,1
 2023,regular season,Nick Buchert,185,61,3.0327868852459017
 2023,regular season,Pat Fraher,310,62,5
-2023,regular season,Pat OConnell,6,6,1
+2023,regular season,Pat O'Connell,6,6,1
 2023,regular season,Phenizee Ransom,45,45,1
 2023,regular season,Ray Acosta,129,65,1.9846153846153847
 2023,regular season,Robert Hussey,33,33,1
@@ -1424,7 +1424,7 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,regular season,Scott Wall,42,42,1
 2023,regular season,Sean Corbin,156,52,3
 2023,regular season,Sean Wright,315,63,5
-2023,regular season,Sharae Mitchell,7,7,1
+2023,regular season,Sha'Rae Mitchell,7,7,1
 2023,regular season,Simone Jelks,6,6,1
 2023,regular season,Suyash Mehta,39,39,1
 2023,regular season,Tom Washington,57,19,3
@@ -1434,3 +1434,197 @@ szn,szn_type,official,ref_points,games,ref_rating
 2023,regular season,Tyler Mirkovich,7,7,1
 2023,regular season,Tyler Ricks,6,6,1
 2023,regular season,Zach Zarba,325,65,5
+2024,all-star,Derrick Collins,1,1,1
+2024,all-star,Josh Tiven,3,1,3
+2024,all-star,Tony Brothers,5,1,5
+2024,play-in,Aaron Smith,1,1,1
+2024,play-in,Bill Kennedy,3,1,3
+2024,play-in,Courtney Kirkland,3,1,3
+2024,play-in,Curtis Blair,3,1,3
+2024,play-in,Gediminas Petraitis,1,1,1
+2024,play-in,James Williams,5,1,5
+2024,play-in,Josh Tiven,5,1,5
+2024,play-in,Justin Van Duyne,1,1,1
+2024,play-in,Karl Lane,1,1,1
+2024,play-in,Marc Davis,5,1,5
+2024,play-in,Mark Lindsay,3,1,3
+2024,play-in,Mitchell Ervin,1,1,1
+2024,play-in,Nick Buchert,1,1,1
+2024,play-in,Scott Foster,5,1,5
+2024,play-in,Sean Wright,3,1,3
+2024,play-in,Tony Brothers,5,1,5
+2024,play-in,Tyler Ford,3,1,3
+2024,play-in,Zach Zarba,5,1,5
+2024,playoffs,Aaron Smith,1,1,1
+2024,playoffs,Ben Taylor,3,1,3
+2024,playoffs,Brian Forte,3,1,3
+2024,playoffs,James Williams,5,1,5
+2024,playoffs,John Goble,5,1,5
+2024,playoffs,Marc Davis,5,1,5
+2024,playoffs,Mark Lindsay,3,1,3
+2024,playoffs,Mitchell Ervin,3,1,3
+2024,playoffs,Nick Buchert,1,1,1
+2024,playoffs,Pat Fraher,1,1,1
+2024,playoffs,Scott Foster,5,1,5
+2024,playoffs,Sean Corbin,1,1,1
+2024,pre-season,Aaron Smith,11,3,3.6666666666666665
+2024,pre-season,Andy Nagy,7,3,2.3333333333333335
+2024,pre-season,Ashley Moyer-Gleich,3,3,1
+2024,pre-season,Ben Taylor,20,4,5
+2024,pre-season,Bill Kennedy,15,3,5
+2024,pre-season,Biniam Maru,3,3,1
+2024,pre-season,Brandon Adair,6,2,3
+2024,pre-season,Brandon Schwab,2,2,1
+2024,pre-season,Brent Barnaky,9,3,3
+2024,pre-season,Brent Haskill,3,3,1
+2024,pre-season,Brett Nansel,6,2,3
+2024,pre-season,Brian Forte,15,3,5
+2024,pre-season,CJ Washington,10,4,2.5
+2024,pre-season,Che Flores,2,2,1
+2024,pre-season,Clare Aubry,3,3,1
+2024,pre-season,Courtney Kirkland,15,3,5
+2024,pre-season,Curtis Blair,15,3,5
+2024,pre-season,Danielle Scott,2,2,1
+2024,pre-season,Dannica Mosher,2,2,1
+2024,pre-season,David Guthrie,15,3,5
+2024,pre-season,Dedric Taylor,9,3,3
+2024,pre-season,Derek Richardson,2,2,1
+2024,pre-season,Derrick Collins,2,2,1
+2024,pre-season,Ed Malloy,15,3,5
+2024,pre-season,Eric Dalen,9,3,3
+2024,pre-season,Evan Scott,2,2,1
+2024,pre-season,Gediminas Petraitis,15,3,5
+2024,pre-season,Intae Hwang,3,3,1
+2024,pre-season,JB DeRosa,11,3,3.6666666666666665
+2024,pre-season,JD Ralls,3,3,1
+2024,pre-season,JT Orr,9,3,3
+2024,pre-season,Jacyn Goble,13,3,4.333333333333333
+2024,pre-season,James Capers,10,2,5
+2024,pre-season,James Williams,15,3,5
+2024,pre-season,Jason Goldenberg,9,3,3
+2024,pre-season,Jenna Reneau,3,3,1
+2024,pre-season,Jenna Schroeder,5,3,1.6666666666666667
+2024,pre-season,John Butler,12,4,3
+2024,pre-season,John Conley,2,2,1
+2024,pre-season,Jonathan Sterling,2,2,1
+2024,pre-season,Josh Tiven,10,2,5
+2024,pre-season,Justin Van Duyne,11,3,3.6666666666666665
+2024,pre-season,Karl Lane,15,3,5
+2024,pre-season,Kevin Cutler,9,3,3
+2024,pre-season,Kevin Scott,15,3,5
+2024,pre-season,Lauren Holtkamp,6,2,3
+2024,pre-season,Leon Wood,2,2,1
+2024,pre-season,Marat Kogut,12,4,3
+2024,pre-season,Marc Davis,15,3,5
+2024,pre-season,Mark Lindsay,15,3,5
+2024,pre-season,Matt Boland,4,2,2
+2024,pre-season,Matt Kallio,3,3,1
+2024,pre-season,Matt Myers,3,3,1
+2024,pre-season,Michael Smith,9,3,3
+2024,pre-season,Mitchell Ervin,15,3,5
+2024,pre-season,Mousa Dagher,4,2,2
+2024,pre-season,Natalie Sago,12,4,3
+2024,pre-season,Nate Green,2,2,1
+2024,pre-season,Nick Buchert,13,3,4.333333333333333
+2024,pre-season,Pat Fraher,13,3,4.333333333333333
+2024,pre-season,Pat O'Connell,3,3,1
+2024,pre-season,Phenizee Ransom,9,3,3
+2024,pre-season,Ray Acosta,12,4,3
+2024,pre-season,Robert Hussey,2,2,1
+2024,pre-season,Rodney Mott,13,3,4.333333333333333
+2024,pre-season,Scott Twardoski,9,3,3
+2024,pre-season,Scott Wall,2,2,1
+2024,pre-season,Sean Corbin,9,3,3
+2024,pre-season,Sean Wright,15,3,5
+2024,pre-season,Sha'Rae Mitchell,3,3,1
+2024,pre-season,Suyash Mehta,2,2,1
+2024,pre-season,Tom Washington,9,3,3
+2024,pre-season,Tony Brothers,15,3,5
+2024,pre-season,Tre Maddox,15,3,5
+2024,pre-season,Tyler Ford,15,3,5
+2024,pre-season,Tyler Mirkovich,3,3,1
+2024,pre-season,Tyler Ricks,3,3,1
+2024,pre-season,Zach Zarba,15,3,5
+2024,regular season,Aaron Smith,198,64,3.09375
+2024,regular season,Andy Nagy,106,52,2.0384615384615383
+2024,regular season,Ashley Moyer-Gleich,153,57,2.6842105263157894
+2024,regular season,Ben Taylor,199,41,4.853658536585366
+2024,regular season,Bill Kennedy,310,62,5
+2024,regular season,Biniam Maru,2,2,1
+2024,regular season,Brandon Adair,49,45,1.0888888888888888
+2024,regular season,Brandon Schwab,37,37,1
+2024,regular season,Brent Barnaky,168,62,2.7096774193548385
+2024,regular season,Brent Haskill,8,8,1
+2024,regular season,Brett Nansel,97,55,1.7636363636363637
+2024,regular season,Brian Forte,269,63,4.26984126984127
+2024,regular season,CJ Washington,102,56,1.8214285714285714
+2024,regular season,Che Flores,33,33,1
+2024,regular season,Clare Aubry,3,3,1
+2024,regular season,Courtney Kirkland,270,54,5
+2024,regular season,Curtis Blair,315,63,5
+2024,regular season,Danielle Scott,36,36,1
+2024,regular season,Dannica Mosher,35,35,1
+2024,regular season,David Guthrie,265,53,5
+2024,regular season,Dedric Taylor,143,61,2.3442622950819674
+2024,regular season,Derek Richardson,40,40,1
+2024,regular season,Derrick Collins,55,47,1.1702127659574468
+2024,regular season,Ed Malloy,290,58,5
+2024,regular season,Eric Dalen,169,59,2.864406779661017
+2024,regular season,Evan Scott,42,42,1
+2024,regular season,Gediminas Petraitis,230,64,3.59375
+2024,regular season,Intae Hwang,33,33,1
+2024,regular season,JB DeRosa,194,64,3.03125
+2024,regular season,JD Ralls,8,8,1
+2024,regular season,JT Orr,113,55,2.0545454545454547
+2024,regular season,Jacyn Goble,219,63,3.4761904761904763
+2024,regular season,James Capers,240,48,5
+2024,regular season,James Williams,303,61,4.967213114754099
+2024,regular season,Jason Goldenberg,75,43,1.744186046511628
+2024,regular season,Jenna Reneau,7,7,1
+2024,regular season,Jenna Schroeder,42,42,1
+2024,regular season,John Butler,119,55,2.1636363636363636
+2024,regular season,John Conley,36,36,1
+2024,regular season,John Goble,120,24,5
+2024,regular season,Jonathan Sterling,37,37,1
+2024,regular season,Josh Tiven,325,65,5
+2024,regular season,Justin Van Duyne,197,65,3.0307692307692307
+2024,regular season,Karl Lane,247,65,3.8
+2024,regular season,Kevin Cutler,201,53,3.792452830188679
+2024,regular season,Kevin Scott,310,62,5
+2024,regular season,Lauren Holtkamp,37,15,2.466666666666667
+2024,regular season,Leon Wood,29,29,1
+2024,regular season,Marat Kogut,134,58,2.310344827586207
+2024,regular season,Marc Davis,305,61,5
+2024,regular season,Mark Lindsay,310,62,5
+2024,regular season,Matt Boland,34,34,1
+2024,regular season,Matt Kallio,34,34,1
+2024,regular season,Matt Myers,46,46,1
+2024,regular season,Michael Smith,119,53,2.2452830188679247
+2024,regular season,Mitchell Ervin,247,63,3.9206349206349205
+2024,regular season,Mousa Dagher,46,46,1
+2024,regular season,Natalie Sago,170,64,2.65625
+2024,regular season,Nate Green,39,39,1
+2024,regular season,Nick Buchert,196,60,3.2666666666666666
+2024,regular season,Pat Fraher,270,64,4.21875
+2024,regular season,Pat O'Connell,7,7,1
+2024,regular season,Phenizee Ransom,95,55,1.7272727272727273
+2024,regular season,Ray Acosta,184,66,2.787878787878788
+2024,regular season,Robert Hussey,36,36,1
+2024,regular season,Rodney Mott,128,30,4.266666666666667
+2024,regular season,Scott Foster,310,62,5
+2024,regular season,Scott Twardoski,136,60,2.2666666666666666
+2024,regular season,Scott Wall,38,38,1
+2024,regular season,Sean Corbin,168,56,3
+2024,regular season,Sean Wright,296,64,4.625
+2024,regular season,Sha'Rae Mitchell,35,35,1
+2024,regular season,Suyash Mehta,36,36,1
+2024,regular season,Tom Washington,130,54,2.4074074074074074
+2024,regular season,Tony Brothers,300,60,5
+2024,regular season,Tre Maddox,77,23,3.347826086956522
+2024,regular season,Tyler Ford,293,63,4.650793650793651
+2024,regular season,Tyler Mirkovich,7,7,1
+2024,regular season,Tyler Ricks,8,8,1
+2024,regular season,Zach Zarba,320,64,5
+2024,NA,David Guthrie,5,1,5
+2024,NA,Mitchell Ervin,1,1,1
+2024,NA,Tyler Ford,3,1,3
