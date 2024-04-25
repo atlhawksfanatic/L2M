@@ -28,11 +28,11 @@ l2m_ref <- l2m |>
   pivot_longer(c(OFFICIAL_1, OFFICIAL_2, OFFICIAL_3),
                values_to = "Referee") |> 
   left_join(bios) |> 
-  mutate(Referee = if_else(is.na(ref_name),
-                           Referee,
-                           paste0('<a href="', ref_url,
-                                  '" target="_blank" >',
-                                  ref_name, '</a>'))) |> 
+  # mutate(Referee = if_else(is.na(ref_name),
+  #                          Referee,
+  #                          paste0('<a href="', ref_url,
+  #                                 '" target="_blank" >',
+  #                                 ref_name, '</a>'))) |> 
   filter(!is.na(Referee)) |> 
   # Group by ref for output down the line
   group_by(Referee) |> 
@@ -53,7 +53,13 @@ vrbls_pct    <- c("Correct Call Percentage",
                   "Bad Calls Percentage",
                   # "Good Graded Percentage",
                   "Bad Graded Percentage")
-vrbls <- c(vrbls_signif, vrbls_pct)
+vrbls_tot <- c("Total Periods",
+               "Total Calls",
+               "Total Correct Calls" = "Total CC",
+               "Total Correct Non-Calls" = "Total CNC",
+               "Total Incorrect Calls" = "Total IC",
+               "Total Incorrect Non-Calls" = "Total INC")
+vrbls <- c(vrbls_tot, vrbls_signif, vrbls_pct)
 
 
 # --- ui ------------------------------------------------------------------
@@ -74,31 +80,31 @@ ui <-  fluidPage(
                           selected = unique(as.character(l2m_ref$season)),
                           inline = TRUE)
     ),
-    # What if we have a date range instead of season?
+    # # What if we have a date range instead of season?
+    # fluidRow(
+    #   dateRangeInput("game_range",
+    #                  label = "Date range of L2M reports:",
+    #                  start = min(l2m$date), end = max(l2m$date),
+    #                  min = min(l2m$date), max = max(l2m$date),
+    #                  startview = "decade"
+    #   )
+    # ), 
     fluidRow(
-      dateRangeInput("game_range",
-                     label = "Date range of L2M reports:",
-                     start = min(l2m$date), end = max(l2m$date),
-                     min = min(l2m$date), max = max(l2m$date),
-                     startview = "decade"
-      )
-    ), 
-    fluidRow(
-      actionButton("update_range", label = "Update Date Range")
+      actionButton("update_range", label = "Update Data Displayed")
     ),
-    # Need to have a slider for number of games refereed
-    fluidRow(
-      sliderInput("obs", "Number of games refereed:", step = 1,
-                  min = 0, max = max(max_games$games), 
-                  value = c(0, max(max_games$games))
-      )
-    ),
+    # # Need to have a slider for number of games refereed
+    # fluidRow(
+    #   sliderInput("obs", "Number of games refereed:", step = 1,
+    #               min = 0, max = max(max_games$games), 
+    #               value = c(0, max(max_games$games))
+    #   )
+    # ),
     
     # What variables to display?
     fluidRow(
       pickerInput("vrbls", "Select variables to display:",
                   choices = vrbls,
-                  selected = vrbls,
+                  selected = c(vrbls_tot, vrbls_pct),
                   options = list("actions-box" = TRUE,
                                  size = 10,
                                  "selected-text-format" = "count > 3"),
@@ -110,9 +116,9 @@ ui <-  fluidPage(
       pickerInput("team", "Team (regardless of home/away):",
                   choices = sort(unique(l2m_ref$home_team)),
                   selected = sort(unique(l2m_ref$home_team)),
-                  options = list(`actions-box` = TRUE,
+                  options = list("actions-box" = TRUE,
                                  size = 10,
-                                 `selected-text-format` = "count > 3"),
+                                 "selected-text-format" = "count > 3"),
                   multiple = TRUE)
     ),
     
@@ -140,18 +146,18 @@ ui <-  fluidPage(
              pickerInput("away_team", "Away Team:",
                          choices = sort(unique(l2m_ref$away_team)),
                          selected = sort(unique(l2m_ref$away_team)),
-                         options = list(`actions-box` = TRUE,
+                         options = list("actions-box" = TRUE,
                                         size = 10,
-                                        `selected-text-format` = "count > 3"),
+                                        "selected-text-format" = "count > 3"),
                          multiple = TRUE)
       ),
       column(6,
              pickerInput("home_team", "Home Team:",
                          choices = sort(unique(l2m_ref$home_team)),
                          selected = sort(unique(l2m_ref$home_team)),
-                         options = list(`actions-box` = TRUE,
+                         options = list("actions-box" = TRUE,
                                         size = 10,
-                                        `selected-text-format` = "count > 3"),
+                                        "selected-text-format" = "count > 3"),
                          multiple = TRUE)
       )
     ),
@@ -190,16 +196,26 @@ server <- function(input, output, session) {
       l2m_ref
     } else {
       # Only update the underlying data if the action button was hit
-      isolate(l2m_ref |> 
-                # Filter for the game range
-                filter(date >= input$game_range[1],
-                       date <= input$game_range[2]) |> 
+      isolate(l2m_ref |>
+                # # Filter for the game range
+                # filter(date >= input$game_range[1],
+                #        date <= input$game_range[2]) |> 
                 # Filter for the season
                 filter(season %in% input$season) |> 
                 # Group by ref for output down the line
                 group_by(Referee) |> 
                 # Count how many games were refereed
-                mutate(games = n_distinct(gid)))
+                mutate(games = n_distinct(gid))) |>
+        # Filter by the number of games refereed
+        # filter(games >= input$obs[1], games <= input$obs[2]) |> 
+        # # Filter for the season
+        # filter(season %in% input$season) |> 
+        # Filter for the Team
+        filter(away_team %in% input$team | home_team %in% input$team) |> 
+        # Filter for the away teams
+        filter(away_team %in% input$away_team) |> 
+        # Filter for the home teams
+        filter(home_team %in% input$home_team)
     }
   })
   
@@ -212,27 +228,33 @@ server <- function(input, output, session) {
   
   ref_table <- reactive({ 
     l2m_data() |> 
-      # Filter by the number of games refereed
-      filter(games >= input$obs[1], games <= input$obs[2]) |> 
-      # # Filter for the season
-      # filter(season %in% input$season) |> 
-      # Filter for the Team
-      filter(away_team %in% input$team | home_team %in% input$team) |> 
-      # Filter for the away teams
-      filter(away_team %in% input$away_team) |> 
-      # Filter for the home teams
-      filter(home_team %in% input$home_team) |> 
+      # # Filter by the number of games refereed
+      # filter(games >= input$obs[1], games <= input$obs[2]) |> 
+      # # # Filter for the season
+      # # filter(season %in% input$season) |> 
+      # # Filter for the Team
+      # filter(away_team %in% input$team | home_team %in% input$team) |> 
+      # # Filter for the away teams
+      # filter(away_team %in% input$away_team) |> 
+      # # Filter for the home teams
+      # filter(home_team %in% input$home_team) |> 
       summarise(Games = n_distinct(gid),
-                "Calls per period" = sum(decision_3 %in% c("CC", "IC")) /
-                  n_distinct(gid, period),
-                "CC per period" = sum(decision_3 == "CC") /
-                  n_distinct(gid, period),
-                "CNC per period" = sum(decision_3 == "CNC") /
-                  n_distinct(gid, period),
-                "IC per period" = sum(decision_3 == "IC") /
-                  n_distinct(gid, period),
-                "INC per period" = sum(decision_3 %in% c("INC", "inc")) /
-                  n_distinct(gid, period),
+                "Total Calls" = sum(decision_3 %in% c("CC", "IC")),
+                "Total Periods" = n_distinct(gid, period),
+                "Calls per period" = `Total Calls` / `Total Periods`,
+                
+                "Total CC" = sum(decision_3 == "CC"),
+                "CC per period" = `Total CC` / `Total Periods`,
+                
+                "Total CNC" = sum(decision_3 == "CNC"),
+                "CNC per period" = `Total CNC` / `Total Periods`,
+                
+                "Total IC" = sum(decision_3 == "IC"),
+                "IC per period" = `Total IC` / `Total Periods`,
+                
+                "Total INC" = sum(decision_3 %in% c("INC", "inc")),
+                "INC per period" = `Total INC` / `Total Periods`,
+                
                 "Correct Call Percentage" = sum(decision_3 == "CC") /
                   sum(decision_3 %in% c("CC", "IC")),
                 "Bad Calls Percentage" = sum(decision_3 %in%
@@ -244,35 +266,34 @@ server <- function(input, output, session) {
                 "Bad Graded Percentage" = sum(decision_3 %in%
                                                 c("IC", "INC", "inc")) /
                   sum(decision_3 %in% c("CC", "CNC", "IC", "INC", "inc"))) |> 
+      mutate(across(contains("Total"), ~format(.,
+                                               big.mark=",", trim=TRUE))) |> 
       arrange(desc(Games)) |> 
       select(Referee, Games, !!!input$vrbls)
   })
   
   sum_table <- reactive({ 
     l2m_data() |> 
-      # Filter by the number of games refereed
-      filter(games >= input$obs[1], games <= input$obs[2]) |> 
-      # # Filter for the season
-      # filter(season %in% input$season) |> 
-      # Filter for the Team
-      filter(away_team %in% input$team | home_team %in% input$team) |> 
-      # Filter for the away teams
-      filter(away_team %in% input$away_team) |> 
-      # Filter for the home teams
-      filter(home_team %in% input$home_team) |> 
+      # Was something here....
       ungroup() |> 
       summarise(placeholder = "All Refs",
                 Games = n_distinct(gid),
-                "Calls per period" = sum(decision_3 %in% c("CC", "IC")) /
-                  n_distinct(gid, period, Referee),
-                "CC per period" = sum(decision_3 == "CC") /
-                  n_distinct(gid, period, Referee),
-                "CNC per period" = sum(decision_3 == "CNC") /
-                  n_distinct(gid, period, Referee),
-                "IC per period" = sum(decision_3 == "IC") /
-                  n_distinct(gid, period, Referee),
-                "INC per period" = sum(decision_3 %in% c("INC", "inc")) /
-                  n_distinct(gid, period, Referee),
+                "Total Calls" = sum(decision_3 %in% c("CC", "IC")),
+                "Total Periods" = n_distinct(gid, period),
+                "Calls per period" = `Total Calls` / `Total Periods`,
+                
+                "Total CC" = sum(decision_3 == "CC"),
+                "CC per period" = `Total CC` / `Total Periods`,
+                
+                "Total CNC" = sum(decision_3 == "CNC"),
+                "CNC per period" = `Total CNC` / `Total Periods`,
+                
+                "Total IC" = sum(decision_3 == "IC"),
+                "IC per period" = `Total IC` / `Total Periods`,
+                
+                "Total INC" = sum(decision_3 %in% c("INC", "inc")),
+                "INC per period" = `Total INC` / `Total Periods`,
+                
                 "Correct Call Percentage" = sum(decision_3 == "CC") /
                   sum(decision_3 %in% c("CC", "IC")),
                 "Bad Calls Percentage" = sum(decision_3 %in%
@@ -284,6 +305,8 @@ server <- function(input, output, session) {
                 "Bad Graded Percentage" = sum(decision_3 %in%
                                                 c("IC", "INC", "inc")) /
                   sum(decision_3 %in% c("CC", "CNC", "IC", "INC", "inc"))) |> 
+      mutate(across(contains("Total"), ~format(.,
+                                               big.mark=",", trim=TRUE))) |> 
       select(Referee = placeholder, Games, !!!input$vrbls)
   })
   
