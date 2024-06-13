@@ -334,6 +334,11 @@ write_rds(l2m_games_stats2, paste0(local_dir, "/L2M_stats_nba.rds"))
 
 # ---- ref-shiny --------------------------------------------------------------
 
+shiny_vrbls <- c("season", "gid", "period", "time", "call", "type",
+                 "committing", "disadvantaged",
+                 "decision", "decision_3", "comments", 
+                 "OFFICIAL_1", "OFFICIAL_2", "OFFICIAL_3")
+
 l2m_shiny <-
   l2m_games_stats2 |> 
   mutate(decision_2 = ifelse(is.na(decision) | decision == "",
@@ -348,7 +353,8 @@ l2m_shiny <-
          foul_num = 1*(foul == "foul"),
          temp_year = ifelse(month(date) < 10, 2016, 2015),
          temp_date = as.Date(paste(temp_year, month(date),
-                                   day(date), sep = "/"), "%Y/%m/%d"))
+                                   day(date), sep = "/"), "%Y/%m/%d")) |> 
+  select(all_of(shiny_vrbls))
 
 if (file.exists("3-shiny/ref-shiny/L2M_stats_nba.csv")) {
   write_csv(l2m_shiny, "3-shiny/ref-shiny/L2M_stats_nba.csv")
