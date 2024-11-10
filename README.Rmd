@@ -36,7 +36,10 @@ nba_dates_long <- tribble(
   2023, "season", "2022-10-17", "2023-4-10",
   2023, "playoffs", "2023-4-11", "2023-6-20",
   2024, "season", "2023-10-23", "2024-04-15",
-  2024, "playoffs", "2024-04-16", "2024-06-21"
+  2024, "playoffs", "2024-04-16", "2024-06-21",
+  
+  2025, "season", "2024-10-21", "2025-04-14",
+  2025, "playoffs", "2025-04-15", "2025-06-22"
 ) |> 
   mutate_at(vars(-season, -season_section), as.Date) |> 
   mutate(days = end_date - start_date + 1)
@@ -69,13 +72,13 @@ day_number <- function(season, datex) {
 ```{r automated, include = FALSE}
 # Automated process
 # Have you updated the game log for the season/playoffs yet?
-source("0-data/0-stats-nba-game-ids.R")
+# source("0-data/0-stats-nba-game-ids.R")
 
 # Download reports
 source("0-data/0-official-nba-referee-assign.R")
 source("0-data/0-official-nba-l2m.R")
 # Still manually scrape though
-source("0-data/0-L2M-download-2023-24.R")
+# source("0-data/0-L2M-download-2023-24.R")
 
 # Gather up and tidy the L2M reports
 source("1-tidy/1-L2M-raw-stats-nba.R") 

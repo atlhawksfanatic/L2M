@@ -62,6 +62,7 @@ l2m_raw_szns <-
                             date < as.Date("2022-10-01") ~ 2022,
                             date < as.Date("2023-10-01") ~ 2023,
                             date < as.Date("2024-10-01") ~ 2024,
+                            date < as.Date("2025-10-01") ~ 2025,
                             T ~ NA_real_),
          # Last day of the regular season
          # April 15, 2015
@@ -90,6 +91,8 @@ l2m_raw_szns <-
                                date < as.Date("2023-6-20") ~ T,
                              date > as.Date("2024-4-16") &
                                date < as.Date("2024-6-21") ~ T,
+                             date > as.Date("2025-4-15") &
+                               date < as.Date("2025-6-22") ~ T,
                              T ~ F))
 
 # ---- correct-players ----------------------------------------------------
