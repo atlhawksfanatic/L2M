@@ -43,9 +43,9 @@ folder hosts individual game files from the API.
 |  2022  |  441  |       17.53       |       4.18       |     0.19      |      95%      |      1.18      |         26%          |     12.18      |
 |  2023  |  474  |       20.80       |       4.41       |     0.16      |      96%      |      1.15      |         24%          |     15.24      |
 |  2024  |  411  |       17.50       |       4.34       |     0.17      |      96%      |      0.92      |         21%          |     12.24      |
-|  2025  |  50   |       14.91       |       4.68       |     0.14      |      97%      |      0.81      |         17%          |      9.42      |
+|  2025  |  85   |       14.76       |       4.49       |     0.15      |      97%      |      0.73      |         17%          |      9.54      |
 
-All games with L2M Call Accuracy updated through 2024-11-08
+All games with L2M Call Accuracy updated through 2024-11-19
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:------:|:--------:|:-----:|:-----------------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------------:|:--------------:|
@@ -69,9 +69,9 @@ All games with L2M Call Accuracy updated through 2024-11-08
 |  2023  |   TRUE   |  32   |       23.17       |       4.58       |     0.14      |      97%      |      1.19      |         23%          |     17.39      |
 |  2024  |  FALSE   |  385  |       17.28       |       4.30       |     0.16      |      96%      |      0.90      |         20%          |     12.09      |
 |  2024  |   TRUE   |  26   |       20.83       |       4.97       |     0.24      |      95%      |      1.21      |         23%          |     14.66      |
-|  2025  |  FALSE   |  50   |       14.91       |       4.68       |     0.14      |      97%      |      0.81      |         17%          |      9.42      |
+|  2025  |  FALSE   |  85   |       14.76       |       4.49       |     0.15      |      97%      |      0.73      |         17%          |      9.54      |
 
-L2M Call Accuracy updated through 2024-11-08
+L2M Call Accuracy updated through 2024-11-19
 
 ### Organization
 
