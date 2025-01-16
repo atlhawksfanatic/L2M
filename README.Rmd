@@ -72,7 +72,7 @@ day_number <- function(season, datex) {
 ```{r automated, include = FALSE}
 # Automated process
 # Have you updated the game log for the season/playoffs yet?
-# source("0-data/0-stats-nba-game-ids.R")
+source("0-data/0-stats-nba-game-ids.R")
 
 # Download reports
 source("0-data/0-official-nba-referee-assign.R")
