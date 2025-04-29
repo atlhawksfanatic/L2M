@@ -59,7 +59,9 @@ if (file.exists("0-data/stats_nba/stats_nba_box.csv")) {
 
 # Only download the missing box scores:
 missing_ids <- stats_nba_game_ids |> 
-  filter(!is.na(gid), !(gid %in% unique(old_box$gid)))
+  filter(!is.na(gid), !(gid %in% unique(old_box$gid)),
+         # API seems useless after this game:
+         as.numeric(gid) < 0022401168)
 
 # ---- nba-stats-api ------------------------------------------------------
 
@@ -84,9 +86,13 @@ stats_nba_headers <- c(
 # Take the list of nba_game_ids that are missing box scores, then query API
 #  for information on players, referees, and attendance
 
-box_mapped <- purrr::map(missing_ids$gid, function(x) {
-  Sys.sleep(runif(1, 0.5, 2.5))
+box_mapped <- purrr::map(missing_ids$gid[1:min(50, length(missing_ids$gid))], function(x) {
   print(paste(x, "at", Sys.time()))
+  if (is.na(x) | as.numeric(x) > 0022401167) {
+    box_score_info <- data.frame(table = NA)
+    return(box_score_info)
+  }
+  Sys.sleep(runif(1, 0.5, 2.5))
   
   # Box Score Info:
   # EndPeriod=1&EndRange=0&GameID=0021700807&
@@ -127,9 +133,13 @@ box_mapped <- purrr::map(missing_ids$gid, function(x) {
   }
 })
 
-info_mapped <- purrr::map(missing_ids$gid, function(x) {
-  Sys.sleep(runif(1, 0.5, 2.5))
+info_mapped <- purrr::map(missing_ids$gid[1:min(50, length(missing_ids$gid))], function(x) {
   print(paste(x, "at", Sys.time()))
+  if (is.na(x) | as.numeric(x) > 0022401167) {
+    box_score_info <- data.frame(table = NA)
+    return(box_score_info)
+  }
+  Sys.sleep(runif(1, 0.5, 2.5))
   
   # Info on officials and attendance for a game
   x_url <- paste0("https://stats.nba.com/stats/boxscoresummaryv2?GameID=", x)
@@ -204,6 +214,8 @@ new_info <- info_mapped |>
 
 # If there are no box scores downloaded, make the new box_info NA
 if (is_empty(new_box) & is_empty(new_info)) {
+  new_box_info <- data.frame(gid = NA)
+} else if (!("GAME_ID" %in% names(new_box))) {
   new_box_info <- data.frame(gid = NA)
 } else {
   # get player's side and convert the minutes into a numeric
