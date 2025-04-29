@@ -72,7 +72,7 @@ official_nba_headers <- c(
 # ---- query --------------------------------------------------------------
 
 # Take the list of nba_game_ids that are missing ref, then query API
-l2m_mapped <- purrr::map(new_game_ids$gid, function(x) {
+l2m_mapped <- purrr::map(new_game_ids$gid[1:min(50, length(new_game_ids$gid))], function(x) {
   Sys.sleep(runif(1, 2.5, 5.5))
   print(paste(x, "at", Sys.time()))
   

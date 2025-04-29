@@ -77,7 +77,7 @@ map_dates <- new_game_dates |>
   select(date) |> 
   distinct()
 
-ref_mapped <- purrr::map(map_dates$date[1:min(100, length(map_dates$date))],
+ref_mapped <- purrr::map(map_dates$date[1:min(50, length(map_dates$date))],
                          function(x) {
   Sys.sleep(runif(1, 2.5, 5.5))
   print(paste(x, "at", Sys.time()))
