@@ -43,9 +43,9 @@ folder hosts individual game files from the API.
 | 2022 | 441 | 17.53 | 4.18 | 0.19 | 95% | 1.18 | 26% | 12.18 |
 | 2023 | 474 | 20.80 | 4.41 | 0.16 | 96% | 1.15 | 24% | 15.24 |
 | 2024 | 411 | 17.50 | 4.34 | 0.17 | 96% | 0.92 | 21% | 12.24 |
-| 2025 | 411 | 14.92 | 4.40 | 0.14 | 97% | 0.56 | 14% | 9.97 |
+| 2025 | 418 | 14.97 | 4.38 | 0.14 | 97% | 0.55 | 14% | 10.04 |
 
-All games with L2M Call Accuracy updated through 2025-04-27
+All games with L2M Call Accuracy updated through 2025-05-05
 
 | Season | Playoffs | Games | Grades per period | Calls per period | IC per period | CC Percentage | INC per period | Bad Calls Percentage | CNC per period |
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
@@ -70,9 +70,9 @@ All games with L2M Call Accuracy updated through 2025-04-27
 | 2024 | FALSE | 385 | 17.28 | 4.30 | 0.16 | 96% | 0.90 | 20% | 12.09 |
 | 2024 | TRUE | 26 | 20.83 | 4.97 | 0.24 | 95% | 1.21 | 23% | 14.66 |
 | 2025 | FALSE | 400 | 14.89 | 4.42 | 0.14 | 97% | 0.55 | 14% | 9.92 |
-| 2025 | TRUE | 11 | 16.08 | 3.69 | 0.00 | 100% | 0.85 | 19% | 11.54 |
+| 2025 | TRUE | 18 | 16.64 | 3.59 | 0.09 | 97% | 0.55 | 15% | 12.50 |
 
-L2M Call Accuracy updated through 2025-04-27
+L2M Call Accuracy updated through 2025-05-05
 
 ### Organization
 
