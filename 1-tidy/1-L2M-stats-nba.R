@@ -40,7 +40,9 @@ bkref_cross <- c("BKN" = "BRK", "PHX" = "PHO", "CHA" = "CHO")
 
 l2m_raw   <- read_csv("1-tidy/L2M/L2M_raw_api.csv",
                       col_types = cols(.default = "c")) |> 
-  mutate(date = as.Date(date))
+  mutate(date = as.Date(date)) |> 
+  mutate_at(vars(committing, disadvantaged),
+            ~stringi::stri_trans_general(., "Latin-ASCII"))
 
 stats_box <- read_csv("0-data/stats_nba/stats_nba_box.csv",
                       col_types = cols(.default = "c")) |> 
