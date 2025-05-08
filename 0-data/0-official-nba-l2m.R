@@ -44,7 +44,9 @@ if (file.exists(paste0(local_dir, "/official_nba_l2m_api.csv"))) {
 
 new_game_ids <- id_list |> 
   # L2Ms began on 2015-03-01, so only use those dates onward in the id_list
-  filter(date > "2015-02-28", date < Sys.Date() - 1) |> 
+  filter(date > "2015-02-28",
+         # 17 reflects 5PM
+         date < floor_date(now(tz = "America/New_York") - 60*60*17) + 1) |> 
   # And don't download for a date that has already occurred
   filter(!gid %in% l2m_old$game_id)
 
