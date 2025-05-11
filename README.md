@@ -9,9 +9,9 @@ want](1-tidy/L2M/L2M_stats_nba.csv)
 ## Articles
 
 - [How To Extract The Last Two Minute
-  Reports](2-eda/2-how-to-last-two-minutes)
+  Reports](2-eda/2-how-to-last-two-minutes.Rmd)
 - [Updating The Last Two Minute Reports: data through the 2019 NBA
-  Finals](2-eda/2-through-2019-finals)
+  Finals](2-eda/2-through-2019-finals.Rmd)
 
 ## Description
 
